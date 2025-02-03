@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the XORO encryption module linked to UNC1860 malware by monitoring for a specific MD5 hash (57cd8e220465aa8030755d4009d0117c). Its implementation can signal potential defense evasion techniques employed by attackers, making it critical for monitoring security environments.
+title: Detection of XORO Encryption Module
+id: 3be856f8-d5e2-40f2-a8d9-0fb0e73fd0b6
+status: experimental
+description: Detects the use of the XORO encryption module with a specific MD5 hash which is associated with UNC1860 malware.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    md5: 57cd8e220465aa8030755d4009d0117c
+  condition: selection
+falsepositives:
+  - Legitimate applications with a matching hash (highly unlikely)
+level: high

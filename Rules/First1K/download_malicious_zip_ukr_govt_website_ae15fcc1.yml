@@ -1,0 +1,30 @@
+# review_report_url: https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies the download of a malicious ZIP file from a Ukrainian government website, targeting a known vulnerability (CVE-2024-4351), based on the URI path and client header details. It may generate false positives if authorized personnel download the file for legitimate purposes, and further validation of the download source is recommended to avoid such issues.
+title: Download of Malicious ZIP File from Ukrainian Government Website
+id: ae15fcc1-c0b2-40b4-9899-110dd823eb83
+status: experimental
+description: Detects the download event of a ZIP file from a Ukrainian government website which contains known vulnerabilities.
+references:
+  - https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /uploads/53/199804/humeniuk_liubov_stanislavivna.zip
+    client_header_names|contains: Referer
+  condition: selection
+falsepositives:
+  - Legitimate download of the file by authorized personnel
+level: high

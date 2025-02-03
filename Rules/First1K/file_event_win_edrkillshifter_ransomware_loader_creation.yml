@@ -1,0 +1,30 @@
+# review_report_url: https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the creation of a specific file, killer.exe, within the C:\Share\ directory, a behavior associated with the EDRKillShifter ransomware. By monitoring for this file in this location, the rule helps identify potential ransomware activity aimed at bypassing EDR defenses. Alerts triggered by this rule should be investigated, as legitimate software rarely uses this filename and path combination.
+title: Detection of EDRKillShifter Ransomware Loader File Creation
+id: 6fec88f1-48da-448a-8713-5de9708d6254
+status: experimental
+description: Detects the creation of a file named "killer.exe" in the directory "C:\Share\" which may indicate the presence of the EDRKillShifter ransomware.
+references:
+  - https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+author: System Two Security
+date: 2024/10/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \killer.exe
+    Image|startswith: C:\Share\
+  condition: selection
+falsepositives:
+  - Legitimate software installation or update that coincidentally uses the same file name and path
+level: high

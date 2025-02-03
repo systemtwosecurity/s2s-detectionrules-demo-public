@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule detects the malware LATRODECTUS, as it identifies the presence of a file called TRUFOS.DLL through its distinct SHA-256 hash value. Hash values only exist in a file and thus the possibility of false positives is minimal. Detection at such a level therefore must be investigated since it appears to have a relation to malicious activities.
+title: Detection of LATRODECTUS TRUFOS.DLL SHA-256 Hash
+id: 61f7df6e-f922-4204-a2df-bde6ecf55dd2
+status: experimental
+description: Detects the presence of a known LATRODECTUS TRUFOS.DLL file by its SHA-256 hash value.
+references:
+  - https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: aee22a35cbdac3f16c3ed742c0b1bfe9739a13469cf43b36fb2c63565111028c
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: high

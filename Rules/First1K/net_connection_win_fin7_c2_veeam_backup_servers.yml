@@ -1,0 +1,44 @@
+# review_report_url: https://labs.withsecure.com/publications/fin7-target-veeam-servers
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule detects FIN7 C2 connections to specific IPs and ports, confirmed by the CTI report. Monitor related process activity (e.g., PowerShell, cmd.exe) and SMB traffic on port 445 for enhanced detection.
+title: FIN7 C2 Connections on Veeam Backup Servers
+id: b5a2691e-7fa5-4742-bc28-1718a6b7f438
+status: experimental
+description: Detects multiple command and control (C2) connections to various IP addresses and ports as seen in attacks against Veeam backup servers by FIN7.
+references:
+  - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  c2_ips:
+    DestinationIp|contains:
+      - 162.248.255.11
+      - 91.199.147.52
+      - 195.123.204.164
+      - 217.12.202.66
+      - 95.217.49.143
+      - 77.75.230.103
+      - 194.78.41.8
+      - 45.136.199.198
+  c2_ports:
+    DestinationPort|contains:
+      - '4343'
+      - '443'
+      - '2543'
+      - '176443'
+      - '4143'
+  condition: c2_ips and c2_ports
+falsepositives:
+  - Legitimate connections to IP addresses and ports that are used by benign applications or services within the environment.
+level: high

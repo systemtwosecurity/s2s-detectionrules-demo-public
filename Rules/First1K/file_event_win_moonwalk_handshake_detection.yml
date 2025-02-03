@@ -1,0 +1,48 @@
+# review_report_url:  https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects MoonWalk malware's cryptographic handshake activity by identifying specific byte sequences at defined offsets in files. It looks for files with particular headers and patterns within the \data\temp\ directory, commonly associated with APT41's command and control activities.
+title: Detection of MoonWalk Malicious Cryptographic Handshake Activity
+id: f0befd33-8c38-49e8-8305-3603b73ee04c
+status: experimental
+description: Detects specific byte sequences at defined offsets in a file that are indicative of the MoonWalk malware cryptographic handshake activity.
+references:
+  - https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.command_and_control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \data\temp\
+    MagicHeader|startswith: 00 7a
+    MagicHeader|contains|all:
+      - f8 12 ab 9e
+      - c7 6c 0f 9a
+      - a7 f8 9d 15
+      - e8 3b d5 4c
+      - 00 7a e2 c6
+      - 82 6b ae e7
+      - 48 bb 98 30
+      - 8b f5 f5 ad
+      - 43 b1 9c 35
+      - 36 18 ec 5d
+      - 05 e3 06 f3
+      - a3 22 d2 1a
+      - 1e a7 88 b5
+      - 2b 05 59 2e
+      - 6f 35 4c 64
+      - 77 1a 95 23
+      - 33 4d 6b 26
+  condition: selection
+falsepositives:
+  - Legitimate files with coincidental byte sequences matching the IoCs
+level: high

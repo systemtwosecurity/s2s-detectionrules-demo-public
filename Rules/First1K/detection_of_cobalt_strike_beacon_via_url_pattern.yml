@@ -1,0 +1,36 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP requests with a specific URL pattern used by Cobalt Strike Beacon for C2 communication, often containing "GetUrl/cache?time=" in the URI. False positives may occur from legitimate applications using similar patterns for caching or timestamped requests.
+title: Detection of Cobalt Strike Beacon via Specific URL Pattern
+id: 20be7828-26a2-4f00-9827-57a0eb96b272
+status: experimental
+description: Detects requests to a specific URL pattern used by Cobalt Strike Beacon for command and control communication.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /GetUrl/cache?time=
+  filter:
+    client_header_names|contains: Host
+    client_header_names|contains|all:
+      - User-Agent
+      - Accept
+      - Accept-Language
+      - Accept-Encoding
+  condition: selection and filter
+falsepositives:
+  - Legitimate applications that use a similar URL pattern for caching or timestamped requests.
+level: high

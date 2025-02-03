@@ -1,0 +1,30 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of APT41's HIGHNOON.BIN malware by identifying the reference to PlusDll.dll, a file associated with its command and control operations. It flags file events related to this specific file to help uncover APT41's malware activity.
+
+title: APT41 HIGHNOON.BIN Malware Reference to PlusDll.dll
+id: ee1151c0-cbad-4132-8cbf-0f5c583cb19b
+status: experimental
+description: Detects the presence of APT41 HIGHNOON.BIN malware samples referencing the PlusDll.dll file, which is indicative of the malware used by the APT41 group.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: PlusDll.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use a file named PlusDll.dll
+level: high

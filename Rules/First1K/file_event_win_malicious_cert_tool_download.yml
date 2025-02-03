@@ -1,0 +1,33 @@
+# review_report_url: https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the download of executable files with names matching patterns commonly associated with malicious certificate activation tools, potentially linked to phishing or malware campaigns. It helps in identifying suspicious activities related to unauthorized file downloads that could compromise systems.
+title: Detection of Malicious Certificate Executable File Download
+id: e4f8e915-f140-4209-b45e-110339190004
+status: experimental
+description: Detects the download of executable files with a name pattern indicating a malicious certificate activation tool, which could be indicative of a targeted phishing or malware campaign.
+references:
+  - https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.initial-access
+  - attack.t1204.002
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - Certificate+AF8hFgBf-
+      - +AF8-
+    TargetFilename|endswith: .exe
+  condition: selection
+falsepositives:
+  - Legitimate software downloads with similar naming conventions (unlikely)
+level: high

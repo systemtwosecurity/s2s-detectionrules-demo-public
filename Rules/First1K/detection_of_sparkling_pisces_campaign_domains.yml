@@ -1,0 +1,33 @@
+# review_report_url: https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule effectively monitors for DNS queries to known malicious domains linked to the Sparkling Pisces campaign, aiding in the early detection of potential command-and-control activities. By focusing on specific domain patterns, it minimizes the risk of false positives from legitimate domain usage.
+title: Detection of Sparkling Pisces Campaign Related Domains
+id: 40a4f728-0798-42a9-ad71-62a841109a11
+status: experimental
+description: Detects DNS queries or web requests to known malicious domains associated with the Sparkling Pisces campaign.
+references:
+  - https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_query:
+    query|contains:
+      - www.vic.apollo-star7.kro.kr
+      - nidlogin.apollo.r-e.kr
+      - mail.apollo-page.r-e.kr
+      - bitjoker2024.000webhostapp.com
+  condition: domain_query
+falsepositives:
+  - Legitimate queries to domains that have been compromised and are also used for legitimate purposes.
+level: high

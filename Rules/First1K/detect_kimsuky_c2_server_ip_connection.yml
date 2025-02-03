@@ -1,0 +1,29 @@
+# review_report_url: https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detect Kimsuky Campaign C2 Server IP Connection
+id: 8ce544a6-d3c4-4ee0-8411-4267e8703fb1
+status: experimental
+description: Detects network connections to a known Kimsuky campaign command and control (C2) server IP address.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_ip:
+    client_header_names: 162.0.209.27
+  condition: c2_ip
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the campaign
+level: high

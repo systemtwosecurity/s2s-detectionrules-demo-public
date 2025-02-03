@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-15
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule is designed to detect the loading of specific driver files (wnbios.sys or WN_64.sys) that are known to be associated with an AV/EDR bypass tool. These vulnerable drivers can be exploited by attackers to evade detection and gain unauthorized access on a Windows system. The rule monitors for any instance of these driver files being loaded, which could indicate malicious activity if seen in unusual contexts.
+title: Detection of Vulnerable Driver Files wnbios.sys or WN_64.sys
+id: 8670cdf9-e6fa-4ddd-9541-414294f879fb
+status: experimental
+description: Detects the presence of the vulnerable driver files wnbios.sys or WN_64.sys which are used by a specific AV/EDR bypass tool.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: driver_load
+detection:
+  selection:
+    ImageLoaded|endswith:
+      - \wnbios.sys
+      - \WN_64.sys
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similarly named drivers (very unlikely)
+level: high

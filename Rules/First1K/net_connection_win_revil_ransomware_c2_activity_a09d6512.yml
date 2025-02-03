@@ -1,0 +1,32 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to IP addresses associated with REvil ransomware activity related to the attack against Kaseya VSA. False positives might result if these listed IP addresses have since been reassigned to other legitimate services.
+title: Detection of REvil Ransomware Network Activity
+id: a09d6512-7fc9-457d-a2ef-5162fbdfe726
+status: experimental
+description: Detects network connections to IP addresses known to be associated with the REvil ransomware attack on Kaseya VSA.
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 193.204.114.232
+      - 161.35.239.148
+      - 18.223.199.234
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP addresses listed if they have been reassigned after the report.
+level: high

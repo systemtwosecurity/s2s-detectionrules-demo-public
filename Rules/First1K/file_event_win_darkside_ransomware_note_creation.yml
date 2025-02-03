@@ -1,0 +1,34 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/darkside-ransomware-splunk-threat-update-and-detections.html
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well-supported by the CTI report from Splunk. The report confirms that bulk creation of note files is a behavior associated with DarkSide ransomware. The detection logic in both the Sigma rule and CTI report aligns, focusing on identifying high-volume file creation events within a short time frame.
+title: Detection of DarkSide Ransomware Note Creation
+id: 412192a1-8d22-4a6e-9bdd-9c80d68d0eb6
+status: experimental
+description: Detects the bulk creation of ransomware note files, which may indicate an active ransomware attack. This rule looks for the creation of multiple files with extensions typical for ransomware notes (.txt, .html, .hta) within a short time frame.
+references:
+  - https://www.splunk.com/en_us/blog/security/darkside-ransomware-splunk-threat-update-and-detections.html
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|endswith:
+      - .txt
+      - .html
+      - .hta
+  condition: selection | count(TargetFilename) by Computer, Image > 15
+falsepositives:
+  - Legitimate software installation or updates that create multiple help or documentation files in a short period of time.
+  - Scripts or automated processes that generate multiple text, HTML, or HTA files as part of their normal operation.
+level: high

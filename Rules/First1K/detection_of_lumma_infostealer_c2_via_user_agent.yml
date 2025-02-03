@@ -1,0 +1,29 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP requests with the user agent string, indicative of Lumma Info-Stealer C2 communication, using ModSecurity logs. It is classified as high severity, with rare false positives from legitimate software using the same user agent string by coincidence.
+title: Detection of Lumma Info-Stealer C2 Activity via User Agent
+id: a59f22f9-79ba-41e8-be02-b7bdf7a7e9cf
+status: experimental
+description: Detects HTTP requests with the known Lumma C2 user agent string 'TeslaBrowser/5.5' which is indicative of Lumma Info-Stealer command and control communication.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  ua_string:
+    User-Agent|contains: TeslaBrowser/5.5
+  condition: ua_string
+falsepositives:
+  - Legitimate software using the same user agent by coincidence (unlikely)
+level: high

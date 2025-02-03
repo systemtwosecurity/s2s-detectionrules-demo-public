@@ -1,0 +1,38 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matches the CTI report as it contain all the information about C2 domains used by the malware. We are providing a fine-tuned rule to enhanced the detection for traffic to these C2 domains (theyardservice.com, worldhomeoutlet.com).
+title: Detection of Cobalt Strike Beacon via Malicious ISO, PDF, and LNK Files
+id: abe319e1-cf64-4b09-826f-2f9d89ebd5a7
+status: experimental
+description: Detects the execution of a Cobalt Strike beacon loader from malicious ISO files, PDF decoy documents, and Microsoft shortcuts as described in MAR 10339794-1.v1.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: smb_files
+detection:
+  selection1:
+    name|contains:
+      - Reports.lnk
+      - ICA-declass.iso
+      - ICA-declass.pdf
+  selection2:
+    path|contains|all:
+      - .pdf
+      - .iso
+      - \\
+      - .lnk
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate use of ISO, PDF, and LNK files that match the names but are not associated with the malicious campaign.
+level: high

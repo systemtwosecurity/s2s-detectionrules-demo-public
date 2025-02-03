@@ -1,0 +1,31 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report lists this file as part of the "Tickler" malware components used by the "Peach Sandstorm" threat actor in their long-running intelligence-gathering operations. The use of a double extension (.pdf.exe) is a common tactic employed by attackers to deceive users into thinking they're opening a harmless PDF document when they're actually executing malware. This rule does not rely solely on the filename for detection. It combines the file extension pattern (.pdf.exe) with the SHA-256 hash, which significantly strengthens its reliability. This approach avoids the pitfalls of filename-only detection while still leveraging the deceptive filename as part of the detection strategy.
+title: Detection of YAHSAT NETWORK_INFRASTRUCTURE_SECURITY_GUIDE_20240421.pdf.exe
+id: a26498a9-bd59-4b69-a5c3-96f816beec9a
+status: experimental
+description: Detects the execution or presence of a file with a double extension, which is a common tactic used by attackers to disguise executables as harmless documents. The SHA-256 hash of the file is also provided for precise detection.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.defense-evasion
+  - attack.t1036.007
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    TargetFilename|endswith: .pdf.exe
+    sha256: 7eb2e9e8cd450fc353323fd2e8b84fbbdfe061a8441fd71750250752c577d198
+  condition: selection
+falsepositives:
+  - Legitimate software with a double extension in the filename (very rare)
+level: high

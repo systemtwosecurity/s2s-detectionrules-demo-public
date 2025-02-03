@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively captures the critical indicator of compromise for ANetDiag.dll, as described in the CTI report, focusing on its distinct path and filename associated with CL0P ransomware’s obfuscation and sandbox evasion techniques. Deploying this rule in systems monitoring file events on Windows could enhance detection of CL0P-related activities and facilitate quicker response to the ransomware's obfuscated malware, particularly when found under 7ZipSfx.000.
+
+title: Detection of CL0P Ransomware - ANetDiag.dll Obfuscated Malware
+id: bddcae36-4a5a-46db-8f01-36efe2441eeb
+status: experimental
+description: Detects the presence of the ANetDiag.dll file with a specific hash which is described as obfuscated malware associated with the CL0P Ransomware campaign.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \7ZipSfx.000\ANetDiag.dll
+    Image|endswith: \7ZipSfx.000\ANetDiag.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename by coincidence
+level: high

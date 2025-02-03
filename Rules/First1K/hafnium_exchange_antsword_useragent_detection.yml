@@ -1,0 +1,28 @@
+# review_report_url:https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule detects the presence of the non-standard user-agent string "antSword/v2.1" in IIS logs, which may indicate the use of the AntSword web shell or similar tools for unauthorized access and management on Microsoft Exchange Servers
+title: Detection of HAFNIUM Targeting Microsoft Exchange Servers with AntSword User-Agent
+id: 1160967b-7917-43b9-8728-a54c02555e44
+status: experimental
+description: Detects the use of a non-standard user-agent string "antSword/v2.1" which could indicate the use of the AntSword webshell or similar tool for exploitation and management of web servers.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  service: iis
+detection:
+  cs-user-agent: antSword/v2.1
+  condition: cs-user-agent
+falsepositives:
+  - Legitimate software or scripts using the same user-agent string by coincidence.
+level: high

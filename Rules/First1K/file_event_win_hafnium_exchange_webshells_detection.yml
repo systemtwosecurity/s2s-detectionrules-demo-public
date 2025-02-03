@@ -1,0 +1,74 @@
+# review_report_url:https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects web shell files in specific directories on Microsoft Exchange Servers, which may indicate HAFNIUM-related persistence methods. It monitors for unusual ASPX file names commonly used in unauthorized access.
+title: Detection of HAFNIUM Targeting Microsoft Exchange Servers with Web Shells
+id: 934a6e2c-4f21-4ea9-9111-c008942b4614
+status: experimental
+description: Detects the presence of specific web shell files in known paths used by HAFNIUM to target Microsoft Exchange Servers.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    TargetFilename|endswith:
+      - \FrontEnd\HttpProxy\owa\auth\default.aspx
+      - \FrontEnd\HttpProxy\owa\auth\errorPage.aspx
+      - \FrontEnd\HttpProxy\owa\auth\errorPages.aspx
+      - \FrontEnd\HttpProxy\owa\auth\shel.aspx
+      - \FrontEnd\HttpProxy\owa\auth\log.aspx
+      - \FrontEnd\HttpProxy\owa\auth\shel2.aspx
+      - \FrontEnd\HttpProxy\owa\auth\8Lw7tAhF9i1pJnRo.aspx
+      - \FrontEnd\HttpProxy\owa\auth\one1.aspx
+      - \FrontEnd\HttpProxy\owa\auth\fatal-erro.aspx
+      - \FrontEnd\HttpProxy\owa\auth\bob.aspx
+      - \FrontEnd\HttpProxy\owa\auth\a.aspx
+      - \FrontEnd\HttpProxy\owa\auth\shel90.aspx
+      - \FrontEnd\HttpProxy\owa\auth\authhead.aspx
+      - \FrontEnd\HttpProxy\owa\auth\one.aspx
+      - \FrontEnd\HttpProxy\owa\auth\logout.aspx
+      - \FrontEnd\HttpProxy\owa\auth\OutlookZH.aspx
+      - \FrontEnd\HttpProxy\owa\auth\logg.aspx
+  selection2:
+    TargetFilename|endswith: \FrontEnd\HttpProxy\owa\auth\current\one1.aspx
+  selection3:
+    TargetFilename|endswith: \FrontEnd\HttpProxy\OAB\log.aspx
+  selection4:
+    TargetFilename|endswith:
+      - \inetpub\wwwroot\aspnet_client\aspnet_client.aspx
+      - \inetpub\wwwroot\aspnet_client\discover.aspx
+      - \inetpub\wwwroot\aspnet_client\default1.aspx
+      - \inetpub\wwwroot\aspnet_client\errorcheck.aspx
+      - \inetpub\wwwroot\aspnet_client\s.aspx
+      - \inetpub\wwwroot\aspnet_client\HttpProxy.aspx
+      - \inetpub\wwwroot\aspnet_client\shell.aspx
+      - \inetpub\wwwroot\aspnet_client\aspnet_www.aspx
+      - \inetpub\wwwroot\aspnet_client\aspnet_iisstart.aspx
+      - \inetpub\wwwroot\aspnet_client\supp0rt.aspx
+      - \inetpub\wwwroot\aspnet_client\aspnet_pages.aspx
+      - \inetpub\wwwroot\aspnet_client\Server.aspx
+      - \inetpub\wwwroot\aspnet_client\xclkmcfldfi948398430fdjkfdkj.aspx
+      - \inetpub\wwwroot\aspnet_client\xx.aspx
+      - \inetpub\wwwroot\aspnet_client\OutlookEN.aspx
+      - \inetpub\wwwroot\aspnet_client\iispage.aspx
+      - \inetpub\wwwroot\aspnet_client\session.aspx
+  selection5:
+    TargetFilename|endswith: \inetpub\wwwroot\aspnet_client\system_web\log.aspx
+  selection6:
+    TargetFilename|endswith: \FrontEnd\HttpProxy\ecp\auth\log.aspx
+  condition: selection1 or selection2 or selection3 or selection4 or selection5 or selection6
+falsepositives:
+  - Legitimate administrative activity may occasionally create or modify ASPX files in these directories. Any such activity should be whitelisted based on known good behavior from administrators.
+level: high

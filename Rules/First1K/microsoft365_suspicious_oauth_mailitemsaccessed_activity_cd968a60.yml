@@ -1,0 +1,32 @@
+# review_report_url: URL
+# review_date: 2024-09-20
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting suspicious OAuth application mailbox access targets specific ClientAppId (47629505-c2b6-4a80-adb1-9b3a3d233b7b) and matches the CTI report detailing how Midnight Blizzard used this ClientAppId to collect email data from Microsoft corporate accounts. Both sources emphasize monitoring the 'Mailitemsaccessed' event for this known malicious ClientAppId to uncover unauthorized email access activities.
+title: Suspicious OAuth Application MailItemsAccessed Activity
+id: cd968a60-19a4-4fb0-83da-3c7a87e5cbe1
+status: experimental
+description: Detects the collection of email details from corporate accounts using the 'Mailitemsaccessed' event with a known malicious OAuth application ClientAppId.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.collection
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload:
+      Operation: MailItemsAccessed
+      AppId: 47629505-c2b6-4a80-adb1-9b3a3d233b7b
+  condition: selection
+falsepositives:
+  - Legitimate use of the OAuth application with the same ClientAppId
+  - False positives are less likely if the ClientAppId is unique to the malicious application
+level: high

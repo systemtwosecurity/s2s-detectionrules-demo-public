@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies the execution of HackTool:Win64/Mimikatz, a tool commonly used for credential dumping, as flagged by Microsoft Defender Antivirus. While legitimate use by security teams during testing or investigations may trigger false positives, any detection should be treated as critical. Promptly investigate and validate the activity to prevent unauthorized access or credential theft.
+
+title: HackTool:Win64/Mimikatz Execution
+id: b9d2b801-ea77-4ac2-9850-077f75a70549
+status: experimental
+description: Detects execution of HackTool:Win64/Mimikatz based on Microsoft Defender Antivirus detection
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.credential-access
+  - attack.t1003
+logsource:
+  category: file_executable_detected
+  product: windows
+detection:
+  selection:
+    Image|endswith: \mimikatz.exe
+    Hashes: HackTool:Win64/Mimikatz
+  condition: selection
+falsepositives:
+  - Legitimate use of Mimikatz by security professionals
+level: high

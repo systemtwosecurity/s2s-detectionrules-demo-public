@@ -1,0 +1,29 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect Linux.Gomir malware's persistence technique by identifying crontab configuration updates through specific command line patterns. It looks for commands that contain crontab, /bin/sh, text file references (*.txt), and the -c flag, which are indicative of malware-related cron job modifications. Legitimate administrative tasks, like system maintenance involving crontab, may trigger false positives, so analysts should consider this in investigations.
+title: Detection of Linux.Gomir Crontab Configuration Update
+id: c52c8714-f8d1-4953-89c5-a1c741518083
+status: experimental
+description: Detects the specific command used by Linux.Gomir malware to update the crontab configuration, which is indicative of establishing persistence on the compromised host.
+references:
+  - https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1053.003
+  - attack.persistence
+logsource:
+  product: linux
+  service: cron
+detection:
+  keywords: /bin/sh -c crontab cron.txt
+  condition: keywords
+falsepositives:
+  - Legitimate administrative activity that involves updating crontab with a script.
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Suspicious Certificate Detected
+id: 419aa937-3ba8-4cb8-97a3-e4b727172aa4
+status: experimental
+description: Detects the use of a suspicious certificate based on thumbprint as reported in CTI.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: driver_load
+detection:
+  selection:
+    EventID: 6
+    Hashes|contains:
+      - 8DCCF6AD21A58226521
+      - E36D7E5DBAD133331C181
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a certificate with the same thumbprint, which is unlikely but possible.
+level: high

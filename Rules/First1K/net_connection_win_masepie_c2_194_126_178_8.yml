@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule detects suspicious network connections to the IP address 194.126.178.8 on port 80, which is associated with MASEPIE malware C2 servers. It is designed to flag potentially malicious activity indicating compromised devices in a network.
+
+title: Suspicious Connection to C2 Server (MASEPIE Malware)
+id: 2497a625-6ce4-4308-ad73-861637ba8816
+status: experimental
+description: Detects network connections to the IP address associated with MASEPIE malware distribution.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 194.126.178.8
+    DestinationPort: 80
+  condition: selection
+falsepositives:
+  - Legitimate connections to this IP address (if used for other purposes)
+level: medium

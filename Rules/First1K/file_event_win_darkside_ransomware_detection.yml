@@ -1,0 +1,31 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is accurately mapped to the findings in the CTI report. The CTI report confirms that the file names Darkside.exe and net.bin are linked to DarkSide ransomware, validating the Sigma rule's detection logic. This detection strategy is essential for early warning and proactive threat mitigation.
+title: Detection of DarkSide Ransomware Files
+id: d4ed4213-adf4-4aa6-89ac-04fa8bde0f9f
+status: experimental
+description: Detects the presence of DarkSide ransomware files based on file names associated with the malware.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \Darkside.exe
+      - \net.bin
+  condition: selection
+falsepositives:
+  - Legitimate files with the same names in directories unrelated to malware execution paths.
+level: high

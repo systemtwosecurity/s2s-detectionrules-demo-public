@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects the creation of an internet shortcut file (EdgeContext.url) in the Startup folder, which could indicate the persistence mechanism of the OCEANMAP malware. Malware often uses such shortcuts to ensure it executes automatically upon system startup, maintaining persistence on compromised systems.
+
+title: OCEANMAP Persistence via Internet Shortcut in Startup Folder
+id: 45b83ffa-9aa2-492e-a44a-b351ea3e9df8
+status: experimental
+description: Detects the creation of an internet shortcut in the Startup folder, indicative of the OCEANMAP malware's persistence mechanism.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1547.001
+logsource:
+  product: windows
+  category: file_change
+detection:
+  selection:
+    TargetFilename: '*EdgeContext.url'
+  condition: selection
+falsepositives:
+  - Legitimate applications creating shortcuts in the Startup folder.
+level: high

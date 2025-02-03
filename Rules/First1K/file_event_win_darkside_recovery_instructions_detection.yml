@@ -1,0 +1,29 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -The sigma rule is consistent with the behavior described in the CTI report. While the exact filename (README.045621d9.TXT) differs slightly from those in the report, the detection of similar README files matches the observed ransomware activities. This alignment confirms that monitoring for these types of files is a valid approach for detecting potential ransomware attacks.
+title: Detection of DarkSide Ransomware Recovery Instructions File
+id: 02f7b19d-2d58-4ee0-be53-0df187517e24
+status: experimental
+description: Detects the creation or presence of a DarkSide ransomware recovery instructions file, which is a sign of a ransomware infection.
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: README.045621d9.TXT
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally uses a similar filename pattern
+level: high

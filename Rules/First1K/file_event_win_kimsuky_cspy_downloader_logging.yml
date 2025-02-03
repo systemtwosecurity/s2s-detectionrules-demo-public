@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the creation or modification of the NTUSERS.log file, which is associated with the CSPY Downloader malware linked to Kimsuky activity. By monitoring this specific log file, the rule can help identify potential malicious behavior indicative of the downloader's operation. It also acknowledges the possibility of false positives from legitimate applications that might use the same filename for logging purposes.
+
+title: Kimsuky CSPY Downloader Logging Activity
+id: 4e8d724a-9974-42e8-9d40-5df8211e6641
+status: experimental
+description: Detects the creation or modification of a log file used by the CSPY Downloader malware associated with Kimsuky activity
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \microsoft\NTUSERS.log
+  condition: selection
+falsepositives:
+  - Legitimate applications that use the same file name for logging
+level: high

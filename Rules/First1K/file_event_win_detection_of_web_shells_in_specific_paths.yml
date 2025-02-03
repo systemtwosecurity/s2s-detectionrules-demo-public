@@ -1,0 +1,50 @@
+# review_report_url: https:https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is fully aligned with the provided CTI report by accurately detecting known web shells in sensitive directories used by attackers. To further enhance detection, it is recommended to create complementary rules for monitoring suspicious archive files and LSASS dumps as outlined in the CTI report. This will provide a more comprehensive detection strategy to mitigate the risks associated with HAFNIUM-related exploitation.
+title: Detection of Web Shells in Specific Paths
+id: 4fef4077-280a-4d23-a255-6315bd622bab
+status: experimental
+description: Detects the presence of web shells in known sensitive paths with specific file names that are commonly used by attackers.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    TargetFilename|endswith:
+      - \errorEEE.aspx
+      - \web.aspx
+      - \errorFF.aspx
+      - \aspnet_client.aspx
+      - \one.aspx
+      - \aspnet_iisstart.aspx
+      - \errorEW.aspx
+      - \errorEE.aspx
+      - \healthcheck.aspx
+      - \aspnet_www.aspx
+      - \shell.aspx
+      - \document.aspx
+      - \xx.aspx
+      - \help.aspx
+  selection2:
+    TargetFilename|startswith|all:
+      - '%PROGRAMFILES%\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth'
+      - C:\Exchange\FrontEnd\HttpProxy\owa\auth
+      - C:\inetpub\wwwroot\aspnet_client
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate administrative tools that use similar file names in the specified paths.
+  - Legitimate custom web applications that may use aspx files in the specified paths.
+level: high

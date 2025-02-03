@@ -1,0 +1,39 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+# - The Sigma rule is validated as it directly corresponds to the CTI report's detailed description of UNC4393 using certutil.exe for downloading malware.
+title: Uncommon Network Connection Initiated By Certutil.EXE
+id: 0dba975d-a193-4ed1-a067-424df57570d1
+status: test
+description: |
+    Detects a network connection initiated by the certutil.exe utility.
+    Attackers can abuse the utility in order to download malware or additional payloads.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
+author: frack113, Florian Roth (Nextron Systems)
+date: 2022-09-02
+modified: 2024-05-31
+tags:
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\certutil.exe'
+        Initiated: 'true'
+        DestinationPort:
+            - 80
+            - 135
+            - 443
+            - 445
+    condition: selection
+falsepositives:
+    - Unknown
+level: high

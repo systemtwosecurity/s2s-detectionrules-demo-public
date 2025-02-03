@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects network connections to ya.ru or sourceforge.net, which could indicate suspicious activity, particularly in the context of EDR bypass or resource development. False positives may occur if legitimate users access these websites.
+
+title: Suspicious Connection to ya.ru or sourceforge.net
+id: d42a1da4-e412-4688-a1a1-fa1050de60c7
+status: experimental
+description: Detects network connections to ya.ru or sourceforge.net, which may indicate suspicious activity as described in the CTI report.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.resource-development
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname:
+      - ya.ru
+      - sourceforge.net
+  condition: selection
+falsepositives:
+  - Legitimate user browsing to ya.ru or sourceforge.net
+level: medium

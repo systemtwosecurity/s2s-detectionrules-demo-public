@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/dipping-into-danger
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The detection aligns with the CTI report on WARMCOOKIE backdoor, identifying 45.9.74.135 as part of the threat infrastructure. Monitoring is recommended to manage risks and verify any reassignment of the IP.
+title: Detection of WARMCOOKIE Backdoor Related Network Connection
+id: bdc0a280-adb5-42f0-83ff-fe87a69d0bd3
+status: experimental
+description: Detects network connections to a known WARMCOOKIE backdoor command and control (C2) server IP address.
+references:
+  - https://www.elastic.co/security-labs/dipping-into-danger
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: 45.9.74.135
+  condition: query
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the threat report.
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://www.attackiq.com/2024/07/31/emulating-andariel/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of Windows Management Instrumentation (WMI) to query the AntiVirusProduct class, which can indicate that an adversary is attempting to identify installed security software. It specifically targets WMI events (EventID 5857) with queries containing AntiVirusProduct, FROM, and SELECT. This detection may trigger on legitimate administrative tasks that check for antivirus software and should be monitored for context.
+title: Discovery of Security Software Using WMI
+id: 9f6e7da7-e4be-4b9a-8624-3e17a1ad1948
+status: experimental
+description: Detects the use of WMI to query the AntiVirusProduct class, which may indicate an adversary is attempting to discover security software on the system.
+references:
+  - https://www.attackiq.com/2024/07/31/emulating-andariel
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.discovery
+logsource:
+  product: windows
+  category: wmi_event
+detection:
+  selection:
+    EventID: 5857
+    Query|contains|all:
+      - AntiVirusProduct
+      - FROM
+      - SELECT
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that query the AntiVirusProduct class.
+level: medium

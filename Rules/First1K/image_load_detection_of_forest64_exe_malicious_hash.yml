@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies the presence of the malicious file Forest64.exe by monitoring specific SHA-256 hash values associated with it. By using multiple hash values, the rule aims to enhance detection accuracy and reduce the risk of false positives. Any detection should be treated seriously and investigated, as these hashes are known to indicate malicious activity.
+title: Detection of Forest64.exe Malicious File
+id: b9fea5b1-d31f-49c3-bb13-41f0ce78b454
+status: experimental
+description: Detects the presence of a known malicious file Forest64.exe based on its SHA-256 hash values.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256:
+    - e06f29dccfe90ae80812c2357171b5c48fba189ae103d28e972067b107e58795
+    - 0be1908566efb9d23a98797884f2827de040e4cedb642b60ed66e208715ed4aa
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and these are known to be associated with malicious activity. Any detection should be investigated.
+level: high

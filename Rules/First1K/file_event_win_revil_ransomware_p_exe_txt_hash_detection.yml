@@ -1,0 +1,31 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This sigma rule is a detection of the existence of p.exe.TXT file with SHA-256 hash associated with the REvil ransomware, which, in particular, has been witnessed during the Kaseya VSA attack. There can be more false positive cases, for example, innocuous files with the same name or SHA-256 collisions, which can be infrequent.
+title: Detection of REvil Ransomware - p.exe.TXT SHA-256 Hash
+id: dcbc2910-1e42-41ba-bac3-a32d33d6b09d
+status: experimental
+description: Detects the presence of a file with a SHA-256 hash associated with the REvil ransomware attack on Kaseya VSA.
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: p.exe.TXT
+    Image|endswith: p.exe.TXT
+  condition: selection
+falsepositives:
+  - Benign files with the same name but different content.
+  - Collisions in SHA-256 (highly unlikely).
+level: high

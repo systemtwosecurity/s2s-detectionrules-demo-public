@@ -1,0 +1,50 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects connections to URLs identified as malicious in a CTI report, such as specific paths and domains. These could indicate command-and-control or exploitation attempts. Verification is needed to rule out legitimate access or coincidental matches.
+title: Detection of Malicious URLs from CTI Report
+id: 74f90b30-df8e-4087-8ff5-3619683f8472
+status: experimental
+description: Detects network connections to malicious URLs as reported in the CTI report.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains:
+      - /cache
+      - /GetUrl/cache
+      - /api/view.php
+      - /download
+      - /?type=Edge
+      - /?type=Chrome
+  selection2:
+    uri|startswith: http://
+    uri|contains:
+      - checkupdate.maskrisks.com
+      - mail.maskrisks.com
+      - 154.205.138.202
+      - update.maskrisks.com
+  selection3:
+    uri|startswith: https://
+    uri|contains:
+      - checkupdate.maskrisks.com
+      - gyudmedtantricuniversity.org/templates/lt_interiordesign/js/custom.js
+      - update.maskrisks.com
+      - tibetpost.net/templates/ja_teline_v/js/gallery/jquery.blueimp-gallery.full.js
+  condition: selection1 and (selection2 or selection3)
+falsepositives:
+  - Legitimate access to the compromised websites by unaware users or systems
+  - Legitimate software downloading updates from a URL that coincidentally contains similar patterns
+level: high

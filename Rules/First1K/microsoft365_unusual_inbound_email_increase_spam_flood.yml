@@ -1,0 +1,33 @@
+# review_report_url: https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+# review_date: 2024-11-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is properly aligned with the CTI report, effectively detecting unusual increases in inbound email activity through AnomalyScore >= 10. It focuses on identifying spam flood anomalies within a 24-hour period, consistent with the CTI's emphasis on detecting patterns indicative of spam flood attacks. The rule aligns well with the detection objectives and critical aspects highlighted in the CTI.
+title: Detection of Unusual Increase in Inbound Emails Indicating Spam Flood Attack
+id: 85b318d9-1eb3-4435-99df-51f0d0628583
+status: experimental
+description: Detects an unusual increase in inbound emails over a 24-hour period with an anomaly score of 10 or higher, which may indicate a potential spam flood attack.
+references:
+  - https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+author: System Two Security
+date: 2024/11/11
+tags:
+  - attack.impact
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    eventName: Receive
+    eventSource: Email
+    status: Anomaly
+  condition: selection and status.AnomalyScore >= 10
+falsepositives:
+  - Legitimate bulk email campaigns
+  - Automated notification systems
+  - Emails from newly onboarded domains
+level: high

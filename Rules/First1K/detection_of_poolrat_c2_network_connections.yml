@@ -1,0 +1,32 @@
+# review_report_url: https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma Rule matched with the CTI report and covers the detection of network connections to the POOLRAT C2 domains (www.talesseries.com/write.php and rgedist.com/sfxl.php).
+title: Detection of POOLRAT C2 Network Connections
+id: 1c433e43-08b7-44b9-b69c-bec982ede150
+status: experimental
+description: Detects network connections to known POOLRAT command and control (C2) servers.
+references:
+  - https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_traffic:
+    uri|contains:
+      - /write.php
+      - /sfxl.php
+    client_header_names|contains: Host
+  condition: c2_traffic
+falsepositives:
+  - Legitimate traffic to domains with similar names or paths
+level: high

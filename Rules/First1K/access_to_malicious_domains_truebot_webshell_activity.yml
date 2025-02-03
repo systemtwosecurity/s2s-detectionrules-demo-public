@@ -1,0 +1,37 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Access to Malicious Domains Indicative of Truebot and Web Shell Activity
+id: 872c8ffa-ea22-4759-9c9f-83272cabdcdf
+status: experimental
+description: Detects network connections to various malicious domains that are associated with Truebot malware and web shell activity.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  domain:
+    client_header_names|contains: Host
+    uri|contains:
+      - http://qweastradoc.com
+      - https://connectzoomdownload.com/download/ZoomInstaller.exe
+      - http://hiperfdhaus.com
+      - http://jirostrogud.com
+      - http://qweastradoc.com/gate.php
+      - http://connectzoomdownload.com/download/ZoomInstaller.exe
+  condition: domain
+falsepositives:
+  - Legitimate access to a domain that has been compromised and is also used for legitimate purposes.
+level: high

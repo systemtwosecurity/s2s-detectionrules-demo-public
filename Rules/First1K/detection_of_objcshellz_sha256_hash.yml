@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the presence of a specific SHA256 hash (8bfa4fe0534c0062393b6a2597c3491f7df3bf2eabfe06544c53bdf1f38db6d4) associated with the ObjCShellz malware linked to North Korean threat actors. It focuses on executable files in a Windows environment, allowing for prompt identification of potential threats. The primary concern for false positives is the rare chance of legitimate software coincidentally sharing this hash.
+title: Detection of ObjCShellz SHA256 Hash
+id: d875bd14-a3ff-48e0-8a19-eadc137025d7
+status: experimental
+description: Detects the presence of a known ObjCShellz SHA256 hash which is associated with North Korean threat groups.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    sha256: 8bfa4fe0534c0062393b6a2597c3491f7df3bf2eabfe06544c53bdf1f38db6d4
+  condition: selection
+falsepositives:
+  - Legitimate software sharing the same hash (highly unlikely)
+level: high

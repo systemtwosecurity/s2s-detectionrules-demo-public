@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-structured to detect AVICaptures.dll, a DLL associated with Truebot and CL0P ransomware, as specified in the CTI report. By monitoring for the exact filename and hash combination, the rule provides a targeted approach to identifying this malware component.
+
+title: Detection of CL0P Ransomware Gang Activity - Truebot AVICaptures.dll
+id: f37a34b6-eeda-44be-8c99-faede9a51309
+status: experimental
+description: Detects the presence of a known Truebot file "AVICaptures.dll" with a specific hash which is associated with the CL0P Ransomware gang.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \AVICaptures.dll
+    sha256: a8569c78af187d603eecdc5faec860458919349eef51091893b705f466340ecd
+  condition: selection
+falsepositives:
+  - Unknown. File hashes should be unique and the occurrence of the same hash from a benign source is highly unlikely.
+level: high

@@ -1,0 +1,36 @@
+# review_report_url: https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches the Volexity CTI report on Microsoft Exchange zero-day exploitation, detecting malicious POST requests to specific OWA files. Both sources align on targeted paths, aiding early threat detection. False positives may occur from legitimate admin activity, requiring validation.
+title: OWA Authentication Bypass via HTTP POST
+id: ac19de9e-9079-406d-abd8-1b5dec34f449
+status: experimental
+description: Detects HTTP POST requests targeting specific files on an OWA (Outlook Web Access) server that may indicate an authentication bypass attack.
+references:
+  - https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|endswith:
+      - /owa/auth/Current/themes/resources/logon.css
+      - /owa/auth/Current/themes/resources/owafont_ja.css
+      - /owa/auth/Current/themes/resources/SegoeUI-SemiLight.ttf
+      - /owa/auth/Current/themes/resources/owafont_ko.css
+      - /owa/auth/Current/themes/resources/SegoeUI-SemiBold.eot
+      - /owa/auth/Current/themes/resources/lgnbotl.gif
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves POST requests to the listed resources.
+level: high

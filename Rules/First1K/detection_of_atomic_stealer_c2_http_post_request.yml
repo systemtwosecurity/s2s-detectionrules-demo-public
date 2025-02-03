@@ -1,0 +1,39 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule detects HTTP POST requests associated with the Atomic Stealer's C2 communication, characterized by specific URI patterns (/joinsystem), unique headers, and hardcoded identifiers. It uses Zeek HTTP logs for detection and is marked as high severity, with potential false positives if legitimate applications use similar patterns.
+title: Detection of Atomic Stealer C2 HTTP POST Request
+id: 59c6c07d-dcf1-42e6-9863-032f48148497
+status: experimental
+description: Detects specific HTTP POST request patterns used by Atomic Stealer to communicate with its C2, including the hardcoded "BuildID" and the user "Shark" within the request.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    method: POST
+    uri: /joinsystem
+    client_header_names|contains|all:
+      - Connection
+      - Content-Type
+      - Host
+      - Content-Length
+  selection2:
+    request_body_len: '16193'
+  selection3:
+    client_header_names|contains: BuildID=pu0=Shark
+  condition: selection1 and selection2 and selection3
+falsepositives:
+  - Legitimate applications using similar POST request patterns with hardcoded identifiers
+level: high

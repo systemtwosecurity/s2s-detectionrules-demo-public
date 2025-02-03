@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.zscaler.com/blogs/security-research/onenote-growing-threat-malware-distribution
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects AsyncRAT malware components on Windows systems by monitoring file creation events and matching known MD5 hashes from a CTI report. It focuses on identifying specific static indicators of compromise but may require validation to ensure compatibility with the log source. Expanding the rule to include SHA256 hashes and behavior-based detections can improve accuracy and coverage.
+
+title: Detection of AsyncRAT Malware Based on MD5 Hashes
+id: 6457637e-4fcc-4f3c-a3ee-7ad1e724fb11
+status: experimental
+description: Detects the presence of AsyncRAT malware components based on known MD5 hashes from a CTI report. This rule monitors file creation events.
+references:
+  - https://www.zscaler.com/blogs/security-research/onenote-growing-threat-malware-distribution
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    md5:
+      - e9f0dbbd19ef972dd2fc163a4b34eae1
+      - 146f4f1c9b29e7505f275772378bfec9
+      - 19905a73840430e28c484b97546225c6
+      - 1d9aa7c9aa3f8dc9dd58a38176ea36fe
+  condition: selection
+falsepositives:
+  - Legitimate software with the same MD5 hash (extremely unlikely).
+level: high

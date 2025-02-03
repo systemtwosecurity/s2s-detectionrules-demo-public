@@ -1,0 +1,35 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect network communication potentially associated with the MISTPEN backdoor used by UNC2970, focusing on connections from SumatraPDF.exe to Microsoft Graph URLs.  it aligns well with the CTI report's description of MISTPEN's communication patterns. It effectively targets the specific process (SumatraPDF.exe) and the Microsoft Graph URLs mentioned in the report. The rule accurately incorporates IOCs from the CTI report, including the Microsoft Graph URLs and the SumatraPDF.exe process
+title: UNC2970 MISTPEN Backdoor Communication Detected
+id: 170e85ac-11ba-40e0-b829-a7e8ae00ca09
+status: experimental
+description: Detects network communication to Microsoft Graph URLs which may indicate the presence of the MISTPEN backdoor used by UNC2970.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    DestinationHostname|contains:
+      - graph.microsoft.com
+      - login.microsoftonline.com
+  selection2:
+    DestinationPort: '443'
+  selection3:
+    Image|endswith: SumatraPDF.exe
+  condition: selection1 and selection2 and selection3
+falsepositives:
+  - Legitimate use of Microsoft Graph API by custom or third-party applications
+level: high

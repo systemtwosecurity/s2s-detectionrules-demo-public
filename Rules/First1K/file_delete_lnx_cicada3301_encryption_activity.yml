@@ -1,0 +1,29 @@
+# review_report_url: https://www.truesec.com/hub/blog/dissecting-the-cicada
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are aligned, detecting file encryption activity linked to Cicada3301 ransomware. The CTI report notes that Cicada3301 changes file names from RECOVER-<ransomware extension>-FILES.txt to RECOVER-<ransomware extension>-DATA.txt. This naming convention is key for identifying ransomware activity, as the group uses similar tactics to other ransomware families, including Rust-based malware.
+title: Detection of Cicada3301 Ransomware File Encryption Activity
+id: 378ffa2a-20ed-4519-b6c6-c9395f0dfd25
+status: experimental
+description: Detects file encryption activity associated with Cicada3301 ransomware by monitoring for file naming convention changes that match the pattern used by the ransomware.
+references:
+  - https://www.truesec.com/hub/blog/dissecting-the-cicada
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: linux
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|endswith: RECOVER-*.DATA.txt
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similar naming convention for backup or recovery purposes.
+level: high

@@ -1,0 +1,35 @@
+# review_report_url: https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately detects connections to Volt Typhoon IPs 45.63.60.39 and 45.32.174.131 as outlined in the CTI report. The detection logic is aligned with the report and ready for testing. 
+title: Detection of Volt Typhoon Related IP Addresses
+id: 5e98f9a6-f357-42ee-bf6d-f4a42b203c05
+status: experimental
+description: Detects network connections to IP addresses associated with the Volt Typhoon threat actor group.
+references:
+  - https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection1:
+    id.resp_p:
+      - 45.63.60.39
+      - 45.32.174.131
+  selection2:
+    query|contains:
+      - 45.63.60.39
+      - 45.32.174.131
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to the IP addresses that have been repurposed for benign use
+level: high

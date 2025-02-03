@@ -1,0 +1,31 @@
+# review_report_url:  https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of /tmp/bsd and /tmp/un files, which may signal exploitation attempts of CVE-2019-19781. The rule flags file events related to these specific filenames, often associated with unauthorized access or payload execution.
+title: Detection of /tmp/bsd and /tmp/un Files Creation
+id: 91a5d4e2-d848-4bf1-bff9-5bdfcfce4f72
+status: experimental
+description: Detects the creation of /tmp/bsd and /tmp/un files which may indicate exploitation of CVE-2019-19781.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.execution
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - /tmp/un
+      - /tmp/bsd
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filenames for temporary purposes
+level: high

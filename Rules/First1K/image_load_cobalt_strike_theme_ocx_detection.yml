@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the loading of a specific Cobalt Strike file named "theme.ocx" with a known SHA-256 hash associated with malicious activity. It helps identify potential command-and-control operations using this specific file.
+title: Detection of Cobalt Strike File "theme.ocx"
+id: f436a70b-2405-4352-9f97-bbc264cd4b7d
+status: experimental
+description: Detects the presence of a known Cobalt Strike file with a specific SHA-256 hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: theme.ocx
+    sha256: ee80f3e3ad43a283cbc83992e235e4c1b03ff3437c880be02ab1d15d92a8348a
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to have the same file name and hash (highly unlikely)
+level: critical

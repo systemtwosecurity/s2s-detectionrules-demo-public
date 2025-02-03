@@ -1,0 +1,36 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.zscaler.com/blogs/security-research/onenote-growing-threat-malware-distribution
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects network connections to malicious URLs associated with IcedID, Cobalt Strike, and Qakbot malware, used for command and control, payload delivery, or decoy purposes. It monitors HTTP logs in Zeek for specific domains and file paths reported in CTI. False positives are unlikely unless the listed URLs are repurposed for legitimate use.
+
+title: Malicious URLs Associated with IcedID, Cobalt Strike, and Qakbot Malware
+id: 7a1df989-0af9-4604-91da-d9434d223488
+status: experimental
+description: Detects network connections to URLs identified in a CTI report as being used by IcedID, Cobalt Strike, and Qakbot malware for command and control (C2), payload delivery, and decoy purposes.  This rule relies on network logs or proxy logs.
+references:
+  - https://www.zscaler.com/blogs/security-research/onenote-growing-threat-malware-distribution
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - 167.172.154.189/360702.dll
+      - thefirstupd.com
+      - transfer.sh/get/vpiHmi/invoice.pdf
+      - helthbrotthersg.com/view.png
+      - myvigyan.com/m1YPt/300123.gif
+      - starcomputadoras.com/lt2eLM6/01.gif
+      - 167.172.154.189/36.ps1
+      - ehonlionetodo.com
+  condition: selection
+falsepositives:
+  - Legitimate use of any of the listed URLs (unlikely).
+level: high

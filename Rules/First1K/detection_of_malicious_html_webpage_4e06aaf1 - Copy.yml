@@ -1,0 +1,33 @@
+# review_report_url:https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report from HarfangLab, which identifies specific HTML elements (e.g., <link rel="stylesheet" href="a.css"> and src=".\Capture") used in malicious web pages targeting government organizations in Europe and the Caucasus. The rule effectively captures these elements, supporting its relevance in detecting threats described in the CTI.
+
+title: Detection of Malicious Web Page HTML File
+id: 4e06aaf1-bab9-47d0-ac72-aaa4fef56972
+status: experimental
+description: Detects malicious web page HTML files using specific HTML elements such as '<link rel="stylesheet" href="a.css">' and 'src=".\Capture"' within a certain file size range.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.resource-development
+  - attack.t1027.006
+logsource:
+  product: modsecurity
+  category: application
+detection:
+  selection1:
+    Content|contains|all:
+      - src=".\Capture"
+      - <link rel="stylesheet" href="a.css">
+  condition: selection1 and filesize > 600 and filesize < 5000
+falsepositives:
+  - Legitimate HTML files that coincidentally use the same CSS file name and capture script source.
+level: high

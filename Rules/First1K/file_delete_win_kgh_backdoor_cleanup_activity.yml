@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the deletion of the file n.x from the AppData\Local\Temp directory, a behavior associated with the KGH backdoor's cleanup process after executing commands. This pattern may indicate malicious activity, but care is needed as legitimate software could also delete temporary files with similar names, leading to potential false positives. The rule focuses on defense evasion techniques used by malware.
+
+title: Detection of KGH Backdoor File Deletion Activity
+id: 07a8bbc6-e2e5-4b28-a1f3-3bfef9bf2556
+status: experimental
+description: Detects the deletion of the "n.x" file by the KGH backdoor, which is indicative of the backdoor executing commands and cleaning up after itself.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Local\Temp\n.x
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similar naming convention for temporary files and also deletes them after processing.
+level: high

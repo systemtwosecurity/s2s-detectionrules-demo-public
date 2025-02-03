@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the creation of a file named /password-entered on macOS systems, which is indicative of BANSHEE malware activity related to credential theft. Since legitimate use of such a filename is highly unlikely, its occurrence should be promptly investigated.
+title: BANSHEE Infostealer Password File Creation Detection
+id: 0d5541f9-8ca1-418c-be5b-79fe6b2f51b3
+status: experimental
+description: Detects the creation of a file used by BANSHEE malware to store stolen passwords.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|endswith: /password-entered
+  condition: selection
+falsepositives:
+  - Legitimate applications that use a similar naming convention for their files (unlikely)
+level: high

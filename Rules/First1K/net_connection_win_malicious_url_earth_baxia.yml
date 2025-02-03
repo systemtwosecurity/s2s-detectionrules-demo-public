@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects network connections to the IP address 104.214.246.128 on port 8080, which is associated with Earth Baxia activity. Given the specificity of the IP and port combination, this rule is likely to be useful for identifying connections linked to malicious command-and-control activity. The rule targets a known malicious URL identified in a CTI report and focuses on suspicious network activity related to Earth Baxia attacks.
+
+title: Malicious URL Connection - hxxps://status.s3cloud-azure[.]com:8080
+id: e737464a-f3a9-49ec-8bb8-40a2af85c0a3
+status: experimental
+description: Detects connections to a malicious URL identified in a CTI report.  This URL is associated with Earth Baxia activity.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 104.214.246.128
+    DestinationPort: 8080
+  condition: selection
+falsepositives:
+  - Legitimate connections to the specified IP address (unlikely).
+level: high

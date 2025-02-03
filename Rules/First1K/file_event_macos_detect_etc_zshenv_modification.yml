@@ -1,0 +1,31 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule monitors the creation or modification of the /etc/zshenv file, a configuration file used by Zsh on macOS. Such activity can indicate the installation of a persistence mechanism, as /etc/zshenv is executed for every Zsh shell session. The rule targets potential abuse by malware, including the BlueNoroff Hidden Risk campaign, which may modify this file to achieve persistence on macOS systems.
+
+title: Detect Modification of /etc/zshenv for Persistence
+id: 3049ad2e-a071-4ad7-a7cb-512c3a615ffc
+status: experimental
+description: Detects the creation or modification of the /etc/zshenv file, which can be an indicator of persistence mechanism installation by malware on macOS systems.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.persistence
+  - attack.t1546.004
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|endswith: /etc/zshenv
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve editing the /etc/zshenv file.
+level: high

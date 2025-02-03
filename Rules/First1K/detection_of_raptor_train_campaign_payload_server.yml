@@ -1,0 +1,30 @@
+# review_report_url: https://blog.lumen.com/derailing-the-raptor-train/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule accurately detects network connections to the Raptor Train campaign's payload server, specifically the IP address, as described in the CTI report. Both the rule and the report focus on identifying communication with this payload server, which is a crucial part of the Canary Campaign infection chain.
+
+title: Detection of Raptor Train Campaign Payload Server
+id: 22dfb23d-8de3-4887-b64a-e72ef4dc8dd4
+status: experimental
+description: Detects network connections to a known Payload Server IP address associated with the Raptor Train Campaign.
+references:
+  - https://blog.lumen.com/derailing-the-raptor-train
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: 80.240.28.29
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the campaign.
+level: high

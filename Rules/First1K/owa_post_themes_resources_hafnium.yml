@@ -1,0 +1,35 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule is designed to detect suspicious HTTP POST requests targeting specific file paths under /owa/auth/Current/themes/resources, potentially indicative of exploitation attempts associated with HAFNIUM's activity against Microsoft Exchange servers.
+
+title: Suspicious HTTP POST Requests to OWA Resources
+id: 90258e7e-722b-457c-8a4b-8e448990e7ae
+status: experimental
+description: Detects HTTP POST requests to specific file paths under /owa/auth/Current/themes/resources, indicative of potential HAFNIUM activity.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem:
+      - /owa/auth/Current/themes/resources/SegoeUI-SemiLight.ttf
+      - /owa/auth/Current/themes/resources/owafont_ko.css
+      - /owa/auth/Current/themes/resources/lgnbotl.gif
+      - /owa/auth/Current/themes/resources/owafont_ja.css
+      - /owa/auth/Current/themes/resources/SegoeUI-SemiBold.eot
+      - /owa/auth/Current/themes/resources/logon.css
+  condition: selection
+falsepositives:
+  - Legitimate POST requests to these resources (unlikely)
+level: medium

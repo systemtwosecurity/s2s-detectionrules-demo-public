@@ -1,0 +1,52 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://news.sophos.com/en-us/2021/03/05/hafnium-advice-about-the-new-nation-state-attack/
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: detecting the creation of potentially malicious web shell files (e.g., .asp, .ashx) in critical web server directories like inetpub\wwwroot and htdocs. The use of filters ensures legitimate activity, such as temporary files or development processes, is excluded, aligning the rule with its technical purpose.
+
+title: Potential Webshell Creation On Static Website
+id: 39f1f9f2-9636-45de-98f6-a4046aa8e4b9
+status: test
+description: Detects the creation of files with certain extensions on a static web site. This can be indicative of potential uploads of a web shell.
+references:
+  - PT ESC rule and personal experience
+  - https://github.com/swisskyrepo/PayloadsAllTheThings/blob/c95a0a1a2855dc0cd7f7327614545fe30482a636/Upload%20Insecure%20Files/README.md
+author: Beyu Denis, oscd.community, Tim Shelton, Thurein Oo
+date: 2019/10/22
+modified: 2023/10/15
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection_wwwroot_path:
+    TargetFilename|contains: \inetpub\wwwroot\
+  selection_wwwroot_ext:
+    TargetFilename|contains:
+      - .ashx
+      - .asp
+      - .ph
+      - .soap
+  selection_htdocs_path:
+    TargetFilename|contains:
+      - \www\
+      - \htdocs\
+      - \html\
+  selection_htdocs_ext:
+    TargetFilename|contains: .ph
+  filter_main_temp:
+    TargetFilename|contains:
+      - \AppData\Local\Temp\
+      - \Windows\Temp\
+  filter_main_system:
+    Image: System
+  filter_main_legitimate:
+    TargetFilename|contains: \xampp
+  condition: (all of selection_wwwroot_* or all of selection_htdocs_*) and not 1 of filter_main_*
+falsepositives:
+  - Legitimate administrator or developer creating legitimate executable files in a web application folder
+level: medium

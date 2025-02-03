@@ -1,0 +1,35 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation and execution of a malicious VBS file in the %TEMP% directory that modifies Windows Defender preferences as part of the WhisperGate Stage 2 malware activities. The rule monitors for VBS files that execute specific PowerShell commands to exclude directories from Windows Defender scans, indicating potential defense evasion. False positives may arise if legitimate VBS scripts are used for administrative purposes, so careful review of suspicious activities is advised.
+title: Detection of WhisperGate Stage 2 VBS File Creation and Execution
+id: e7c3190f-f683-48da-ad13-fb0a14448a30
+status: experimental
+description: Detects the creation and execution of a VBS file in the %TEMP% directory that contains a specific command to modify Windows Defender preferences, as part of the WhisperGate malware Stage 2 activities.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: '%TEMP%'
+    TargetFilename|endswith: .vbs
+  command_execution:
+    CommandLine|contains|all:
+      - .Run
+      - powershell Set-MpPreference -ExclusionPath 'C:\'
+      - CreateObject('WScript.Shell')
+  condition: selection and command_execution
+falsepositives:
+  - Legitimate use of VBS scripts for administration purposes
+level: high

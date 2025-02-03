@@ -1,0 +1,34 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description as it capture any PE files signed with the stolen certificate issued for CCR INC. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs like Gala Lab Corp., OOO ALEAN-TOUR as well. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Hunting for PEs Signed with Stolen Certificate Issued for CCR INC
+id: 28044d21-7fc6-4775-b435-97ea5ca4ea72
+status: experimental
+description: Detects Portable Executable (PE) files signed using a likely stolen certificate issued for CCR INC by looking for a specific serial number in the certificate.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.t1649
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: .exe
+    SignatureStatus: Valid
+    Signed: true
+  filter:
+    Company|contains: CCR INC
+  condition: selection and filter
+falsepositives:
+  - Legitimate software signed with a certificate that has the same company name, which is highly unlikely.
+level: high

@@ -1,0 +1,46 @@
+# review_report_url: https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively aligns with the CTI report by focusing on explorer.exe communicating with known MQTT brokers over specific MQTT ports (1883, 8883, 8884). It is designed to filter out irrelevant traffic, such as common web ports (53, 80, 443), and accurately targets network communication patterns indicative of potential command and control (C2) activity or data exfiltration. This makes the rule highly effective in detecting suspicious activity.
+title: Explorer.exe Communicating with MQTT Brokers
+id: 61d8e84e-846f-42a7-aaa6-754656194908
+status: experimental
+description: Detects the explorer.exe process communicating with known MQTT broker services on specific TCP ports which are typically used by MQTT protocol but not for websockets. This could indicate command and control activity or data exfiltration attempt.
+references:
+  - https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    Image|endswith: \explorer.exe
+    DestinationPort:
+      - 1883
+      - 8884
+      - 8883
+    DestinationHostname|contains:
+      - broker-cn.emqx.io
+      - mqtt.one
+      - iotbind.com
+      - broker.emqx.io
+      - mqtt.eclipseprojects.io
+      - broker.hivemq.com
+      - test.mosquitto.org
+  filter:
+    DestinationPort:
+      - 80
+      - 443
+      - 53
+  condition: selection and not filter
+falsepositives:
+  - Legitimate use of MQTT by custom enterprise applications using explorer.exe for legitimate reasons.
+level: high

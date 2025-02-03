@@ -1,0 +1,35 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively identifies potential data exfiltration by BANSHEE malware by detecting outbound TCP connections to IP address 45.142.122.92 on port 80, initiated by the /curl process. This aligns with known indicators of compromise associated with BANSHEE, as detailed in the referenced CTI report
+title: BANSHEE Infostealer Data Exfiltration
+id: 751ce3ff-6342-4eff-9f26-1609d5484aa9
+status: experimental
+description: Detects a POST request to a specific URL which may indicate data exfiltration by BANSHEE malware
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+  - attack.t1048
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  selection:
+    DestinationIp: 45.142.122.92
+    DestinationPort: 80
+    Protocol: tcp
+    Initiated: true
+  filter:
+    Image|endswith: /curl
+  condition: selection and filter
+falsepositives:
+  - Legitimate software that communicates with the IP for non-malicious purposes
+level: high

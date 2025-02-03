@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule identifies potentially suspicious portable executable (PE) files signed with certificates attributed to Gala Lab Corp, CCR INC, or OOO ALEAN-TOUR, which are likely stolen. It relies on the presence of specific certificate names and a SignatureStatus of "Unknown" during image load events on Windows systems. The rule highlights potential misuse of stolen certificates for defense evasion.
+
+title: Suspicious PE Certificate - Potential Stolen Certificate (Hunting)
+id: 2adfc4a0-ae33-4787-a72e-3b312a11662d
+status: experimental
+description: Detects PEs signed with certificates likely stolen from Gala Lab Corp, CCR INC, or OOO ALEAN-TOUR.  This rule relies on certificate validation information which may not be consistently logged.  Review events related to process creation and image loading for suspicious certificates.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Signature|contains:
+      - CCR INC
+      - OOO ALEAN-TOUR
+      - Gala Lab Corp.
+    SignatureStatus: Unknown
+  condition: all of selection
+falsepositives:
+  - Legitimate use of these certificates (unlikely)
+  - Inconsistent logging of certificate validation information
+level: critical

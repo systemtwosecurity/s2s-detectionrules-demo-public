@@ -1,0 +1,32 @@
+# review_report_url:https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the execution of the KGH loader (msic.exe), which loads the KGH backdoor DLL (msfltr32.dll) into memory. It specifically targets instances where the executable is unsigned, indicating potential malicious activity, as legitimate tools are typically signed. False positives may occur with other unsigned software sharing similar names, but such overlaps are generally rare.
+
+title: Detection of Kimsuky KGH Spyware Suite Loader Execution
+id: f1df803b-b7e0-4d4d-b0d0-1e57ea517883
+status: experimental
+description: Detects the execution of the KGH loader (msic.exe) which is responsible for loading and executing the KGH backdoor DLL (msfltr32.dll) in memory. The file is unsigned and masquerades as a legitimate Microsoft Windows tool.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: msic.exe
+    SignatureStatus: Unsigned
+    OriginalFileName|endswith: msfilter32.exe
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to have the same file name and is unsigned
+level: high

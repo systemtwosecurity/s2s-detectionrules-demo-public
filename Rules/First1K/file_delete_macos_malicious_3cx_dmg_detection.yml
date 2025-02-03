@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule is designed to identify a malicious 3CX DMG file linked to North Korean threat groups by monitoring for a specific SHA256 hash and file extension. By focusing on macOS file deletions, the rule aims to catch instances where this harmful file is present and subsequently removed, indicating potential compromise. The critical level reflects the serious threat posed by the file, while acknowledging the possibility of false positives, suggesting that any detection should be thoroughly investigated to rule out legitimate use cases.
+title: Detection of Malicious 3CX DMG File
+id: 78aa6e2d-6f1d-46f6-8cb2-92d763f87a74
+status: experimental
+description: Detects the presence of a malicious 3CX DMG file associated with North Korean threat groups based on SHA256 hash.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.initial-access
+logsource:
+  product: macos
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|endswith: .dmg
+    sha256: e6bbc33815b9f20b0cf832d7401dd893fbc467c800728b5891336706da0dbcec
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: critical

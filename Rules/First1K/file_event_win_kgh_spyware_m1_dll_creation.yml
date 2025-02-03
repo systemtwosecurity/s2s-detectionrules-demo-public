@@ -1,0 +1,31 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of the m1.dll file by the winword.exe process, which is indicative of the KGH spyware payload that establishes persistence by dropping a backdoor. It focuses on monitoring file creation events specifically tied to this malicious activity. The likelihood of false positives is acknowledged, as legitimate software installations or updates may also use a file with a similar name.
+
+title: Detection of KGH Spyware Payload m1.dll Creation by winword.exe
+id: 13cf5d0f-7567-4c07-b8f6-3d564b34bdbc
+status: experimental
+description: Detects the creation of the file m1.dll by winword.exe, which is associated with the KGH spyware payload that drops a backdoor and creates persistence.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image: winword.exe
+    TargetFilename|endswith: \m1.dll
+  condition: selection
+falsepositives:
+  - Legitimate software installation or update that uses a similarly named file.
+level: high

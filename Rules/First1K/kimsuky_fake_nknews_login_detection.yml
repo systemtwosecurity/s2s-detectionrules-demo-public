@@ -1,0 +1,29 @@
+# review_report_url: https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Kimsuky Campaign - Fake NK News Login Site Detection
+id: 442c29a4-96a2-4daa-aab9-c123804d8afd
+status: experimental
+description: Detects access to a fake NK News login site which is a known indicator of compromise associated with a Kimsuky phishing campaign.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri: https://www.nknews.pro/ip/register/
+  condition: selection
+falsepositives:
+  - Legitimate access to a similarly named website, if it exists.
+level: high

@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://github.com/BloodHoundAD/AzureHound
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects successful authentication events in Azure sign-in logs where the user-agent matches azurehound, indicating the potential use of the AzureHound tool for reconnaissance. Its focus on successful authentications reduces noise and highlights activity associated with discovery tactics in cloud environments.
+
+title: Discovery Using AzureHound
+id: 35b781cc-1a08-4a5a-80af-42fd7c315c6b
+status: test
+description: Detects AzureHound (A BloodHound data collector for Microsoft Azure) activity via the default User-Agent that is used during its operation after successful authentication.
+references:
+  - https://github.com/BloodHoundAD/AzureHound
+author: Janantha Marasinghe
+date: 2022/11/27
+tags:
+  - attack.discovery
+  - attack.t1087.004
+  - attack.t1526
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection:
+    userAgent|contains: azurehound
+    ResultType: 0
+  condition: selection
+falsepositives:
+  - Unknown
+level: high

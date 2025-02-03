@@ -1,0 +1,35 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections attempting to POST data to /submit.php, a URI often associated with Cobalt Strike beacon activity in the Kaseya VSA attack. HTTP POST requests are pursued, which were made by rundll32.exe and contained specific command line arguments. False positives can be expected due to the legitimate use of rundll32.exe making HTTP POST requests, which is very rare and should be looked into. The severity is high.
+title: Detection of Cobalt Strike Beacon via HTTP POST to /submit.php
+id: 7ba1218c-0527-45f1-8334-94ebceb80a3b
+status: experimental
+description: Detects network connections attempting to post data to the URI used by Cobalt Strike beacon as reported in the Kaseya VSA attack.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '80'
+    Protocol: tcp
+    Initiated: 'true'
+    Image|endswith: \rundll32.exe
+    CommandLine|contains|all:
+      - /submit.php
+      - http
+  condition: selection
+falsepositives:
+  - Legitimate use of rundll32.exe to perform HTTP POST requests to /submit.php, which is uncommon and should be investigated.
+level: high

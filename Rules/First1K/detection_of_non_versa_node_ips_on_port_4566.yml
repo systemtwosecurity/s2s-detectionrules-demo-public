@@ -1,0 +1,30 @@
+# review_report_url: https://blog.lumen.com/taking-the-crossroads-the-versa-director-zero-day-exploitation/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is fully supported by the details provided in the CTI report. The rule accurately captures the critical behavior described—network interactions on port 4566 from non-Versa node IPs, which could be indicative of exploitation activity.
+title: Detection of Non-Versa Node IPs Interacting with Versa Director on Port 4566
+id: de76e5e2-2a19-492f-9739-c600a34e9efa
+status: experimental
+description: Detects network interactions with Versa Director servers on port 4566 from non-Versa node IP addresses, which may indicate exploitation of CVE-2024-39717.
+references:
+  - https://blog.lumen.com/taking-the-crossroads-the-versa-director-zero-day-exploitation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    id.resp_p: 4566
+  condition: selection
+falsepositives:
+  - Legitimate administrative access from non-standard IPs
+  - Misconfigured network devices attempting to connect
+level: high

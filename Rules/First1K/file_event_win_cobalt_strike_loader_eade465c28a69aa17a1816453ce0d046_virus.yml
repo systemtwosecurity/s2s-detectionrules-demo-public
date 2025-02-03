@@ -1,0 +1,29 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation, modification, or execution of a specific file with the filename "eade465c28a69aa17a1816453ce0d046.virus," which is linked to Cobalt Strike malware. The rule identifies potential command and control (C2) activity from attackers using this loader. The detection level is high, but false positives could arise from legitimate software using a similarly named file.
+title: Detection of Cobalt Strike Loader "eade465c28a69aa17a1816453ce0d046.virus"
+id: 6e235dac-9749-4460-8fc2-46951b506cf5
+status: experimental
+description: Detects the creation, modification, or execution of a specific loader filename associated with Cobalt Strike malware.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: eade465c28a69aa17a1816453ce0d046.virus
+  condition: selection
+falsepositives:
+  - Legitimate software with a filename collision
+level: high

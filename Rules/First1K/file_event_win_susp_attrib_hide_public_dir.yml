@@ -1,0 +1,37 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects the use of attrib +s +h to hide files associated with Cobalt Strike and Earth Baxia activities, specifically in the C:\Users\Public directory. This tactic is a known method for maintaining persistence on compromised systems. The rule focuses on identifying specific file names such as Logs.txt, Edge.exe, and msedge.dll, which are commonly used by Earth Baxia.
+
+title: Suspicious File Hiding in Public Directory
+id: ea36dbe6-4e78-4838-a542-144ce2324d12
+status: experimental
+description: Detects the use of attrib +s +h to hide files related to Cobalt Strike in the C:\Users\Public directory, as observed in Earth Baxia campaigns.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1564.001
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    CommandLine|contains|all:
+      - +s
+      - attrib
+      - +h
+    ParentImage: C:\Windows\System32\cmd.exe
+    TargetFilename|endswith:
+      - \Logs.txt
+      - \Edge.exe
+      - \msedge.dll
+  condition: selection
+falsepositives:
+  - Legitimate use of attrib +s +h in the Public directory (rare)
+level: high

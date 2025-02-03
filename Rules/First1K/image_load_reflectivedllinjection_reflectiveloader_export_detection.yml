@@ -1,0 +1,30 @@
+# review_report_url: https://securityintelligence.com/x-force/ex-conti-fin7-actors-collaborate-new-backdoor
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The detection of Minodo Loader through its unique MD5 hash and internal filename is critical for identifying malicious activities associated with advanced threat actors like FIN7. The Sigma rule effectively aids in the identification of this loader, enhancing the capability of security teams to respond promptly to threats.
+title: Detection of ReflectiveLoader Export Indicative of ReflectiveDLLInjection Technique
+id: 31e107f7-2918-4707-93be-7889ccb0955e
+status: experimental
+description: Detects the loading of a DLL with an export named ReflectiveLoader, which is indicative of the ReflectiveDLLInjection technique used by various threat actors including Ex-Conti and FIN7.
+references:
+  - https://securityintelligence.com/x-force/ex-conti-fin7-actors-collaborate-new-backdoor
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1620
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|contains: ReflectiveLoader
+  condition: selection
+falsepositives:
+  - Legitimate applications that use reflective DLL loading techniques for benign purposes
+level: high

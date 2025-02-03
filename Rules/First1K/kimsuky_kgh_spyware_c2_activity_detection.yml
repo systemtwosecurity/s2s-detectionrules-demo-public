@@ -1,0 +1,41 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect command and control (C2) activity associated with the Kimsuky KGH Spyware Suite by monitoring for specific URLs containing myaccounts.posadadesantiago.com and the parameter test/Update.php?wShell=201. The detection focuses on identifying malicious communications linked to the spyware. While false positives are unlikely, legitimate access to this URL with the specific parameter should be investigated and whitelisted if necessary.
+
+title: Kimsuky KGH Spyware Suite C2 Activity Detection
+id: 643a39bd-2493-4d29-b2e8-0eead85ccd03
+status: experimental
+description: Detects potential command and control (C2) communication to known Kimsuky KGH Spyware Suite URLs.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains:
+      - '&act=wbi&ver=x64'
+      - '&act=pws&ver=x64'
+      - /home?act=news&id=
+      - /home/up.php?id=
+      - '&act=sbk&ver=x64'
+      - '&act=tre&ver=x64'
+      - /home?id=
+      - '&act=upf&ver=x64'
+      - '&act=cmd&ver=x64'
+  selection2:
+    uri|contains: csv.posadadesantiago.com
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate traffic to similarly named domains or URLs that are not related to Kimsuky KGH Spyware Suite.
+level: high

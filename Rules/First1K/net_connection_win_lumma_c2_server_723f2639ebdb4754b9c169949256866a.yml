@@ -1,0 +1,28 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections to a known Lumma C2 server IP address (82.117.255.127), a strong indicator of a Lumma info-stealer infection. It monitors direct communication with this IP, flagging potential command-and-control activity. False positives can arise if the IP address has been reassigned or is being used for legitimate purposes.
+title: Detection of Lumma C2 Server Connection
+id: 723f2639-ebdb-4754-b9c1-69949256866a
+status: experimental
+description: Detects network connections to a known Lumma C2 server IP address which is indicative of a Lumma info-stealer infection.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  DestinationIp: 82.117.255.127
+  condition: DestinationIp
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned or is used for benign purposes.
+level: high

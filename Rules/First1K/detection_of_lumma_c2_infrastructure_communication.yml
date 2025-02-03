@@ -1,0 +1,35 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP network connections to known Lumma C2 infrastructure IPs such as 144.76.173.247 and 82.118.23.50, using Zeek HTTP logs. It is classified as high severity, with potential false positives if the IP addresses are reassigned for legitimate purposes.
+title: Detection of Lumma C2 Infrastructure Communication
+id: 6ad3fa13-1745-4ffa-9c78-bb2dfc0b5aaa
+status: experimental
+description: Detects network connections to known Lumma C2 infrastructure IP addresses.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_ip:
+    client_header_names:
+      - 144.76.173.247
+      - 82.118.23.50
+      - 82.117.255.127
+      - 45.9.74.78
+      - 82.117.255.80
+      - 77.73.134.68
+  condition: c2_ip
+falsepositives:
+  - Legitimate connections to IP addresses that have been repurposed after the report
+level: high

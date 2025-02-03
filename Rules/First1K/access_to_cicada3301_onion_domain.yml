@@ -1,0 +1,28 @@
+# review_report_url: https://unit42.paloaltonetworks.com/repellent-scorpius-cicada3301-ransomware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule correctly checks for the orion domain of the malware as mentioned in the CTI report
+title: Access to Cicada3301 Onion Domain
+id: 07145df7-6ba6-4c8e-84d8-e8b520e93ad9
+status: experimental
+description: Detects network traffic to the Cicada3301 onion domain which is associated with ransomware activity.
+references:
+  - https://unit42.paloaltonetworks.com/repellent-scorpius-cicada3301-ransomware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: cicadabv7vicyvgz5khl7v2x5yygcgow7ryy6yppwmxii4eoobdaztqd.onion
+  condition: query
+falsepositives:
+  - Legitimate access to the domain by security researchers or threat intelligence platforms
+level: high

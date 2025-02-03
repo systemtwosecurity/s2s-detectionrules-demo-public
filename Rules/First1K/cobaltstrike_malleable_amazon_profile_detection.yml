@@ -1,0 +1,37 @@
+# review_report_url:https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting CobaltStrike Malleable Amazon Browsing Profile accurately captures the traffic patterns described in the CTI report, including the user-agent, HTTP methods, URIs, Amazon host, and the cookie pattern. This rule is highly effective for detecting Cobalt Strike’s Malleable Profile activity and can be confidently used in monitoring for such traffic.
+title: CobaltStrike Malleable Amazon Browsing Profile
+id: 17b33054-47d3-495b-a8bb-54b29687c6d6
+status: experimental
+description: Detects Malleable Amazon Profile through specific user-agent strings, methods, URIs, hosts, and cookie patterns in proxy logs.
+references:
+  - https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  category: proxy
+detection:
+  selection1:
+    c-useragent|contains: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
+    cs-method|contains: GET
+    c-uri|contains: /s/ref=nb_sb_noss_1/167-3294888-0262949/field-keywords=books
+    cs-host|contains: www.amazon.com
+    cs-cookie|endswith: cscm-hits=24KU11B88RZSYGJ3BDK[141989012996]
+  selection2:
+    c-useragent|contains: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
+    cs-method|contains: POST
+    c-uri|contains: /NAZI5/adj/amzn.us.sr.aps
+    cs-host|contains: www.amazon.com
+  condition: selection1 or selection2
+falsepositives:
+  - Unknown
+level: high

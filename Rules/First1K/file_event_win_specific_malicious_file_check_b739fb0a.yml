@@ -1,0 +1,29 @@
+# review_report_url: https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects attempts by malware to check for the existence of a specific file (qwer.txt in the AppData directory), which is used as a marker for implants to trigger the execution of malicious payloads. The rule identifies file events related to this specific filename, as it is commonly associated with malware persistence and execution. False positives may come from legitimate applications or scripts that inadvertently check for this file.
+title: Detection of Specific Malicious File Check
+id: b739fb0a-75e2-448c-8855-3cc9df3545bf
+status: experimental
+description: Detects the checking for the existence of a specific file used by malware implants as a condition to execute their malicious payload.
+references:
+  - https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\qwer.txt
+  condition: selection
+falsepositives:
+  - Legitimate applications or scripts checking for the existence of the specified file.
+level: high

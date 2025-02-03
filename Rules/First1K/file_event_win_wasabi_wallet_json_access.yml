@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects access or creation of .json files in the \WalletWasabi\Client\Wallets\ directory, which are critical for storing sensitive wallet data in Wasabi Wallet. Such activity could indicate the presence of information-stealing malware attempting to exfiltrate cryptocurrency wallet information. 
+title: Detection of Wasabi Wallet File Access
+id: b84827fd-bb19-4b36-881a-2193d8f2829e
+status: experimental
+description: Detects file access or creation events targeting the Wasabi Wallet directory with .json files, which may indicate an information-stealing malware attack.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \WalletWasabi\Client\Wallets\*.json
+  condition: selection
+falsepositives:
+  - Legitimate access or creation of Wasabi Wallet .json files by authorized users or system processes.
+level: high

@@ -1,0 +1,35 @@
+# review_report_url:https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting known malicious JA3 fingerprints successfully maps to the CTI report. The rule targets SSL/TLS fingerprints associated with malware families such as Trickbot, AsyncRat, Dridex, Empire, PoshC2, and TOR, which are explicitly mentioned in the CTI report. This alignment confirms the rule's effectiveness in detecting these specific malware communications over SSL/TLS channels.
+title: Detection of Known Malicious JA3 Fingerprints
+id: 9a81b5a6-bdb9-4d44-802b-7c2b3ff19b88
+status: experimental
+description: Detects SSL/TLS client and server fingerprints associated with known malware families such as Trickbot, AsyncRat, Dridex, Empire or PoshC2, and TOR client.
+references:
+  - https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: x509
+detection:
+  ja3_hashes:
+    certificate.serial|contains:
+      - e7d705a3286e19ea42f587b344ee6865
+      - db42e3017c8b6d160751ef3a04f695e7
+      - 6734f37431670b3ab4292b8f60f29984
+      - 51c64c77e60f3980eea90869b68c58a8
+      - fc54e0d16d9764783542f0146a98b300
+  condition: ja3_hashes
+falsepositives:
+  - Legitimate applications with the same JA3 fingerprint as malware
+  - SSL/TLS traffic going through network devices or services that modify the fingerprint
+level: high

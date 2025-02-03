@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns well with the CTI report. Both focus on the creation of multiple service principals and applications, with the CTI report providing specific examples of malicious activity that matches the Sigma rule's criteria for detecting potential malicious OAuth activities.
+title: O365 Multiple Service Principals Created by User
+id: 1b504b2b-cdb2-4964-aa46-59c195164819
+status: experimental
+description: Detects the creation of multiple service principals by a user within a short period of time, which may indicate malicious OAuth application activity in Microsoft 365 environments.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.persistence
+logsource:
+  product: m365
+  service: audit
+detection:
+  selection:
+    Operation: Add service principal.
+  condition: selection | stats count() by user | search count > 3
+falsepositives:
+  - Legitimate bulk creation of service principals by automated processes or during initial setup
+level: high

@@ -1,0 +1,46 @@
+# review_report_url:https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The detection rule for OCEANMAP effectively targets its self-modification and persistence behavior, such as creating an Internet shortcut in the Startup folder. This aligns with findings from the HarfangLab report, which details OCEANMAP's use of email for command and control, including updating its configuration by modifying its own binary.
+
+title: OCEANMAP Malicious Binary Self-Modification and Persistence Setup
+id: 4e1ae5b5-0181-45ae-8177-d5867ff41b61
+status: experimental
+description: Detects the self-modification of OCEANMAP malware and the creation of an Internet shortcut in the Startup folder for persistence.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    CommandLine|contains|all:
+      - /Y
+      - _tmp.exe
+      - /b
+      - /c
+      - cmd.exe
+      - '&&'
+      - start
+      - copy
+  selection2:
+    CommandLine|contains|all:
+      - /F
+      - taskkill
+      - /PID
+  selection3:
+    TargetFilename|endswith: \Microsoft\Windows\Start Menu\Programs\Startup\EdgeContext.url
+  condition: selection1 and selection2 and selection3
+falsepositives:
+  - Legitimate software installation or update mechanisms that use similar self-modification techniques
+  - Legitimate use of Internet shortcuts in the Startup folder for benign purposes
+level: high

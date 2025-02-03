@@ -1,0 +1,33 @@
+# review_report_url:  https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report by detecting URL click events related to Teams workloads, focusing on statuses like ClickedThrough and ClickAllowed
+title: Detection of URL Click Events on SharePoint URLs Related to Teams Workload
+id: 4709424d-9246-43e0-9400-ffdaa56b87d9
+status: experimental
+description: Detects click events on SharePoint URLs related to Teams workload by interested users within the last day.
+references:
+  - https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+author: System Two Security
+date: 2024/11/11
+tags:
+  - attack.reconnaissance
+logsource:
+  product: m365
+  service: threat_detection
+detection:
+  selection:
+    eventName: UrlClickEvents
+    eventSource: SharePoint
+    status|contains:
+      - ClickedThrough
+      - ClickAllowed
+  condition: selection
+falsepositives:
+  - Legitimate SharePoint URL click activity related to Teams by authorized users
+level: medium

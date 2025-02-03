@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. You can check alternative sigma from rule ID: 92ffee8f-bc55-46e4-a846-6636fc95bf7a
+title: Detection of DUSTPAN Family aclui.dll File
+id: 8e90d92a-ca19-4661-aa18-b2c887dacab6
+status: experimental
+description: Detects the execution or presence of the aclui.dll file with a specific MD5 hash associated with the DUSTPAN family.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \aclui.dll
+    Hashes|contains: MD5=17d0ada8f5610ff29f2e8eaf0e3bb578
+  condition: selection
+falsepositives:
+  - Unknown. Any match should be investigated.
+level: high

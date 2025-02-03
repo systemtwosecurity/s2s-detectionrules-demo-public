@@ -1,0 +1,33 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the creation or modification of files in the /tmp/Browsers/ directory, which is indicative of BANSHEE infostealer activity on macOS. Although legitimate software might use a similar directory structure, such instances are rare and warrant investigation.
+title: Detection of BANSHEE Infostealer Activity
+id: 4a18c569-1aac-4acc-9bfd-97b45b1c340e
+status: experimental
+description: Detects file creation or modification in a specific directory used by BANSHEE malware to store collected data from browsers.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: /tmp/Browsers/
+    TargetFilename|endswith:
+      - /Cookies
+      - /Login Data
+      - /History
+  condition: selection
+falsepositives:
+  - Legitimate browser data backup or sync applications that use a similar directory structure
+level: high

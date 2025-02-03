@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries associated with APT41's beaconing activity, specifically targeting suspicious domains tied to their command-and-control infrastructure. It leverages domain-based indicators to identify potential malicious activity within DNS logs. False positives are unlikely given the specificity of the domains.
+
+title: APT41 Beaconing - DNS Queries (Akacur and Tezs Workers)
+id: ec040f2f-7b11-4d89-8940-da766e3c06ba
+status: experimental
+description: Detects DNS queries associated with APT41 beaconing activity, specifically related to the domains ns1.akacur.tk, ns2.akacur.tk, and orange-breeze-66bb.tezsfsoikdvd.workers.dev.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - ns1.akacur.tk
+    - orange-breeze-66bb.tezsfsoikdvd.workers.dev
+    - ns2.akacur.tk
+  condition: query
+falsepositives:
+  - Legitimate DNS queries for these domains (unlikely)
+level: high

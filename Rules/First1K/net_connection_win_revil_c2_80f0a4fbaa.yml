@@ -1,0 +1,30 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network traffic connections to a well-known REvil C2 server IP address (31.42.177.52) over port 80 used during the Kaseya VSA attack. The rule has high severity and is aimed at detecting communication from the bad C2 server. Expect false positives for reused IP addresses afterward for other purposes.
+title: Detect Network Connection to REvil C2 Server
+id: f0a4fbaa-15b8-4830-8caf-63d8734e3cc4
+status: experimental
+description: Detects network connections to a known REvil command and control (C2) server IP and port as used in the Kaseya VSA attack.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 31.42.177.52
+    DestinationPort: 80
+  condition: selection
+falsepositives:
+  - Legitimate traffic to the IP if it has been reassigned after the attack
+level: high

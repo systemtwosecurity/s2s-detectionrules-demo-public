@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects BEACON backdoor activity through DNS queries for `jquery-3.3.1.min.js`, indicative of a jQuery malleable C2 profile used by APT41 post-exploitation. It uses Windows DNS query logs, though false positives may occur from legitimate jQuery requests.
+title: Detection of BEACON Backdoor Activity via Jquery Malleable C2 Profile
+id: f118730c-171d-4181-943a-5af4b7a09e62
+status: experimental
+description: Detects HTTP requests indicative of BEACON backdoor communication using a jquery malleable C2 profile, which is a sign of post-exploitation activity following exploitation of CVE-2020-10189.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.command_and_control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: jquery-3.3.1.min.js
+  condition: selection
+falsepositives:
+  - Legitimate queries for jQuery library from benign sources
+level: high

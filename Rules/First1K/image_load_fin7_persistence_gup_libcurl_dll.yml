@@ -1,0 +1,30 @@
+# review_report_url: https://labs.withsecure.com/publications/fin7-target-veeam-servers
+# review_date: 2024-10-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule effectively captures a critical persistence technique used by FIN7 involving GUP.exe and a malicious libcurl.dll. The CTI report aligns precisely with the rule’s detection logic, providing confidence in the rule’s ability to detect these attacks.
+title: FIN7 Persistence via GUP.exe and Malicious libcurl.dll
+id: 78703030-083f-49b3-9bf3-950d004cc826
+status: experimental
+description: Detects the execution of a legitimate GUP.exe binary with a side-loaded malicious .NET DLL file "libcurl.dll" as used by FIN7 in attacks against Veeam backup servers.
+references:
+  - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \gup.exe
+    Image|endswith: \libcurl.dll
+  condition: selection
+falsepositives:
+  - Legitimate use of GUP.exe with a custom libcurl.dll that is not malicious.
+level: high

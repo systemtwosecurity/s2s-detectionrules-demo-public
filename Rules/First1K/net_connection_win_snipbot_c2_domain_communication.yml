@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/snipbot-romcom-malware-variant
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule for detecting SnipBot malware C2 domain communication aligns well with the threat described in the CTI report, particularly in identifying network connections to the primary C2 domain, xeontime.com. The logic and conditions of the rule are straightforward, utilizing a simple string match for the first CTI destination domain as mentioned in the rule 
+title: Detection of SnipBot Malware C2 Domain Communication
+id: 2860f31a-b77c-486f-9620-4d66be5b3740
+status: experimental
+description: Detects network connections to the first C2 domain used by the SnipBot malware variant.
+references:
+  - https://unit42.paloaltonetworks.com/snipbot-romcom-malware-variant
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains: xeontime.com
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally communicates with a domain that contains the string 'xeontime.com'
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the presence of a file with a specific SHA256 hash (1fcd9892532813a27537f4e1a1c21ec0c110d6b3929602750ed77bbba7caa426) linked to Kimsuky APT activities by monitoring image load events. It emphasizes the critical nature of such detections, as they indicate potential malicious activity. However, the rule acknowledges the possibility of false positives due to unknown benign software utilizing the same hash.
+title: Kimsuky APT Malicious File Hash Detected
+id: 94871790-337a-4052-a220-44444f77ce50
+status: experimental
+description: Detects the presence of a file with a SHA256 hash associated with Kimsuky APT group activities.
+references:
+  - https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: image_load
+detection:
+  hash_detection:
+    Hashes|contains: 1fcd9892532813a27537f4e1a1c21ec0c110d6b3929602750ed77bbba7caa426
+  condition: hash_detection
+falsepositives:
+  - Unknown. Any detection should be treated as a high priority, but it is possible that the hash could be used in benign software that is not yet known to the system.
+level: high

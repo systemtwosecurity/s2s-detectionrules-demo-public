@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the creation of suspicious files (*.search-ms) that are commonly associated with malicious activity targeting government organizations through compromised routers. The files listed are linked to known C2 operations, particularly in the Caucasus region. Given their association with high-priority attacks, any detection should be thoroughly investigated.
+
+title: Detection of Suspicious WebDAV Files
+id: d49455c8-0960-4496-b0d6-0eeebc2cc228
+status: experimental
+description: Detects the creation of files commonly associated with compromised routers targeting government organizations.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_change
+detection:
+  TargetFilename:
+    - vinnic.search-ms
+    - pol.search-ms
+    - calendar.search-ms
+    - wody.search-ms
+    - info-mod.search-ms
+    - mod.search-ms
+  condition: TargetFilename
+falsepositives:
+  - Legitimate use of similarly named files (unlikely)
+level: high

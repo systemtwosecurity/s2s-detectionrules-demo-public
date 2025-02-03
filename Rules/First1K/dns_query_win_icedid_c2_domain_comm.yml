@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule points to DNS queries targeted to the domain neaachar.com, which belongs to ICEDID malware C2 infrastructure. Note that it can be benign access if the domain was repurposed for benign applications - false positive.
+title: ICEDID C2 Domain Communication Detected
+id: f5d84028-cf95-4d89-8641-f4951a838747
+status: experimental
+description: Detects network communication to a known ICEDID Command and Control (C2) domain.
+references:
+  - https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: neaachar.com
+  condition: selection
+falsepositives:
+  - Legitimate access to the domain if it has been repurposed for benign use.
+level: high

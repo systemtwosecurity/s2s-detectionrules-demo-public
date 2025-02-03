@@ -1,0 +1,30 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is effectively validated by the CTI report from CISA. The report confirms that the creation of a bitmap file in C:\ProgramData is a known behavior of ransomware, such as DarkSide. Monitoring for such file creation provides a reliable early-warning indicator of ransomware activity.
+title: Detection of Ransomware File Creation Activity
+id: c380da59-f862-4f71-9211-f7f361a0503d
+status: experimental
+description: Detects the creation of a bitmap image file in C:\ProgramData with a name matching the encryption extension used by ransomware.
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\ProgramData\
+    TargetFilename|endswith: .BMP
+  condition: selection
+falsepositives:
+  - Legitimate applications that create .BMP files in the ProgramData directory
+level: high

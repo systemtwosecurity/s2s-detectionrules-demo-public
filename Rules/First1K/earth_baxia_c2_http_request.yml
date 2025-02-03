@@ -1,0 +1,36 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects Earth Baxia's C2 activity by identifying HTTP requests that match specific patterns, such as query parameters and known malicious domains (status.s3cloud-azure.com). By targeting the specific port 8080 and unique query parameters, the rule is aligned with the tactics and infrastructure observed in the APT41 intrusion campaign. This detection method is precise in capturing C2 communications, providing strong coverage for identifying Earth Baxia's malicious activity.
+
+title: Earth Baxia C2 Activity
+id: 3321692e-96f1-408d-a783-b23987dc7856
+status: experimental
+description: Detects Earth Baxia C2 activity based on a specific HTTP request pattern.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-host: status.s3cloud-azure.com
+    s-port: '8080'
+    cs-uri-query|contains|all:
+      - NEDC
+      - /common/oauth2/authorize
+      - client_id=QnJ1bm8oaXNBZG1pbik=
+      - REVTS1RPUC1FVDUxQUpP
+      - eDY0
+      - b25jZXN2Yy5leGU=
+  condition: selection
+falsepositives:
+  - Legitimate applications using similar URL patterns (unlikely)
+level: critical

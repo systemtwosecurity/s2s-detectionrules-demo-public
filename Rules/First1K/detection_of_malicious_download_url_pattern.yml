@@ -1,0 +1,29 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects download attempts from the URL pattern which is associated with known malicious activity. False positives may include legitimate software updates from domains with similar names, necessitating careful contextual verification.
+title: Detection of Malicious Download URL Pattern
+id: 5b310413-bd3f-4511-bf9d-d35866dbb8fd
+status: experimental
+description: Detects the specific download URL pattern associated with a known malicious activity where the compromised website triggers an alert and starts the download of a malicious file.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.execution
+logsource:
+  product: modsecurity
+  category: application
+detection:
+  urls:
+    Url|contains: https://update.maskrisks.com/download
+  condition: urls
+falsepositives:
+  - Legitimate software updates from domains that are similar to the malicious domain but are not identical.
+level: high

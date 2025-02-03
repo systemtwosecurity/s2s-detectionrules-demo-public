@@ -1,0 +1,37 @@
+# review_report_url: https://redcanary.com/threat-detection-report/trends/info-stealers
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections initiated by uncommon processes like InstallUtil.exe, MSBuild.exe, and aspnet_compiler.exe without command-line arguments, potentially indicating process injection by malware such as RedLine. It correlates these processes with specific destination IP patterns and ports for additional context.
+title: Uncommon Processes with Network Connections and No Command-Line Arguments
+id: a5eaebef-04db-4444-a66d-2a5b2ed0d10d
+status: experimental
+description: Detects network connections from uncommon processes such as InstallUtil.exe, MSBuild.exe, and aspnet_compiler.exe without command-line arguments, which may indicate process injection by malware like RedLine.
+references:
+  - https://redcanary.com/threat-detection-report/trends/info-stealers
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.defense-evasion
+  - attack.t1218.004
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    Image|endswith:
+      - \InstallUtil.exe
+      - \aspnet_compiler.exe
+      - \MSBuild.exe
+    CommandLine: ''
+  selection2:
+    DestinationIp|startswith: 192.168.
+    DestinationPort|startswith: '80'
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate use of these processes with network connections and no command-line arguments, although this is uncommon.
+level: high

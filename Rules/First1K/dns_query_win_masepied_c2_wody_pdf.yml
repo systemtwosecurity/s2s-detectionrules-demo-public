@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects suspicious DNS queries that resolve to the MASEPIE malware's C2 server (194.126.178.8) and requests the wody.pdf decoy document. This is a high-priority detection as it signifies communication with a known malicious server associated with targeted attacks.
+
+title: Suspicious Connection to Masepie C2 Server
+id: 2266fa8e-c821-4898-a17c-a27e3bb88922
+status: experimental
+description: Detects access to a known Masepie C2 server delivering the 'wody.pdf' decoy document.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|endswith: /webdav/wody.pdf
+    QueryResults: 194.126.178.8
+  condition: selection
+falsepositives:
+  - Legitimate DNS queries for the specified URL (unlikely due to the specific path).
+level: high

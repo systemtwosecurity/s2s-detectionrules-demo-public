@@ -1,0 +1,31 @@
+# review_report_url: https://www.silentpush.com/blog/fin7-malware-deepfake-ai-honeypot/
+# review_date: 2024-10-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule effectively maps to the findings in the CTI report on FIN7 malware. The report highlights that the NetSupport RAT can execute from unconventional locations, such as C:\Users\Public, which aligns with the Sigma rule's detection criteria. Additionally, the connection to known C2 servers, such as 166.88.159[.]37, underscores the necessity of monitoring unusual execution patterns to prevent malicious activities.
+title: FIN7 C2 Domain Traffic Detection
+id: cf75a140-67eb-48cc-84fd-0e811421fdc9
+status: experimental
+description: Detects network traffic to known command and control (C2) domains associated with the FIN7 malware campaign.
+references:
+  - https://www.silentpush.com/blog/fin7-malware-deepfake-ai-honeypot
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  c2_traffic:
+    query|contains:
+      - pang-scrooge-carnage.shop
+      - thesiszppdsmi.shop
+  condition: c2_traffic
+falsepositives:
+  - Legitimate traffic to domains that have been compromised and are being used as C2 by FIN7.
+level: high

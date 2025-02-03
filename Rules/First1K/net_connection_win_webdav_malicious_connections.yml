@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule is designed to detect suspicious network connections to WebDAV servers that have been identified as part of a campaign targeting government organizations in Europe and the Caucasus. The campaign leverages compromised routers and Microsoft search URI handlers to deliver malicious files via HTTP (port 80). The rule specifically targets connections to the identified IP addresses (194.126.178.8 and 124.168.91.178) that are commonly used for malicious activity related to WebDAV-based attacks.
+
+title: Malicious WebDAV Server Connections - Compromised Routers
+id: 48db2c53-b15d-4a3a-ac61-d8c593e15019
+status: experimental
+description: Detects connections to WebDAV servers identified in a campaign targeting government organizations in Europe and the Caucasus, leveraging compromised routers and Microsoft search URI handlers for malicious file delivery.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 194.126.178.8
+      - 124.168.91.178
+    DestinationPort: 80
+    Protocol: TCP
+  condition: selection
+falsepositives:
+  - Legitimate connections to the specified IP addresses may occur.  Requires further investigation based on context.
+level: high

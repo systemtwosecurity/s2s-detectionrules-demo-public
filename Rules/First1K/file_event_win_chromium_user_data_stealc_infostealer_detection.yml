@@ -1,0 +1,31 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-2
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects suspicious access to the Chromium browser's User Data directory, which could indicate activity by the Stealc infostealer malware. False positives may include legitimate access by software, extensions, administrators, or backup scripts.
+title: Detection of Chromium User Data Access Indicative of Stealc Infostealer Activity
+id: c02b1674-c202-46e9-845f-ab44dc1d664b
+status: experimental
+description: Detects file system activity that indicates access to Chromium User Data, which may suggest the presence of the Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+  - attack.t1217
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: \Chromium\User Data
+  condition: selection
+falsepositives:
+  - Legitimate software or browser extensions accessing the Chromium User Data folder
+  - Administrators or scripts accessing the Chromium User Data for backup or maintenance
+level: high

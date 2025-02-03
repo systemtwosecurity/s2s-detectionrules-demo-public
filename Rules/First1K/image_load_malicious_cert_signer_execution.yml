@@ -1,0 +1,30 @@
+# review_report_url: https://binhex.ninja/re-malware-analysis-blog/shell-shocked-the-oyster-backdoor-update
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: na
+# review_notes:
+#  - This rule detects the execution of binaries signed by the malicious certificate signer "Fuzhou Xingmeng Information Technology Co., Ltd." It aims to identify potentially malicious binaries within the organization based on their signature.The key challenge is that legitimate software may have been signed by the same certificate, especially if the certificate has not yet been revoked or if older software still in use was signed by this certificate before the entity was flagged as malicious. Such cases must be carefully reviewed before any actions are taken. As per the CTI report, it accurately matches the IOC for the malicious certificate
+
+title: Detection of Execution from Malicious Certificate Signer
+id: c1a1772c-6258-49fb-a3ad-7f8523d5f0c8
+status: experimental
+description: Detects the execution of binaries signed by a known malicious certificate signer "Fuzhou Xingmeng Information Technology Co., Ltd."
+references:
+  - https://binhex.ninja/re-malware-analysis-blog/shell-shocked-the-oyster-backdoor-update
+author: System Two Security
+date: 2024/09/16
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Signature: Fuzhou Xingmeng Information Technology Co., Ltd.
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to be signed by the same signer, if the certificate has not been revoked and is still in use.
+level: high

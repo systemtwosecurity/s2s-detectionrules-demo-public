@@ -1,0 +1,33 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the sideloading of the Sbiedll.dll file by taskhost.exe, a technique used by the MoonWalk backdoor. A false negative could occur if the malware's DLL is renamed or if legitimate software inadvertently shares the same hash. However, such occurrences are highly unlikely.
+
+title: DodgeBox DLL Sideloading via taskhost.exe
+id: 6146d766-d943-448b-a882-8c97f4286b95
+status: experimental
+description: Detects the sideloading of a known DodgeBox DLL (Sbiedll.dll) by taskhost.exe, which is indicative of the MoonWalk backdoor.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.defense_evasion
+  - attack.t1574.002
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image|endswith: \taskhost.exe
+    ImageLoaded|endswith: \Sbiedll.dll
+    Hashes|contains: MD5=d72f202c1d684c9a19f075290a60920f
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename and hash by coincidence (highly unlikely)
+level: high

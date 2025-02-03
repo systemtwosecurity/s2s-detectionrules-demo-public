@@ -1,0 +1,33 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of a trojanized libmupdf.dll file associated with the BURNBOOK malware family. The rule's relevance and accuracy are high, as it directly corresponds to the IOCs mentioned in the CTI report. The detection efficacy is strong, focusing on specific file names and MD5 hashes that are indicators of compromise . The IOCs in the rule match exactly with those provided in the CTI report, reducing the risk of false positives.The detection key uses appropriate logical operators, combining the file name (ImageLoaded) with specific MD5 hashes (Hashes) using the AND condition. The use of the 'endswith' modifier for the file path and 'contains' for the hashes is appropriate and efficient.
+title: Detection of Trojanized libmupdf.dll Indicative of BURNBOOK Malware
+id: 65436f65-a867-48b8-b495-4502a2f9e780
+status: experimental
+description: Detects the presence of a file named libmupdf.dll with specific MD5 hashes associated with the BURNBOOK malware family.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \libmupdf.dll
+    Hashes|contains:
+      - 57e8a7ef21e7586d008d4116d70062a6
+      - f3baee9c48a2f744a16af30220de5066
+  condition: selection
+falsepositives:
+  - Legitimate software with a hash collision
+  - Legitimate updates to the libmupdf.dll file that have not been whitelisted
+level: high

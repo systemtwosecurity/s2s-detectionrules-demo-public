@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The provided Sigma rule is designed to detect connections to IP addresses that are associated with potentially compromised Ubiquiti network devices. These devices could be part of targeted attacks leveraging known vulnerabilities. The specific IP addresses in the rule may be tied to malicious activity based on intelligence reports, such as HarfangLab's research on compromised routers.
+
+title: Suspicious Ubiquiti Devices - Potential Compromise
+id: 77e91a1f-e11f-4d48-8453-4b7180fd90d4
+status: experimental
+description: Detects connections to IP addresses associated with potentially compromised Ubiquiti network devices.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    DestinationIp:
+      - 172.114.170.18
+      - 124.168.91.178
+      - 194.126.178.8
+      - 159.196.128.120
+  condition: selection
+falsepositives:
+  - Legitimate connections to these IP addresses if they have been remediated.
+level: high

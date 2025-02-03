@@ -1,0 +1,182 @@
+# review_report_url: https://unit42.paloaltonetworks.com/dynamics-of-deepfake-scams/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-aligned with the CTI report and covered all the url for Deepfake scam. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs like common media file types (.mp4, .avi, .mov) used in deepfake videos. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detection of Deepfake Scam Campaign URLs
+id: 35e98722-d659-4eac-9590-53116ac2665f
+status: experimental
+description: Detects access to URLs hosting scam content related to deepfake scam campaigns as reported in CTI.
+references:
+  - https://unit42.paloaltonetworks.com/dynamics-of-deepfake-scams
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.resource-development
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - invest-toolavenue.shop
+      - njecil.top
+      - kurtilast.top
+      - enter-up.top
+      - testdomaintest.site
+      - gtriotit-wqm.site
+      - wizardstarsrea.pro
+      - newglowhideout.pro
+      - stockainet.site
+      - flowcyber.click
+      - wizardstar-sree.xyz
+      - xtradgpt.online
+      - mtgaeth.vip
+      - silvermaster-gtj.cloud
+      - d1g1talpoint.xyz
+      - excellentone.one
+      - maplegateu-yj.xyz
+      - pinkwheels-rb.cloud
+      - goldzonexa.world
+      - globalmastersilvernew.world
+      - crystalincantation.com
+      - illjp4gpz.sbs
+      - wizardstarsreb.pro
+      - srkgjh.top
+      - investcontribution.top
+      - stakspat.site
+      - ggenniusprrojecct.site
+      - metawings.top
+      - lozlas-ta.cloud
+      - qatuk.org
+      - ai-usmfence.click
+      - fabulous4onee.monster
+      - crisiswatch.online
+      - gfnuw.top
+      - kevxk.top
+      - liketechnewgateq.world
+      - st-twp.cloud
+      - theebeestbrookeer.website
+      - greenrealm.world
+      - voidrover-hjsi.xyz
+      - jetshow-qi.cloud
+      - fiirststreeeet.top
+      - prevaczcgv.site
+      - wizardstar-srej.pro
+      - boarbooks-rh.cloud
+      - agentvisitliarpoint.click
+      - lsuhhf.top
+      - wizardstar-srey.xyz
+      - thequantumai.org
+      - passionquantum.shop
+      - bikeputaware.click
+      - bit-360.site
+      - juoguquda.com
+      - firstcoyotecapital.click
+      - directors.homes
+      - ai-usmside.shop
+      - globalpolytechasd.world
+      - originalquantum.shop
+      - gravetechno-jy.cloud
+      - kuvukye.space
+      - sskkilfulinnvestoor.site
+      - ai-usmcollective.click
+      - naatuureeffocus.com
+      - dflihdr.top
+      - wizardstar-sren.pro
+      - mmajp1oxg.monster
+      - inv-platform2024.site
+      - subterrasphere.world
+      - oakcloudhi-erg.world
+      - bitvidex360.trade
+      - lozlas-tc.cloud
+      - ai-usmroot.shop
+      - echolimirs.top
+      - quantumai.tools
+      - oakcloudhi-ere.world
+      - dongice-jksd.cloud
+      - spacemome.online
+      - ricegoodniceproas.world
+      - illjp4xty.sbs
+      - restigood-oo.cloud
+      - techverseasx.world
+      - registration-form.website
+      - superstarone.one
+      - coredale-pg.cloud
+      - belmar-marketing.online
+      - tulalavno.store
+      - ai-usmcapital.click
+      - qvantum-ai.tech
+      - lozlas-tb.cloud
+      - g-tradytactics3.site
+      - blackenedretl.shop
+      - quantumal.xyz
+      - groundbreakinginitiative.top
+      - spikemaster-ra.cloud
+      - ser2kke.monster
+      - wizardstarsreo.pro
+      - hotelierjobz.com
+      - hybridpowerit.com
+      - blaroya.com
+      - swapfavour.com
+      - wztnb.shop
+      - conspatriots2024.com
+      - euphemiouslystner.life
+      - kos4mzf.monster
+      - infosysdata.store
+      - lartons.top
+      - consultar-resgate.com/ll/etapa2
+      - fourhillsfarmva.com
+      - huerwlleiss-herton.pro
+      - edenovougobio.site
+      - rockriddle.world
+      - inc-co.site
+      - treewavet.world
+      - pinkwheels-ra.cloud
+      - milfarka.store
+      - unityventurehub.space
+      - whitesphereworldjoyful.world
+      - capitalflow-skillful.shop
+      - ultravirilehemer.com
+      - peerfeectwall.online
+      - promisingendeavor.website
+      - redwoodrest.world
+      - rondeliercore.com
+      - flowpulse.click
+      - wizardstar-sred.xyz
+      - owrsasd-tf.cloud
+      - cavernaid-ky.cloud
+      - spikemaster-rj.cloud
+      - iaqa.life
+      - rwtfoa-hpl.cloud
+      - wizardstar-srea.xyz
+      - newforestjoyzonega.world
+      - baelandworld.com
+      - sacvenih.sbs
+      - wizardstarsrek.pro
+      - outlayquantum.shop
+      - quantum-ai.link
+      - fortunatenews.com
+      - sweetchaseonly.click
+      - untamedal.top
+      - dearetung.homes
+      - foodtruckit.com
+      - certifilite.com
+      - flowersys-sv.cloud
+      - grottostones-gl.cloud
+      - onlinepasivechange.sbs
+      - ai-usmoutlay.click
+      - globalpolytr.world
+      - hideoutglownew.pro
+      - alt-fin-side.shop
+      - gatenewtechlikew.world
+      - techmerge-ai.space
+      - pro-fitters.store
+  condition: selection
+falsepositives:
+  - Legitimate access to a domain that has been compromised and is temporarily hosting scam content
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://securityintelligence.com/x-force/ex-conti-fin7-actors-collaborate-new-backdoor
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Minodo Loader malware is a dangerous loader that leverages advanced evasion techniques and memory-based execution. This Sigma rule effectively detects the presence of this malware by monitoring specific MD5 hashes and DLL filenames, aligning closely with the CTI data from IBM X-Force.
+title: Detection of Minodo Loader Malware
+id: 66e7b67a-f819-452c-b63c-2dd0fcdf7315
+status: experimental
+description: Detects the presence of a 64-bit DLL with a specific MD5 hash or internal filename associated with Minodo Loader malware.
+references:
+  - https://securityintelligence.com/x-force/ex-conti-fin7-actors-collaborate-new-backdoor
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    md5: 2373BE26018075847AEA51636B739F66
+    ImageLoaded|endswith: MultiRunDll64.dll
+  condition: selection
+falsepositives:
+  - Unknown. This MD5 hash and filename are specific to the Minodo Loader malware and should not be used by legitimate software.
+level: high

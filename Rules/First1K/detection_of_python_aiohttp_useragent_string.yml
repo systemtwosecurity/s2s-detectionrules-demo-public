@@ -1,0 +1,35 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects HTTP requests with the specific UserAgent string Python/3.11 aiohttp/3.9.5, which has been linked to potentially malicious activity in CTI reporting. It is effective for identifying suspicious usage of Python's aiohttp library but may produce false positives if legitimate internal applications or developers use the same library version. To reduce noise, baselining known legitimate uses and correlating with other suspicious activity (e.g., unusual source IPs or anomalous access patterns) is recommended. The rule is highly targeted but should be part of a broader detection strategy for accuracy.
+# review_tags:fixed.manual
+title: Detection of LLMHijacking for RP Campaign
+id: 4ca16d33-f45a-4ddf-838d-ae87ad376e5a
+status: experimental
+description: Detects network connections to an IP address associated with the RP Service that performed all the invocations, with additional indicators to improve specificity and reduce false positives.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.credential-access
+  - attack.t1557.001
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    destination_ip: 194.48.248.108
+    user_agent|contains:
+      - axios/1.6.1
+      - Python/3.11 aiohttp/3.9.5
+    destination_as_org: "Ark Networks Ltd"
+  condition: selection
+falsepositives:
+  - Legitimate connections from network administrators or approved services interacting with the RP service.
+level: high

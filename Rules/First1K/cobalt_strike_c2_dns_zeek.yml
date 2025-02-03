@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries and network connections to domains potentially associated with Cobalt Strike C2 infrastructure, such as beamofthemoon.com and its subdomains. These queries could indicate an ongoing attack or compromise. False positives might occur if legitimate communication occurs with these domains (if they are used for other purposes), so context should be reviewed to confirm the malicious nature of the activity.
+
+title: Suspicious DNS Queries and Network Connections to Cobalt Strike C2 Domains
+id: 9e89d062-94cf-471b-85e1-9db170e10c47
+status: experimental
+description: Detects DNS queries and network connections to domains associated with Cobalt Strike C2 infrastructure.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains:
+      - beamofthemoon.com
+      - mail.beamofthemoon.com
+      - store.beamofthemoon.com
+  condition: selection
+falsepositives:
+  - Legitimate communication with beamofthemoon.com (if it exists)
+level: medium

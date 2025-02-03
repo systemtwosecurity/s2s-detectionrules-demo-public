@@ -1,0 +1,39 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule provided effectively detects the SQL query pattern executed by the LEMURLOOT web shell on MOVEit Transfer systems, as corroborated by the CTI report. The rule is tailored to recognize the extraction of MOVEit system metadata, specifically targeting SQL query fragments like folder and file identifiers, uploader information, folder paths, and file sizes. This pattern aligns precisely with LEMURLOOT’s actions described in the CTI report, which include accessing Microsoft Azure system settings, file paths, and associated metadata within MOVEit Transfer environments.
+
+title: Detection of LEMURLOOT Web Shell Activity on MOVEit Transfer
+id: 97f071b5-1af6-4b5d-906b-c8bbdb05682e
+status: experimental
+description: Detects the execution of a specific SQL query used by the LEMURLOOT web shell to retrieve Azure system settings and other sensitive information from MOVEit Transfer systems.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.collection
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    ActivityDisplayName|contains|all:
+      - fr.name as fname from folders fr
+      - fr.FolderPath
+      - f.folderid
+      - u.LoginName as uploader
+      - f.instid
+      - select f.id
+      - files f left join users u on f.UploadUsername = u.Username where f.FolderID = fr.ID
+      - filesize
+      - f.Name as Name
+  condition: selection
+falsepositives:
+  - Legitimate use of the specific SQL query by authorized personnel or systems, which should be whitelisted after investigation.
+level: high

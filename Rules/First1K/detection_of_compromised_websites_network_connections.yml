@@ -1,0 +1,30 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries for network connections to compromised websites, specifically "tibetpost.net" and "gyudmedtantricuniversity.org." False positives may occur if the domains are reclaimed by legitimate owners after being compromised.
+title: Detection of Network Connections to Compromised Websites
+id: 1079c0c7-d0bd-4932-9b20-82c27774c85b
+status: experimental
+description: Detects network connections to compromised websites tibetpost.net and gyudmedtantricuniversity.org.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - tibetpost.net
+    - gyudmedtantricuniversity.org
+  condition: query
+falsepositives:
+  - Legitimate connections to the compromised domains if they have been reclaimed by the legitimate owners.
+level: high

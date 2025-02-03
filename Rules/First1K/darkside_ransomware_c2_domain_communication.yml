@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/sitdarkside_ransomware_c2_domain_communication.ymles/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately maps to the provided CTI report. The inclusion of specific domains (baroquetees.com and rumahsia.com) as indicators of compromise (IoCs) in both the Sigma rule and CTI report shows a strong alignment. This rule is well-suited for detecting potential ransomware activity linked to DarkSide through DNS logs, supporting proactive threat hunting and incident response efforts.
+title: Detection of DarkSide Ransomware Domain Communication
+id: 4c4ac35d-f5e2-46c2-bfbe-5e5eb732f843
+status: experimental
+description: Detects network connections to known DarkSide ransomware command and control (C2) domains.
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domains:
+    query|contains:
+      - baroquetees.com
+      - rumahsia.com
+  condition: domains
+falsepositives:
+  - Legitimate connections to domains with similar names
+level: high

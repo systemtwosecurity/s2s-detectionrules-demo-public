@@ -1,0 +1,29 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation, modification, or execution of a malicious loader executable associated with the threat actor TAG-102. It specifically targets files with the SHA256 hash 31f11b4d81f3ae25b6a01cd1038914f31d045bc4136c40a6221944ea553d6414. Such detections are critical and likely indicate defense evasion tactics used by a sophisticated threat actor.
+title: Detection of Malicious Loader Executable Related to TAG-102
+id: da57169c-e4cf-4363-a0f0-9490131ec181
+status: experimental
+description: Detects the creation, modification, or execution of a malicious loader executable with a specific SHA256 hash that is associated with the threat actor TAG-102.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  hashes:
+    sha256: 31f11b4d81f3ae25b6a01cd1038914f31d045bc4136c40a6221944ea553d6414
+  condition: hashes
+falsepositives:
+  - Legitimate software with a hash collision (highly unlikely)
+level: critical

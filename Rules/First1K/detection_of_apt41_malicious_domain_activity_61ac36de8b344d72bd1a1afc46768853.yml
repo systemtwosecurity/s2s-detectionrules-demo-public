@@ -1,0 +1,33 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies DNS queries to domains associated with APT41 malware, signaling potential malicious activity. It uses `zeek` DNS logs and targets specific suspicious domains. False positives could occur if any listed domains are later repurposed for legitimate use.
+title: Detection of APT41 Related Malicious Domain Activity
+id: 61ac36de-8b34-4d72-bd1a-1afc46768853
+status: experimental
+description: Detects network activity to domains known to be associated with APT41 malware.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - techniciantext.com
+    - notped.com
+    - dnsgogle.com
+    - paniesx.com
+    - operatingbox.com
+  condition: query
+falsepositives:
+  - Legitimate queries to domains that have been compromised or repurposed by APT41.
+level: high

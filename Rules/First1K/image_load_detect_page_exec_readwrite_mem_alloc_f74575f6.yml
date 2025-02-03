@@ -1,0 +1,32 @@
+# review_report_url: https://any.run/cybersecurity-blog/brute-ratel-c4-analysis
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the allocation of `PAGE_EXECUTE_READWRITE` memory, a technique often used by malware to load or decrypt payloads in executable memory. While this can indicate malicious activity, certain legitimate applications, such as JIT compilers, may also require this memory allocation.
+title: Detect PAGE_EXECUTE_READWRITE Memory Allocation
+id: f74575f6-56b0-480c-9b31-8fc7c415efd2
+status: experimental
+description: Detects the allocation of PAGE_EXECUTE_READWRITE memory which could indicate an attempt to write a decrypted payload into executable memory, a technique commonly used by malware during exploitation.
+references:
+  - https://any.run/cybersecurity-blog/brute-ratel-c4-analysis
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    EventID: 10
+    Image|endswith: \upfilles.dll
+    ImageLoaded|endswith: .dll
+    Hashes|contains: PAGE_EXECUTE_READWRITE
+  condition: selection
+falsepositives:
+  - Legitimate applications that require PAGE_EXECUTE_READWRITE memory allocations for legitimate purposes (e.g., some JIT compilers).
+level: high

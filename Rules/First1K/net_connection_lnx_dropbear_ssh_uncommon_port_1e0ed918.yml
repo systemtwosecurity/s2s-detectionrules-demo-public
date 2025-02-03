@@ -1,0 +1,30 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a Dropbear SSH server running on port 58900, which is non-standard and may suggest a compromised legacy device. False positives could arise if Dropbear is legitimately configured to use this port.
+title: Detection of Dropbear SSH Server on Uncommon Port
+id: 1e0ed918-9c5d-4832-911e-df295c8a0c5a
+status: experimental
+description: Detects network connections to a Dropbear SSH server running on a non-standard port which may indicate a compromised legacy device.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '58900'
+    Image|endswith: /dropbear
+  condition: selection
+falsepositives:
+  - Legitimate use of Dropbear SSH server on port 58900
+level: high

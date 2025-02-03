@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/dipping-into-danger
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are properly aligned, confirming omeindia.com as a phishing domain associated with the WARMCOOKIE campaign.
+title: Detection of WARMCOOKIE Phishing Domain DNS Request
+id: 6f83aeed-dd45-4e23-b2df-9cad674ac60c
+status: experimental
+description: Detects DNS requests for the known WARMCOOKIE phishing domain omeindia.com.
+references:
+  - https://www.elastic.co/security-labs/dipping-into-danger
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: omeindia.com
+  condition: query
+falsepositives:
+  - Legitimate DNS requests to the domain if it has been repurposed after the threat report.
+level: high

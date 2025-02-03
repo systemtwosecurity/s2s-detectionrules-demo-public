@@ -1,0 +1,42 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well mapped with the CTI report, detecting the download of malicious .zip files from the URLs listed in the report, which are linked to malware campaigns like PEAKLIGHT, CRYPTBOT, and SHADOWLADDER. The detection logic and network-based IOCs match precisely, ensuring effective detection.
+title: Download of Malicious ZIP Files Detected
+id: b9367519-9b57-4cb3-a40b-006f584f4db5
+status: experimental
+description: Detects download requests for .zip files from known malicious URLs associated with PEAKLIGHT, LUMMAC.V2, CRYPTBOT, and SHADOWLADDER malware campaigns.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.initial-access
+  - attack.t1608.001
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains|all:
+      - .b-cdn.net/
+      - .zip
+  selection2:
+    uri|contains:
+      - fatodex.b-cdn.net/K2.zip
+      - potexo.b-cdn.net/K1.zip
+      - potexo.b-cdn.net/K2.zip
+      - nextomax.b-cdn.net/L1.zip
+      - nextomax.b-cdn.net/L2.zip
+      - fatodex.b-cdn.net/K1.zip
+      - matodown.b-cdn.net/K2.zip
+      - matodown.b-cdn.net/K1.zip
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate access to a .zip file from a benign CDN that matches the malicious pattern by coincidence.
+level: high

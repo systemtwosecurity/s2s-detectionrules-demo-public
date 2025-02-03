@@ -1,0 +1,34 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detecting high-frequency creation of ransomware note files aligns closely with the CTI report on Clop ransomware, targeting the bulk creation of .txt, .html, and .hta ransom notes indicative of Clop’s behavior. This rule complements other Clop detection mechanisms, forming a layered detection strategy across various stages of the ransomware’s activity while accounting for possible legitimate software activity, enhancing Clop ransomware detection accuracy.
+
+title: High Frequency Creation of Ransomware Notes
+id: 54bc6766-c302-406c-ae3b-b53005e248f0
+status: experimental
+description: Detects a high number of ransomware note creation events, which is a common behavior of ransomware. This rule looks for the creation of more than 30 or 50 unique ransomware note files, which could indicate the presence of ransomware encrypting files and dropping ransom notes.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+author: System Two Security
+date: 2024/09/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|endswith:
+      - .hta
+      - .txt
+      - .html
+  condition: selection | count(TargetFilename) by Computer > 30
+falsepositives:
+  - Legitimate software that creates a large number of text, HTML, or HTA files in a short period of time.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule is useful for detecting  connections from macos  to the specific Telegram URL associated with Atomic Stealer malware, indicating potential compromise or attacker communication.
+title: Detection of Atomic Stealer Malware Contact URL
+id: 22fb50c5-9656-4825-97fa-2ea6e1cd2763
+status: experimental
+description: Detects network connections to the Atomic Stealer malware contact URL which may indicate compromise or malware communication.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  selection:
+    DestinationHostname|contains: t.me/Ping3r
+  condition: selection
+falsepositives:
+  - Legitimate access to the Telegram URL by users. It is recommended to investigate the context of the access.
+level: high

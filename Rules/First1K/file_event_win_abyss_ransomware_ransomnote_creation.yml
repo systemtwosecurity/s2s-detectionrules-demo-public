@@ -1,0 +1,30 @@
+# review_report_url: https://socradar.io/dark-web-profile-abyss-ransomware/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of the ransom note "WhatHappened.txt," which is associated with Abyss Ransomware infections. Monitoring file creation events for this specific filename can help identify ransomware incidents early. Legitimate software may also use similarly named files, so tuning the rule may be necessary to reduce false positives, especially in environments with software using comparable filenames.
+
+title: Abyss Ransomware - Ransom Note Creation Detected
+id: 491ba18c-0caa-49f5-b788-815b884a997e
+status: experimental
+description: Detects the creation of a ransom note named "WhatHappened.txt" which is indicative of Abyss Ransomware activity.
+references:
+  - https://socradar.io/dark-web-profile-abyss-ransomware
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \WhatHappened.txt
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a file named "WhatHappened.txt" for its own purposes.
+level: high

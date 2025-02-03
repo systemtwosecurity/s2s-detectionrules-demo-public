@@ -1,0 +1,35 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation or modification of PHP web shell files, commonly used by attackers to maintain access to compromised servers, by monitoring specific filenames such as exp_door v1.0.2.php, WSO 4.0.5.php, and b374k.php. It targets Linux file event logs to identify malicious files. To reduce false positives, correlation with other suspicious activities or tools that may use similar filenames is recommended.
+
+title: Detection of PHP Web Shells
+id: e434fc23-8087-4b82-9d07-eca7e34be323
+status: experimental
+description: Detects the use of specific PHP web shells which are commonly used by attackers for maintaining access to compromised web servers.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - exp_door v1.0.2.php
+      - WSO 4.0.5.php
+      - b374k.php
+  condition: selection
+falsepositives:
+  - Legitimate administrative tools that use similar names
+  - False positives can be reduced by correlating with other suspicious activities
+level: high

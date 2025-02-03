@@ -1,0 +1,57 @@
+# review_report_url: https://www.vmray.com/latrodectus-a-year-in-the-making/
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to specific command and control (C2) domains known to be associated with the Latrodectus malware. It monitors for outbound connections where the destination hostname matches any from a list of identified Latrodectus C2 URLs. By identifying these connections, the rule helps uncover potential malware activity, though it may occasionally trigger false positives from legitimate domains with similar names.
+title: Detection of Latrodectus C2 URLs
+id: 55e86ef1-9267-4ffc-b488-de1199717443
+status: experimental
+description: Detects network connections to known Latrodectus command and control (C2) URLs.
+references:
+  - https://www.vmray.com/latrodectus-a-year-in-the-making
+author: System Two Security
+date: 2024/10/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - stratimasesstr.com
+      - grebiunti.top
+      - zumkoshapsret.com
+      - illoskanawer.com
+      - minrezviko.com
+      - skinnyjeanso.com
+      - trymeakafr.com
+      - finilamedima.com
+      - workspacin.cloud
+      - winarkamaps.com
+      - coolarition.com
+      - drifajizo.fun
+      - rilomenifis.com
+      - aytobusesre.com
+      - isomicrotich.com
+      - worlpquano.com
+      - saicetyapy.space
+      - antyparkov.site
+      - titnovacrion.top
+      - finjuiceer.com
+      - peronikilinfer.com
+      - jertacco.com
+      - pomaspoteraka.com
+      - carflotyup.com
+      - stripplasst.com
+      - grunzalom.fun
+      - scifimond.com
+      - restoreviner.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains that are falsely similar to malicious C2 URLs
+level: high

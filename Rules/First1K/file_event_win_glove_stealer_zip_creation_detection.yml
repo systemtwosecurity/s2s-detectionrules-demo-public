@@ -1,0 +1,29 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule Detects the creation of a ZIP file in the Recent directory with a name pattern of MD5_HASH.xexe, which is indicative of Glove Stealer malware activity.
+title: Glove Stealer ZIP File Creation Detection
+id: a9bcf184-e091-469f-af09-9f197553b3f4
+status: experimental
+description: Detects the creation of a ZIP file in the Recent directory with a name pattern of MD5_HASH.xexe, which is indicative of Glove Stealer malware activity.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \Recent\*.xexe
+  condition: selection
+falsepositives:
+  - Legitimate applications that create ZIP files with a similar naming convention in the Recent directory.
+level: high

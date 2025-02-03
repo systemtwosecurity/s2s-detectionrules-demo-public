@@ -1,0 +1,36 @@
+# review_report_url:https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is highly relevant to the CTI report. The report details that this port was used for communication with the MoonPeak/XenoRAT malware, and the IP address is identified as a key component of the C2 infrastructure. The rule is well-suited for detecting malicious network traffic related to this campaign by monitoring connections to C2 servers using the identified IPs, URIs, and ports.
+title: Detection of XenoRAT Infection via Network Connection to C2 Server
+id: 09bbf620-f391-4842-ae08-d06d84a9643e
+status: experimental
+description: Detects network connections to a known malicious C2 server IP on a specific port, which is indicative of a XenoRAT infection.
+references:
+  - https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names: Host
+    uri: /.*
+    method: GET
+    status_code: 200
+  filter1:
+    client_header_names|contains: User-Agent
+  filter2:
+    uri|contains: '8936'
+  condition: selection and filter1 and filter2
+falsepositives:
+  - Legitimate applications using the same IP and port by coincidence
+level: high

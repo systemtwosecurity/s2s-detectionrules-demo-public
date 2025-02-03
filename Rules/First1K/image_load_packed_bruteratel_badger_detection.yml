@@ -1,0 +1,30 @@
+# review_report_url: https://blog.reveng.ai/latrodectus-distribution-via-brc4/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule detects the presence of the packed Brute Ratel Badger implant by identifying a specific DLL file (aclui.dll) with a known malicious SHA-256 hash. The detection is based on loading this file into memory, which is part of the Brute Ratel infection chain. The rule is set to trigger when this specific file is loaded, potentially indicating malicious activity. False positives are highly unlikely but may occur if legitimate software coincidentally uses the same filename and hash. The rule focuses on defense evasion techniques used by the Badger implant.
+title: Detection of Packed Brute Ratel Badger
+id: 6db7774d-9a49-4d46-8c53-684b9d790134
+status: experimental
+description: Detects the presence of a file with a specific SHA-256 hash and filename indicating a packed Brute Ratel Badger.
+references:
+  - https://blog.reveng.ai/latrodectus-distribution-via-brc4
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Hashes|contains: c5dc5fd676ab5b877bc86f88485c29d9f74933f8e98a33bddc29f0f3acc5a5b9
+    ImageLoaded|endswith: aclui.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally has the same hash and filename (highly unlikely)
+level: high

@@ -1,0 +1,72 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is perfectly aligned with the CTI report, as it uses a combination of file paths and hashes directly derived from the report. This should allow for effective detection of Black Basta ransomware activities, ensuring that both known malicious files and associated artifacts are captured.
+title: Black Basta Ransomware File Indicators
+id: 01c1f921-96b8-4e7b-8f21-55c350d7f8f0
+status: experimental
+description: Detects file creation or process execution related to Black Basta ransomware based on file paths and hashes.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a
+author: System Two Security
+date: 2024/09/18
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  file_paths:
+    TargetFilename|contains:
+      - C:\Users\Public\db_Usr.sql
+      - C:\Users\Public\Audio\7z.dll
+      - C:\Users\Public\7z.dll
+      - C:\Users\Public\GeniusMesh.exe
+      - \Device\Mup\*\C$\Users\Public\Music\DumpNParse86.exe
+      - \Device\Mup\*\C$\Users\Public\Music\DumpNParse.exe
+      - C:\Users\Public\Audio\Jun.exe
+      - \Device\Mup\*\C$\Users\Public\Music\PROCEXP.sys
+      - \Device\Mup\*\C$\Users\Public\Music\POSTDump.exe
+      - C:\Users\Public\Thief.exe
+      - C:\Users\Public\Audio\hv2.ps1
+      - C:\Users\Public\Audio\7zG.exe
+      - C:\Users\Public\7zG.exe
+      - '*\instructions_read_me.txt'
+      - C:\Users\Public\Audio\esx.zip
+      - C:\Users\Public\DataSoft.exe
+      - C:\Users\Public\NetApp.exe
+      - C:\Users\Public\BitData.exe
+      - C:\Users\Public\Audio\db_Usr.sql
+      - C:\Users\Public\DigitalText.dll
+      - C:\Users\Public\socksps.ps1
+      - C:\Users\Public\eucr.exe
+      - C:\Program Files\MonitorIT\GWT.ps1
+      - C:\Users\Public\BitLogic.dll
+      - C:\Users\All Users\*\GWT.ps1
+      - C:\Windows\DS_c1.dll
+  hashes:
+    Image:
+      - 3c65da7f7bfdaf9acc6445abbedd9c4e927d37bb9e3629f34afc338058680407
+      - 2642ec377c0cee3235571832cb472870
+      - 034b5fe047920b2ae9493451623633b14a85176f5eea0c7aadc110ea1730ee79
+      - c26a5cb62a78c467cc6b6867c7093fbb7b1a96d92121d4d6c3f0557ef9c881e0
+      - 8C68B2A794BA3D148CAE91BDF9C8D357289752A94118B5558418A36D95A5A45F
+      - f21240e0bf9f0a391d514e34d4fa24ecb997d939379d2260ebce7c693e55f061
+      - 4c897334e6391e7a2fa3cbcbf773d5a4
+      - b6a4f4097367d9c124f51154d8750ea036a812d5badde0baf9c5f183bb53dd24
+      - 808c96cb90b7de7792a827c6946ff48123802959635a23bf9d98478ae6a259f9
+      - 819cb9bcf62be7666db5666a693524070b0df589c58309b067191b30480b0c3a
+      - 8501e14ee6ee142122746333b936c9ab0fc541328f37b5612b6804e6cdc2c2c6
+      - 3a8fc07cadc08eeb8be342452636a754158403c3d4ebff379a4ae66f8298d9a6
+      - d503090431fdd99c9df3451d9b73c5737c79eda6eb80c148b8dc71e84623401f
+      - 4ac69411ed124da06ad66ee8bfbcea2f593b5b199a2c38496e1ee24f9d04f34a
+      - b3fe23dd4701ed00d79c03043b0b952e
+  condition: file_paths or hashes
+falsepositives:
+  - Legitimate software that uses the same filenames or hashes by coincidence.
+level: critical

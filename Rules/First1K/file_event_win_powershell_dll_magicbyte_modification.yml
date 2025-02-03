@@ -1,0 +1,33 @@
+# review_report_url: https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects malicious PowerShell scripts that modify the first byte of a DLL file to 0x4D, which is a known evasion technique used by malware to bypass detection mechanisms. The rule monitors file events where PowerShell is involved in modifying DLL files with a specific byte signature. False positives may arise from legitimate applications that modify DLLs for patching purposes.
+title: Malicious PowerShell Script Modifying DLL First Byte
+id: 1e1fb796-ed6d-4fe9-b383-8c318a463090
+status: experimental
+description: Detects the modification of the first byte of a DLL file to 0x4D using PowerShell, which is indicative of an evasion technique used by malware.
+references:
+  - https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image|endswith:
+      - \powershell.exe
+      - \pwsh.exe
+    TargetFilename|endswith: .dll
+    MagicHeader|startswith: 4D
+  condition: selection
+falsepositives:
+  - Legitimate applications that patch or modify DLL files in a similar manner
+level: high

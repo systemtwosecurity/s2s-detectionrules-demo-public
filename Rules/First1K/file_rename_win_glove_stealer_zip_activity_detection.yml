@@ -1,0 +1,31 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the renaming of ZIP files by Glove Stealer, following its documented behavior of converting files from MD5_HASH.xexe to MD5_HASHXE during encryption. This pattern is specific to Glove Stealer's exfiltration process and can effectively highlight its activity.
+title: Detection of Glove Stealer Encrypted ZIP File Renaming Activity
+id: 5bc08c05-12ab-4278-a17f-c8f3516a0c11
+status: experimental
+description: Detects the renaming of encrypted ZIP files to a specific pattern used by Glove Stealer malware, which is indicative of data exfiltration.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_rename
+detection:
+  selection:
+    TargetFilename|endswith: XE
+  filter:
+    OriginalFileName|endswith: .xexe
+  condition: selection and filter
+falsepositives:
+  - Legitimate applications that use a similar naming convention for temporary files or updates.
+level: high

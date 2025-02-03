@@ -1,0 +1,30 @@
+# review_report_url: https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detection of MoonPeak C2 Server Communication Over Port 8936
+id: d719ebc9-130e-422e-8464-890158f03239
+status: experimental
+description: Detects network connections to a known MoonPeak C2 server over port 8936, which is indicative of a compromised host communicating with the attacker-controlled server.
+references:
+  - https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: CONNECT
+    uri|contains: 91.194.161.109:8936
+  condition: selection
+falsepositives:
+  - Legitimate applications using port 8936 for communication, which is uncommon
+level: high

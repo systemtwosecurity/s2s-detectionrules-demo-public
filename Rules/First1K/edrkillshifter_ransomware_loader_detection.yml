@@ -1,0 +1,31 @@
+# review_report_url: https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+# review_date: 2024-11-14
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution of a specific ransomware loader, EDRKillShifter, identified by unique characteristics such as the file name (killer.exe), and specific MD5 and SHA-1 hash values. These indicators are based on threat intelligence that links this loader to malicious activity. The rule is designed to trigger alerts when files matching these details are detected, as this loader is associated with ransomware operations and potentially harmful actions.
+title: Detection of EDRKillShifter Ransomware Loader
+id: 32f9add6-f3a4-4bf8-966d-1b96190ee598
+status: experimental
+description: Detects the execution of a ransomware loader with specific characteristics including file name, size, and hash values as reported in CTI.
+references:
+  - https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+author: System Two Security
+date: 2024/10/26
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    TargetFilename|endswith: killer.exe
+    md5: 8799D3A98290E8FA3CFE789CA232BBE8
+    sha1: 65C23880BAFD1B1F860B8B87456D8D6CD8B5645
+  condition: selection
+falsepositives:
+  - Unknown. This detection is based on specific indicators of compromise and should be investigated.
+level: critical

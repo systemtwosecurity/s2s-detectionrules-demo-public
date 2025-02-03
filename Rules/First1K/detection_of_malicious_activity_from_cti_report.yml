@@ -1,0 +1,59 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is designed to detect various indicators of compromise (IoCs) associated with a specific threat actor, as described in the CTI report. The rule focuses on Zeek HTTP logs and looks for malicious IP addresses, domains, URLs, and file hashes across different HTTP header fields and request body. The rule is well-constructed and aligns closely with the provided threat intelligence. The rule strikes a good balance between specificity (targeting exact indicators) and breadth (covering multiple aspects of the threat).This rule directly addresses multiple aspects of the threat described in the CTI report: IP addresses used by the threat actors, Actor-controlled domains, Specific URL (/procdump.gif), File hashes associated with malware variants (TigerRAT, LightHand, ValidAlpha)
+title: Detection of Malicious Activity from CTI Report
+id: 0f883b56-ed66-40f6-b965-1d4331bf7c32
+status: experimental
+description: Detects network connections to known malicious IP addresses and domains, and file hashes associated with malware as reported in the CTI report.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/09/09
+tags:
+  - attack.command-and-control
+  - attack.t1071.002
+logsource:
+  product: zeek
+  service: http
+detection:
+  ip_addresses:
+    client_header_names|contains:
+      - 'X-Forwarded-For: 45.155.37.101'
+      - 'X-Forwarded-For: 147.78.149.201'
+      - 'X-Forwarded-For: 109.248.150.147'
+      - 'X-Forwarded-For: 162.19.71.175'
+      - 'X-Forwarded-For: 213.139.205.151'
+      - 'X-Forwarded-For: 84.38.134.56'
+  domains:
+    client_header_names|contains:
+      - 'Host: ww3c.bounceme.net'
+      - 'Host: privatemake.bounceme.net'
+      - 'Host: advice.uphearth.com'
+      - 'Host: americajobmail.site'
+  urls:
+    uri|contains: /procdump.gif
+  file_hashes:
+    request_body_len|contains|all:
+      - 8daa6b20caf4bf384cc7912a73f243ce6e2f07a5cb3b3e95303db931c3fe339f
+      - 868a62feff8b46466e9d63b83135a7987bf6d332c13739aa11b747b3e2ad4bbf
+      - f1662bee722a4e25614ed30933b0ced17b752d99fae868fbb326a46afa2282d5
+      - c2500a6e12f22b16e221ba01952b69c92278cd05632283d8b84c55c916efe27c
+      - f32f6b229913d68daad937cc72a57aa45291a9d623109ed48938815aa7b6005c
+      - 1b88b939e5ec186b2d19aec8f17792d493d74dd6ab3d5a6ddc42bfe78b01aff1
+      - 0837dd54268c373069fc5c1628c6e3d75eb99c3b3efc94c45b73e2cf9a6f3207
+      - 3098e6e7ae23b3b8637677da7bfc0ba720e557e6df71fa54a8ef1579b6746061
+      - c1a09024504a5ec422cbea68e17dffc46472d3c2d73f83aa0741a89528a45cd1
+      - 29c6044d65af0073424ccc01abcb8411cbdc52720cac957a3012773c4380bab3
+      - 7339cfa5a67f5a4261c18839ef971d7f96eaf60a46190cab590b439c71c4742b
+      - fed94f461145681dc9347b382497a72542424c64b6ae6fcf945f4becd2d46c32
+  condition: ip_addresses or domains or urls or file_hashes
+falsepositives:
+  - Legitimate connections to the listed IP addresses or domains that have been compromised but are now clean.
+  - Legitimate software or files that may have the same hash as the malicious files listed but are not malicious.
+level: high

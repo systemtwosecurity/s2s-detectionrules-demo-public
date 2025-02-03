@@ -1,0 +1,31 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well mapped with the CTI report. The rule detects CRYPTBOT C2 HTTP POST requests to the URL /upload.php, which matches the CTI report’s listed CRYPTBOT C2 URL. The detection logic aligns with the network-based indicators (NBIs) provided in the report, confirming accurate detection parameters.
+title: Detection of CRYPTBOT C2 HTTP POST Request
+id: 321b8a0b-20c5-4252-ad51-45f6b49eecb4
+status: experimental
+description: Detects HTTP POST requests to a known CRYPTBOT command and control (C2) URL.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: POST
+    uri: /upload.php
+    client_header_names|contains: Host
+  condition: selection
+falsepositives:
+  - Legitimate POST requests to the same URI on different hosts
+level: high

@@ -1,0 +1,29 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is aligned with the CTI report. The detection logic correctly matches the identified C2 beacon domain (malaytravelgroup.com) from the CTI report, with no discrepancies found.
+
+title: APT28 C2 Beacon Domain Detection
+id: 4b896b0c-301e-4c22-85f2-1a1ef038ae97
+status: experimental
+description: Detects network connections to a known C2 beacon domain used by APT28.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: malaytravelgroup.com
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain if it has been hijacked or reused for legitimate purposes after the report.
+level: high

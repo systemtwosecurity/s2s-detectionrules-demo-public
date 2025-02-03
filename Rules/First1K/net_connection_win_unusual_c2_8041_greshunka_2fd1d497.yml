@@ -1,0 +1,33 @@
+# review_report_url: https://www.forcepoint.com/blog/x-labs/inside-latrodectus-malware-phishing-campaign
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects unusual network connections to a known malicious command and control (C2) server, specifically targeting traffic on port 8041 to the domain `greshunka.com`. Such connections may indicate communication with a compromised host.
+title: Unusual Network Connection to Malicious C2 Server
+id: 2fd1d497-1217-4c4e-b6dc-cfc055aa2469
+status: experimental
+description: Detects network connections to a malicious command and control (C2) server on an unusual port, which may indicate communication with a compromised host.
+references:
+  - https://www.forcepoint.com/blog/x-labs/inside-latrodectus-malware-phishing-campaign
+author: System Two Security
+date: 2024/10/23
+tags:
+  - attack.t1571
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '8041'
+    DestinationHostname|contains: greshunka.com
+    DestinationIp: 194.54.156.91
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same port by coincidence
+  - Network traffic to a legitimate domain that matches the IOC by coincidence
+level: high

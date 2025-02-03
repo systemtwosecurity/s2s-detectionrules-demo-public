@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques//
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects sudden changes in logging configuration on a Linux host, monitoring transitions from logging being enabled to disabled, which could indicate an attacker disabling logs to evade detection. It focuses on potential tampering with logging services, but may generate false positives from legitimate maintenance or system restarts.
+
+title: Sudden Cessation of Security Logs
+id: 207b4931-58fa-4c50-9d23-6fef681e0d3d
+status: experimental
+description: Detects a sudden stop in logs from a Linux host, potentially indicating an attacker disabling logging.
+references:
+  - https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.defense-evasion
+logsource:
+  category: sysmon_status
+  product: linux
+detection:
+  selection:
+    Configuration: '*enabled*'
+  filter:
+    Configuration: '*disabled*'
+  condition: selection and filter
+falsepositives:
+  - Legitimate system shutdowns or restarts
+  - Temporary network outages affecting log forwarding
+  - Intentional disabling of logging for maintenance
+level: medium

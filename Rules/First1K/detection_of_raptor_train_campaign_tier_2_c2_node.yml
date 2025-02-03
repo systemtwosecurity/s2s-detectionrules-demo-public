@@ -1,0 +1,30 @@
+# review_report_url: https://blog.lumen.com/derailing-the-raptor-train/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule accurately detects DNS or HTTP queries to the Raptor Train campaign’s Tier 2 C2 node at the domain, as described in the CTI report. Both the rule and the report highlight this domain as part of the Canary Campaign infrastructure, used to retrieve and drop payloads for compromised devices.
+
+title: Detection of Raptor Train Campaign Tier 2 C2 Node
+id: 5725bd02-7b17-4ddf-9b9c-643c00692ff7
+status: experimental
+description: Detects DNS or HTTP requests to a known Raptor Train campaign Tier 2 C2 node domain.
+references:
+  - https://blog.lumen.com/derailing-the-raptor-train
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain:
+    query|contains: awerdasvbjgrt.b2047.com
+  condition: domain
+falsepositives:
+  - Legitimate queries to the domain, although highly unlikely given the context of the report.
+level: high

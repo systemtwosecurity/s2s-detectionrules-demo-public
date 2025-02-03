@@ -1,0 +1,35 @@
+# review_report_url: URL
+# review_date: 2024-09-20
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns well with the CTI report, as both address detecting multiple failed authentications from a single IP, indicating a potential password spray attack.
+title: Detect Multiple Failed Authentications from a Single IP
+id: 9133bd82-71ac-487f-8174-1a817a909a06
+status: experimental
+description: Detects multiple failed login attempts from a single IP address, which could indicate a password spray attack against Azure Active Directory.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.initial-access
+  - attack.t1110.003
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload: UserLoginFailed
+    eventName: UserLoginFailed
+    eventSource: AzureActiveDirectory
+    status:
+      errorCode: '50126'
+  condition: selection | stats dc(userPrincipalName) as unique_accounts by ipAddress | where unique_accounts > 10
+falsepositives:
+  - Legitimate failed login attempts due to user error or misconfiguration.
+  - Third-party applications or services that may cause benign authentication failures.
+level: high

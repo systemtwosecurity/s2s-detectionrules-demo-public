@@ -1,0 +1,36 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of the CSPY Downloader by monitoring specific C2 URL patterns associated with the Kimsuky APT group. It filters for HTTP GET requests containing these URLs and checks for a User-Agent header to reduce false positives. This targeted approach enhances detection accuracy while minimizing irrelevant alerts.
+title: Detection of CSPY Downloader C2 URL Pattern
+id: bbc933bd-25ef-4a44-b4c3-25d260fa901d
+status: experimental
+description: Detects the use of the CSPY Downloader with a specific C2 URL pattern associated with Kimsuky APT group.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - /home/dwn.php?van=101
+      - /home/dwn.php?van=102
+      - /home/dwn.php?van=10860
+  filter1:
+    client_header_names|contains: User-Agent
+  filter2:
+    method: GET
+  condition: selection and filter1 and filter2
+falsepositives:
+  - Legitimate access to a web application with a similar URI pattern
+level: high

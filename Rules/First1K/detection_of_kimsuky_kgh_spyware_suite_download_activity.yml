@@ -1,0 +1,40 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects potential malware downloads associated with the Kimsuky KGH spyware suite by identifying specific download attempts from the domain wave.posadadesantiago.com with unique parameters like van=10860, van=101, or van=102. It focuses on monitoring suspicious download activity that matches known C2 patterns used by the Kimsuky APT group. The rule is precise and aims to avoid false positives from legitimate traffic by focusing on these specific URI patterns.
+
+title: Detection of Kimsuky KGH Spyware Suite Download Activity
+id: 6efa0f9c-9f5b-422b-b19a-1928c14820cb
+status: experimental
+description: Detects potential malware download attempts from the domain wave.posadadesantiago.com with specific parameters.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains|all:
+      - '10860'
+      - /home/dwn.php?van=
+  selection2:
+    uri|contains|all:
+      - '101'
+      - /home/dwn.php?van=
+  selection3:
+    uri|contains|all:
+      - /home/dwn.php?van=
+      - '102'
+  condition: selection1 or selection2 or selection3
+falsepositives:
+  - Legitimate access to the domain wave.posadadesantiago.com with similar parameters that are not related to the KGH spyware suite.
+level: high

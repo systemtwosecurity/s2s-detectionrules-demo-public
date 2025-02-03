@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule aims to detect DNS queries directed at the malicious domain rebelthumb.net, which is associated with the PondRAT malware utilized by North Korean threat groups. By monitoring DNS traffic via Zeek, it helps identify potential command-and-control communications, allowing for timely incident response. While the rule categorizes such traffic as suspicious, it acknowledges that further investigation is warranted due to the possibility of legitimate use or domain hijacking.
+title: Detection of PondRAT Malicious Domain
+id: 8a394462-8d08-4972-9654-6f2e3c01f014
+status: experimental
+description: Detects DNS queries for a known malicious domain associated with North Korean threat group PondRAT.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: rebelthumb[.]net
+  condition: selection
+falsepositives:
+  - Unknown, traffic to this domain should be considered suspicious and investigated.
+level: high

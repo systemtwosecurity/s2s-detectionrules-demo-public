@@ -1,0 +1,32 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution of test01.exe followed by the download of load2022.exe from the malicious domain smm2021.net, as part of the WhisperGate malware campaign. It monitors command-line activity and network connections on Windows systems, identifying potential malicious behavior tied to malware execution and payload delivery. False positives may occur if legitimate software uses the same names or domain.
+
+title: WhisperGate Malware - Execution and Download Activity
+id: e6d3ae16-c7d8-49ea-93d7-19542b2c9ee8
+status: experimental
+description: Detects the execution of test01.exe which then downloads load2022.exe from smm2021.net
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    CommandLine|contains: test01.exe
+  selection2:
+    DestinationHostname|contains: smm2021.net
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate software that uses the same executable names or network activity that coincidentally connects to a domain with a similar name
+level: high

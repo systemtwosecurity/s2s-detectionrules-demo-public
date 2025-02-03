@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the creation of a named pipe connection to OpenVPN’s service from a remote host, which may indicate potential unauthorized access or exploitation attempts. By monitoring for specific named pipe events related to openvpn.exe, it aids in detecting suspicious activities that could lead to security breaches.
+title: Connection to OpenVPN Named Pipe from Remote Host
+id: 1fad3806-1a2e-4332-853c-9031a9095fe9
+status: experimental
+description: Detects a named pipe event related to OpenVPN with a remote IP address indicating a possible connection to OpenVPN’s named pipe from a remote host.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: pipe_created
+detection:
+  selection:
+    PipeName: \\Device\\NamedPipe\\openvpn\\service
+    Image: '*\\openvpn.exe'
+  condition: selection
+falsepositives:
+  - Legitimate remote administration tools that use named pipes for OpenVPN connections.
+level: high

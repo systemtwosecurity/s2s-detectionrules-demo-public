@@ -1,0 +1,32 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects suspicious named pipe activity associated with OpenVPN where the named pipe is acting as a server, but the initiating process is not the legitimate openvpnserv.exe. This can help identify potential abuse of OpenVPN's named pipes by malicious processes attempting to impersonate or hijack OpenVPN communication.
+title: Detect OpenVPN Named Pipe Server Activity Not Initiated by openvpnserv.exe
+id: f2759d86-9f0d-4714-9614-50ce39349c5d
+status: experimental
+description: Detects named pipe events where the pipe name is related to OpenVPN, the named pipe end is "Server", and the initiating process is not "openvpnserv.exe".
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: pipe_created
+detection:
+  selection:
+    PipeName|endswith: \\openvpn\\service
+    Image|endswith: openvpn.exe
+  filter:
+    Image|endswith: openvpnserv.exe
+  condition: selection and not filter
+falsepositives:
+  - Legitimate use of OpenVPN with custom configurations or scripts that may create named pipes not using openvpnserv.exe
+level: high

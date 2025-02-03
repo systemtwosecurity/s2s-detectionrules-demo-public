@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule provides precise detection for the LEMURLOOT webshell using the SHA-256 hash detailed in the CTI report, with excellent alignment and minimal risk of false positives; for improved coverage, consider additional rules that detect other LEMURLOOT attributes (e.g., specific strings or DLL artifacts) to identify broader variants of this malware family.
+
+title: Detection of LEMURLOOT ASPX Webshell
+id: 57044496-3961-4ed2-bd66-97466e9acea0
+status: experimental
+description: Detects the presence of a specific ASPX webshell associated with the LEMURLOOT malware family by SHA256 hash.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Hashes|contains: 3a977446ed70b02864ef8cfa3135d8b134c93ef868a4cc0aa5d3c2a74545725b
+  condition: selection
+falsepositives:
+  - Unknown. Any detection should be investigated.
+level: high

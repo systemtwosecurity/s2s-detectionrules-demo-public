@@ -1,0 +1,28 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries to a known Brute Ratel C2 domain (dns1.s-logistics.net), which is an indicator of compromise. The rule is highly relevant and accurate, as it directly corresponds to an IOC mentioned in the provided CTI report. Its efficacy lies in its simplicity and specificity, making it effective for detecting this particular threat indicator.
+title: Detection of Brute Ratel C2 DNS Query
+id: 206ba49b-4810-4653-9c60-d4dfa5a983c5
+status: experimental
+description: Detects DNS queries to known Brute Ratel C2 domain dns2.s-logistics.net which is an indicator of compromise.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: dns2.s-logistics.net
+  condition: query
+falsepositives:
+  - Legitimate DNS queries to the domain dns2.s-logistics.net if it is used for benign purposes within the environment.
+level: high

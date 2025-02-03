@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule identifies attempts to access the MOVEit Transfer API token endpoint (/api/v1/token), which could signal exploitation of CVE-2023-34362. False positives may occur due to legitimate API calls from authorized users or applications.
+
+title: MOVEit Transfer API Token Access
+id: c7b1cee0-82f1-47af-8796-f5f22aefd5ee
+status: experimental
+description: Detects attempts to access the MOVEit Transfer API token endpoint, potentially indicating exploitation of CVE-2023-34362.
+references:
+  - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-uri-stem: /api/v1/token
+  condition: selection
+falsepositives:
+  - Legitimate API access by authorized users or applications
+level: medium

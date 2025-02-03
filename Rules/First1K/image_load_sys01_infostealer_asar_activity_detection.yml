@@ -1,0 +1,42 @@
+# review_report_url: https://www.bitdefender.com/en-gb/blog/labs/unmasking-the-sys01-infostealer-threat-bitdefender-labs-tracks-global-malvertising-campaign-targeting-meta-business-pages
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the presence of an ASAR archive containing suspicious files indicative of the SYS01 Infostealer, including a password-protected archive, a specific hash for a legitimate archiving executable (7za.exe), a main.js file with obfuscated code, and optional PowerShell scripts.
+title: Detection of SYS01 Infostealer ASAR Archive Activity
+id: 9b9f318a-e428-4944-95bc-239e2c29ab81
+status: experimental
+description: Detects the presence of an ASAR archive containing suspicious files indicative of the SYS01 Infostealer, including a password-protected archive, a specific hash for a legitimate archiving executable (7za.exe), a main.js file with obfuscated code, and optional PowerShell scripts.
+references:
+  - https://www.bitdefender.com/en-gb/blog/labs/unmasking-the-sys01-infostealer-threat-bitdefender-labs-tracks-global-malvertising-campaign-targeting-meta-business-pages
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection1:
+    ImageLoaded|endswith: .asar
+  selection2:
+    ImageLoaded|endswith: \7za.exe
+    sha256: c136b1467d669a725478a6110ebaaab3cb88a3d389dfa688e06173c066b76fcf
+  selection3:
+    ImageLoaded|endswith: .js
+    CommandLine|contains|all:
+      - powershell.exe
+      - spawnSync
+  selection4:
+    CommandLine|contains|all:
+      - -ExecutionPolicy Bypass
+      - powershell
+  condition: selection1 and selection2 and (selection3 or selection4)
+falsepositives:
+  - Legitimate use of ASAR archives by Electron applications that are not related to the SYS01 Infostealer.
+  - False positives can be reduced by correlating with other suspicious behaviors or IOCs.
+level: high

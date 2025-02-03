@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies privileged role elevations in Azure AD performed without successful Multi-Factor Authentication (MFA), potentially indicating an attempt to bypass authentication controls. While legitimate failures due to MFA issues can occur, any such elevation should be promptly reviewed and validated. Enforcing MFA for privileged actions is critical to minimizing risks of unauthorized access and privilege escalation.
+
+title: Privileged Role Elevation Without MFA
+id: 95e4331d-a4b1-4936-9865-3fc26889d687
+status: experimental
+description: Detects privileged role elevation in Azure AD without Multi-Factor Authentication.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.privilege-escalation
+  - attack.t1556.006
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection:
+    conditionalAccessStatus: failure
+    ResultType: '0'
+  filter:
+    AuthenticationRequirement: mfa
+  condition: selection and filter
+falsepositives:
+  - Legitimate failures due to MFA issues (e.g., token expired)
+level: medium

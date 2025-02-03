@@ -1,0 +1,33 @@
+# review_report_url: https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect HTTP beaconing activity associated with the Quad7 UPDTAE backdoor. It specifically looks for POST requests to the URI /iot/post where the User-Agent header contains the value "IOT". This value is characteristic of the Quad7 UPDTAE backdoor's communication patterns.
+title: Detection of Quad7 UPDTAE Backdoor Beaconing Activity
+id: 71543cdc-3d3d-49d1-b5b5-20d40aad7ace
+status: experimental
+description: Detects HTTP beaconing activity with a User-Agent taking the value of "IOT", which is indicative of the Quad7 UPDTAE backdoor.
+references:
+  - https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: POST
+    uri: /iot/post
+    client_header_names|contains: User-Agent
+  filter:
+    client_header_names|contains: IOT
+  condition: selection and filter
+falsepositives:
+  - Legitimate IoT devices with a User-Agent of "IOT" that perform regular beaconing
+level: high

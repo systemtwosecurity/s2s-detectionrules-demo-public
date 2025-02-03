@@ -1,0 +1,33 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects file download attempts from compromised Tibetan websites associated with malicious JavaScript hosting Cobalt Strike payloads. Ensure contextual validation, as legitimate downloads might occur if the sites are later reclaimed or cleaned.
+title: Detection of Malicious File Downloads from Compromised Tibetan Websites
+id: 60d9627e-862c-4fb3-8f9e-a17b3a852aa0
+status: experimental
+description: Detects file downloads from compromised Tibetan websites known to host malicious JavaScript that triggers Cobalt Strike payload downloads.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains:
+      - tibetpost.net
+      - gyudmedtantricuniversity.org
+  selection2:
+    method: GET
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate downloads from the websites, if they become uncompromised or if the infrastructure is used for legitimate content.
+level: high

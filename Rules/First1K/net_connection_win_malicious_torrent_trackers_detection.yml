@@ -1,0 +1,38 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -"Based on the Sigma rule's detection criteria and the CTI report indicators, there is a clear alignment between observed network connections and known malicious torrent trackers commonly leveraged by threat actors. The matches indicate a high likelihood that these connections were used by threat actors for downloading or updating malicious toolkits, which aligns with known techniques for deploying ransomware, penetration testing frameworks, and AV/EDR evasion tools. These findings validate the Sigma rule's effectiveness in detecting network-based indicators associated with malicious torrent activity and reinforce the importance of monitoring for specific tracker connections as part of a proactive defense strategy."
+title: Detection of Network Connections to Malicious Torrent Trackers
+id: f9fe6f84-7250-483b-8788-1ecfe5a51de5
+status: experimental
+description: Detects network connections to known malicious torrent trackers used by threat actors to download malicious toolkits.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.resource-development
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort:
+      - '6969'
+      - '1337'
+      - '2920'
+    DestinationHostname|contains:
+      - exodus.desync.com
+      - tracker.opentrackr.org
+      - tracker.leechers-paradise.org
+      - 9.rarbg.to
+      - tracker.coppersurfer.tk
+  condition: selection
+falsepositives:
+  - Legitimate use of torrent software for downloading non-malicious content
+level: high

@@ -1,0 +1,43 @@
+# review_report_url:  https://rhinosecuritylabs.com/aws/s3-ransomware-part-1-attack-vector
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects a potential S3 ransomware attack involving a compromised AWS KMS key. The rule tracks CloudTrail events such as PutObject (for encrypting objects in an S3 bucket using KMS), ScheduleKeyDeletion (for deleting a KMS key), and the upload of a "ransom-note.txt" file (a common tactic in ransomware attacks). If all these events occur together, it may indicate a ransomware attack.
+title: S3 Ransomware Attack via Compromised KMS Key
+id: 46e71c68-14c9-457e-b4ee-351f12e927b2
+status: experimental
+description: Detects the use of a compromised AWS KMS key to encrypt objects in an S3 bucket, which is indicative of a ransomware attack.
+references:
+  - https://rhinosecuritylabs.com/aws/s3-ransomware-part-1-attack-vector
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.impact
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection_encrypt:
+    eventName: PutObject
+    eventSource: s3.amazonaws.com
+    requestParameters:
+      attribute:
+        x-amz-server-side-encryption-aws-kms-key-id: '*'
+  selection_delete:
+    eventName: ScheduleKeyDeletion
+    eventSource: kms.amazonaws.com
+  selection_ransom_note:
+    eventName: PutObject
+    eventSource: s3.amazonaws.com
+    requestParameters:
+      key: ransom-note.txt
+  condition: selection_encrypt and selection_delete and selection_ransom_note
+falsepositives:
+  - Legitimate encryption activity using KMS keys
+  - Legitimate scheduled deletion of KMS keys
+  - Legitimate upload of files not related to ransomware activity
+level: high

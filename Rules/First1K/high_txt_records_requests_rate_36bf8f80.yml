@@ -1,0 +1,29 @@
+# review_report_url:https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches the DNS C2 behavior described in the CTI report. The rule’s condition of detecting high rates of DNS TXT requests aligns directly with the DNS C2 traffic patterns used by Cobalt Strike, as documented in the CTI report. This makes the Sigma rule effective for detecting DNS-based Cobalt Strike command and control activity.Thus, the match between the Sigma rule and the CTI report is accurate and confirms that this rule is useful for detecting Cobalt Strike’s DNS-based C2 traffic.
+title: High TXT Records Requests Rate
+id: 36bf8f80-f81e-4033-b384-c7594cbd0bd6
+status: experimental
+description: Detects an extremely high rate of TXT record type DNS requests from a host in a short period of time, indicating potential data exfiltration or C2 activity.
+references:
+  - https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    qtype_name: TXT
+  condition: selection | count() by src_ip > 50
+falsepositives:
+  - Legitimate high DNS TXT requests rate to domain name which should be added to whitelist
+level: medium

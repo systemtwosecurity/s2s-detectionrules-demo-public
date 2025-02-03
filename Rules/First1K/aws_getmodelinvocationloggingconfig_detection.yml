@@ -1,0 +1,32 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule "Detection of GetModelInvocationLoggingConfiguration API Call" identifies potential discovery activity by monitoring for the GetModelInvocationLoggingConfiguration API call in AWS CloudTrail logs. This API may be used to retrieve logging configuration details for model invocations, which could provide attackers with insights into logging practices and enable them to evade detection. While the activity may align with the Discovery phase of the MITRE ATT&CK framework, legitimate administrative or operational use by authorized personnel could trigger false positives. The rule’s low severity reflects the need for further correlation with other suspicious activity to determine malicious intent.
+# review_tags:fixed.manual
+title: Detection of GetModelInvocationLoggingConfiguration API Call
+id: a1c5c07f-216b-4fd0-b124-0f76eb355a29
+status: experimental
+description: Detects the usage of the GetModelInvocationLoggingConfiguration API call in AWS CloudTrail logs, which may indicate an attempt to retrieve logging configuration for model invocations.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.discovery
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: GetModelInvocationLoggingConfiguration
+    eventSource: bedrock.amazonaws.com
+    eventType: AwsApiCall
+  condition: selection
+falsepositives:
+  - Legitimate use of the GetModelInvocationLoggingConfiguration API by authorized personnel or systems
+level: low

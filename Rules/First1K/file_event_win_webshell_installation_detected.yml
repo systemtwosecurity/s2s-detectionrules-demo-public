@@ -1,0 +1,33 @@
+# review_report_url: https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule monitors certain paths and risk file names like programs associated with the tactics used by the APT41 in order to identify the presence of a webshell on the Windows system. It targets file events with an imjp14k.dll and service.exe system files that may suggest the existence of loss of control web servers by malicious persistence techniques.
+title: Webshell Installation Detected
+id: f2eb1091-e840-40a5-bcdd-6f9997144ff2
+status: experimental
+description: Detects the installation of a webshell on a machine with a web server by monitoring for specific file paths.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \imjp14k.dll
+      - \imjp14k.dll.dat
+      - \service.exe
+  condition: selection
+falsepositives:
+  - Legitimate software installation that uses similar file names.
+level: high

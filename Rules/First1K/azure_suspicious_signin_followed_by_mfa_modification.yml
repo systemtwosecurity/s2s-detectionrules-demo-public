@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies a suspicious sign-in attempt (failed) followed by a modification of MFA settings (successful), which may indicate an attempt to bypass authentication mechanisms. While legitimate MFA changes after failed sign-ins can occur, such events should be investigated if unexpected or linked to unusual user activity. Regular monitoring and enforcing strict authentication policies can help mitigate risks of unauthorized MFA modifications.
+
+title: Suspicious Sign-in Followed by MFA Modification
+id: debf3df8-155c-48fb-bddb-623607ef7291
+status: experimental
+description: Detects a suspicious sign-in followed by an MFA modification.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.credential-access
+  - attack.t1556.006
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection:
+    ResultType: fail
+  filter:
+    Status: success
+    AuthenticationRequirement: mfa
+  condition: selection and filter
+falsepositives:
+  - Legitimate failed sign-ins followed by successful MFA changes.
+level: medium

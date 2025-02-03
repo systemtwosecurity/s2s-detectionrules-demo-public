@@ -1,0 +1,33 @@
+# review_report_url:  https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of files named xaa, xab, xac, and xad on Linux systems, which may indicate the chunking of the KEYPLUG.LINUX binary by APT41. The rule monitors file_event logs for these specific file names. False positives may occur if legitimate software or scripts use similar naming conventions for splitting files.
+title: APT41 Chunking KEYPLUG.LINUX Binary Detection
+id: b61095dd-feaf-4ef3-8979-72492797e072
+status: experimental
+description: Detects the creation of separate files named "xaa", "xab", "xac", and "xad" which may indicate chunking of KEYPLUG.LINUX binary by APT41.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - /xaa
+      - /xad
+      - /xab
+      - /xac
+  condition: selection
+falsepositives:
+  - Legitimate software or scripts that use similar naming conventions for splitting files.
+level: high

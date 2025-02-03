@@ -1,0 +1,29 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Detection of GooseEgg Malicious Binary justice.exe
+id: 4dfed420-542d-4dfe-9da0-42343ab408be
+status: experimental
+description: Detects the presence of a known GooseEgg malicious binary justice.exe by its SHA-256 hash.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: 6b311c0a977d21e772ac4e99762234da852bbf84293386fbe78622a96c0b052f
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: high

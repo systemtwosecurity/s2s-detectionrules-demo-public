@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The Sigma rule detects the execution of the Copy-VSS script as described, which targets shadow copies to dump credentials from the SAM file. The detection logic matches PowerShell script block text for the presence of Copy-VSS
+
+title: Detection of Copy-VSS Nishang Script Execution
+id: 80d7b7d9-ecd2-4a88-8061-54ffd678b199
+status: experimental
+description: Detects the execution of the Copy-VSS script, part of the Nishang PowerShell post-exploitation framework.  This script is used to copy the SAM file and dump credentials.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: ps_script
+detection:
+  selection:
+    ScriptBlockText|contains: Copy-VSS
+  condition: selection
+falsepositives:
+  - Legitimate use of Nishang for penetration testing or security auditing.
+level: high

@@ -1,0 +1,78 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule has been carefully reviewed and validated against the CTI report's YARA detection logic. The Sigma rule focuses on identifying Golang malware samples by detecting function names used by the WellMess malware, with complete alignment between the Sigma rule and the CTI report.
+title: Detection of WellMess Golang Samples Based on Function Names
+id: 51a11815-d084-482a-908a-0ec81ee6c1b5
+status: experimental
+description: Detects the presence of WellMess Golang malware samples by identifying specific function names used by the actor in file contents.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - botlib.DownloadDNS
+      - botlib.Base64ToNormal
+      - botlib.CreateDNSName
+      - botlib.Send.func1
+      - botlib.Service
+      - botlib.wellMess
+      - botlib.Command
+      - botlib.Send
+      - botlib.Decipher
+      - botlib.RandInt
+      - botlib.(*rc6cipher).Decrypt
+      - botlib.Unpack
+      - botlib.GetRandomBytes
+      - botlib.Join
+      - botlib.New
+      - botlib.reply
+      - botlib.SendMessage
+      - botlib.JoinDnsChunks
+      - botlib.(*rc6cipher).BlockSize
+      - botlib.Work
+      - botlib.AES_Decrypt
+      - botlib.AES_Encrypt
+      - botlib.Cipher
+      - botlib.chunksM
+      - botlib.GenerateSymmKey
+      - botlib.FromNormalToBase64
+      - botlib.CalculateMD5Hash
+      - botlib.deleteFile
+      - botlib.RandStringBytes
+      - botlib.encrypt
+      - botlib.UDFile
+      - botlib.Pad
+      - botlib.(*KeySizeError).Error
+      - botlib.ReceiveMessage
+      - botlib.Post
+      - botlib.generateRandomString
+      - botlib.Download
+      - botlib.Key
+      - botlib.Split
+      - botlib.init
+      - botlib.(*rc6cipher).Encrypt
+      - botlib.saveFile
+      - botlib.convertFromString
+      - botlib.KeySizeError.Error
+      - botlib.EncryptText
+      - botlib.UnpackB
+      - botlib.Parse
+      - botlib.Pack
+      - botlib.SendDNS
+  condition: selection
+falsepositives:
+  - Legitimate applications using similar function names
+level: high

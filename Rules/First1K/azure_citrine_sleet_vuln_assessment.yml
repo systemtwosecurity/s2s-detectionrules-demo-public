@@ -1,0 +1,35 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects devices with specific CVE vulnerabilities exploited by Citrine Sleet by monitoring changes in the DeviceTvmSoftwareVulnerabilities table. It focuses on identifying systems exposed to CVEs CVE-2024-38193, CVE-2024-7971, CVE-2024-21338, and CVE-2024-38106, which are potentially targeted by attackers.
+title: Assess Presence of Vulnerabilities Used by Citrine Sleet
+id: 5f58158a-9000-479c-baa5-5535168193b2
+status: experimental
+description: Detects the presence of specific vulnerabilities on devices by looking for certain CVE IDs in the DeviceTvmSoftwareVulnerabilities table.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.reconnaissance
+  - attack.t1588.006
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    CategoryValue|contains: DeviceTvmSoftwareVulnerabilities
+    ModifiedProperties{}.NewValue|contains:
+      - CVE-2024-38193
+      - CVE-2024-7971
+      - CVE-2024-21338
+      - CVE-2024-38106
+  condition: selection
+falsepositives:
+  - Vulnerabilities may be present on devices that are not being actively exploited or targeted by Citrine Sleet.
+level: high

@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies the execution of files associated with the BlackCat ransomware family, such as Ransom:Win32/Blackcat.exe or Ransom:Win64/Blackcat.exe. This indicates likely ransomware activity and requires immediate attention. False positives may occur from legitimate security testing or analysis of ransomware samples, but all detections should be treated as critical. Prompt investigation and containment are essential to mitigate potential damage.
+
+title: Ransomware Blackcat Execution Detected
+id: 0ab81e80-371e-4b87-bb1e-50ca6492877d
+status: experimental
+description: Detects execution of files associated with the Blackcat ransomware family.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    Image|endswith:
+      - \Ransom:Win32/Blackcat.exe
+      - \Ransom:Win64/Blackcat.exe
+  condition: selection
+falsepositives:
+  - Legitimate security software detections or analysis of Blackcat samples.
+level: high

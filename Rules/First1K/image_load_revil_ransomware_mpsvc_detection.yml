@@ -1,0 +1,38 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the loading of Mpsvc.dll files with certain SHA-256 hashes associated with the REvil ransomware variant. Note that false positives are bound to occur as legitimate software coincidentally share a matching hash.
+title: Detection of REvil Ransomware Variant Mpsvc.dll
+id: 43d36b72-e889-4aa5-975e-6647c326a69e
+status: experimental
+description: Detects the presence of specific SHA-256 hashes related to the REvil ransomware variant Mpsvc.dll on a system.
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith:
+      - \Mpsvc.dll
+      - \MpsVc
+      - \MpsVc_.dll
+    Hashes|contains|all:
+      - SHA256:0496ca57e387b10dfdac809de8a4e039f68e8d66535d5d19ec76d39f7d0a4402
+      - SHA256:d5ce6f36a06b0dc8ce8e7e2c9a53e66094c2adfc93cfac61dd09efe9ac45a75f
+      - SHA256:cc0cdc6a3d843e22c98170713abf1d6ae06e8b5e34ed06ac3159adafe85e3bd6
+      - SHA256:8dd620d9aeb35960bb766458c8890ede987c33d239cf730f93fe49d90ae759dd
+      - SHA256:d8353cfc5e696d3ae402c7c70565c1e7f31e49bcf74a6e12e5ab044f306b4b20
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally has a matching hash
+level: critical

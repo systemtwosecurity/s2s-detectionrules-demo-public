@@ -1,0 +1,35 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is correct based on the rule name and description,specifically in terms of process injection techniques used by Cobalt Strike Beacon. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs like "add file hash detection" and "C2 network detection" as additional layers. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detection of Cobalt Strike Process Injection Techniques
+id: e06ae876-9631-4be1-82eb-4d8bdf7dcd9f
+status: experimental
+description: Detects the use of specific process injection techniques often used by Cobalt Strike Beacon for executing code in the context of another process. These techniques include ntdll:RtlUserThreadStart, CreateThread, NtQueueApcThread-s, CreateRemoteThread, and RtlCreateUserThread.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.defense-evasion
+  - attack.t1055
+logsource:
+  product: windows
+  category: create_remote_thread
+detection:
+  selection:
+    StartFunction|contains|all:
+      - ntdll:RtlUserThreadStart
+      - CreateRemoteThread
+      - RtlCreateUserThread
+      - NtQueueApcThread-s
+      - CreateThread
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar process injection techniques for non-malicious purposes
+level: high

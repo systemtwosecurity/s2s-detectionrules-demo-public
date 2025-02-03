@@ -1,0 +1,60 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -  The Sigma rule is valid based strictly on the CTI data provided.
+title: Detection of TEARDROP Custom Loader DLLs with Specific PE Export Function Names
+id: 981ec78f-41f4-4dfe-ba73-f1b3117f77dd
+status: experimental
+description: Detects the loading of custom loader DLLs with specific PE export function names that have a "Tk" prefix, which are indicators of the TEARDROP malware variant associated with the Solorigate incident.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: .dll
+    OriginalFileName|contains:
+      - TkDebugBorder
+      - __RtlProjectObj
+      - Tk_PostscriptImage
+      - XClearWindow
+      - __TkGlobal
+      - Tk_GetRootCoords
+      - NetSetupServiceMain
+      - CreateProcessTVI
+      - _XInitImageFuncPtrs
+      - GetLimitStroke
+      - CreateLocalThread
+      - TkpSetMainMenubar
+      - Tk_QueryAllocMem
+      - TkSelPropProc
+      - SetTkPrv
+      - TkComputeAnchor
+      - TkGetDefaultScreenName
+      - __GetClasterInf
+      - Tk_IntersectTextLayout
+      - TkFindStateString
+      - Tk_GetElementBox
+      - TkWinClipboardRender
+      - Tk_SizeOfImage
+      - TkWinCancelMouseTimer
+      - TkpSetKeycodeAndState
+      - RestVirtAlloc
+      - FreeSetupRevoke
+      - XCreateBitmapFromData
+      - Tk_NameOf3DBorder
+      - TkGrabState
+  condition: selection
+falsepositives:
+  - Legitimate applications that use export function names with a "Tk" prefix
+level: high

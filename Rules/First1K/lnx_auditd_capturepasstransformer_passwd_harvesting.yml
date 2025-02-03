@@ -1,0 +1,31 @@
+# review_report_url: https://blog.lumen.com/taking-the-crossroads-the-versa-director-zero-day-exploitation/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is fully aligned with the behavior described in the CTI report. The detection logic captures the exact command used by the malware to harvest and store credentials. 
+title: CapturePassTransformer Malicious Activity - Password Harvesting
+id: 634ab448-8751-49d2-8852-bbb2d5ba8eb7
+status: experimental
+description: Detects the execution of a specific bash command used by CapturePassTransformer malware to check for the presence of encoded credentials in a temporary file and write them if they are not present.
+references:
+  - https://blog.lumen.com/taking-the-crossroads-the-versa-director-zero-day-exploitation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.credential-access
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0|contains|all:
+      - /bin/bash -c grep -q
+      - /tmp/.temp.data || echo
+  condition: selection
+falsepositives:
+  - Legitimate use of similar bash commands for file manipulation by system administrators or scripts.
+level: high

@@ -1,0 +1,34 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries for known Stealc C2 server domains which are indicators of compromise, using Zeek DNS logs. It is classified as high severity, with potential false positives from legitimate DNS queries to domains with similar names but unrelated to malicious activity.
+title: Detection of Stealc C2 Servers Domain Names
+id: f0e27af6-5771-4775-a2d8-03da995b9cfd
+status: experimental
+description: Detects DNS queries for known Stealc C2 servers domain names, which are indicators of compromise.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+  - attack.t1583.002
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - moneylandry.com
+    - fff-ttt.com
+    - aa-cj.com
+    - 666palm.com
+    - 777palm.com
+  condition: query
+falsepositives:
+  - Legitimate DNS queries to domains that have a name similar to the IoCs listed but are not related to the malicious activity.
+level: high

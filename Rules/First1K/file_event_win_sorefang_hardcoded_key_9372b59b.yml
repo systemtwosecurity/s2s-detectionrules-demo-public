@@ -1,0 +1,29 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule has been analyzed and validated against the CTI report. The rule aims to detect the presence of a hardcoded encryption key used by SoreFang malware as part of its encryption routines, a known tactic for defense evasion.
+title: Detection of SoreFang Malware Hardcoded Encryption Key
+id: 9372b59b-5768-4ac0-8715-7ffc3c45063b
+status: experimental
+description: Detects the presence of a hardcoded encryption key associated with the SoreFang malware.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: 2b6233eb3e872ff78988f4a8f3f6a3ba
+  condition: selection
+falsepositives:
+  - Legitimate applications that happen to use the same encryption key pattern by coincidence.
+level: high

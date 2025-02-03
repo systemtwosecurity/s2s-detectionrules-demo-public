@@ -1,0 +1,36 @@
+# review_report_url: https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+# review_date: 2024-10-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detection of PRC State-Sponsored Cyber Actor File Hashes
+id: 70c19c86-d5ad-4b70-b669-4e7e9dbc7910
+status: experimental
+description: Detects file creation, process creation, or network events involving hashes associated with a PRC state-sponsored cyber actor.
+references:
+  - https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.reconnaissance
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256:
+    - 3a9d8bb85fbcfe92bae79d5ab18e4bca9eaf36cea70086e8d1ab85336c83945f
+    - ee8df354503a56c62719656fae71b3502acf9f87951c55ffd955feec90a11484
+    - 3c2fe308c0a563e06263bbacf793bbe9b2259d795fcc36b953793a7e499e7f71
+    - fe95a382b4f879830e2666473d662a24b34fccf34b6b3505ee1b62b32adafa15
+    - 472ccfb865c81704562ea95870f60c08ef00bcd2ca1d7f09352398c05be5d05d
+    - 41e5181b9553bbe33d91ee204fe1d2ca321ac123f9147bb475c0ed32f9488597
+    - c7fee7a3ffaf0732f42d89c4399cbff219459ae04a81fc6eff7050d53bd69b99
+    - 66a19f7d2547a8a85cee7a62d0b6114fd31afdee090bd43f36b89470238393d7
+  condition: sha256
+falsepositives:
+  - Benign collisions with the specified hashes, although highly unlikely, should be considered.
+level: high

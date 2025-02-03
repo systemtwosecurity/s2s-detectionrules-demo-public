@@ -1,0 +1,104 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule  detects file creation events related to the IDs of 75 browser authenticator extensions which may indicate targeting by the Stealc infostealer.
+title: Detection of Stealc Infostealer Targeting Browser Authenticator Extensions
+id: 85971bd5-79f7-4f5f-be86-5250a01f47e8
+status: experimental
+description: Detects file creation events related to the IDs of browser authenticator extensions which may indicate targeting by the Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - \fnjhmkhhmkbjkkabndcnnogagogbneec
+      - \dmkamcknogkgcdfhhbddcghachkejeap
+      - \ejjladinnckdgjemekebdpeokbikhfci
+      - \fhmfendgdocmcbmfikdcogofphimnkno
+      - \kncchdigobghenbbaddojjnnaogfppfj
+      - \cnmamaachppnkjgnildpdmkaakejnhae
+      - \jnkelfanjkeadonecabehalmbgpfodjm
+      - \phkbamefinggmakgklpkljjmgibohnba
+      - \cjmkndjhnagcfbpiemnkdpomccnjblmj
+      - \nngceckbapebfimnlniiiahkandclblb
+      - \pdadjkfkgcafgbceimcpbkalnfnepbnk
+      - \ibnejdfjmmkpcnlpebklmnkoeoihofec
+      - \kmhcihpebfmpgmihbkipmjlmmioameka
+      - \jhgnbkkipaallpehbohjmkbjofjdmeid
+      - \jojhfeoedkpkglbfimdfabpdfjaoolaf
+      - \nanjmdknhkinifnkgdcggcfnhdaammmj
+      - \gojhcdgcpbpfigcaejpfhfegekdgiblk
+      - \fhbohimaelbohpjbbldcngcnapndodjp
+      - \hpglfhgfnhbgpjdenjgmdgoeiappafln
+      - \lodccjjbdhfakaekdiahmedfbieldgik
+      - \odbfpeeihdkbihmopkbjmoonfanlbfcl
+      - \acmacodkjbdgmoleebolmdjonilkdbch
+      - \jnlgamecbpmbajjfhmmmlhejkemejdma
+      - \jhfjfclepacoldmjmkmdlmganfaalklb
+      - \imloifkgjagghnncjkhggdhalmcnfklk
+      - \nlgbhdfgdhgbiamfdfmbikcdghidoadd
+      - \chgfefjpcobfbnpmiokfjjaglahmnded
+      - \igkpcodhieompeloncfnbekccinhapdb
+      - \nlbmnnijcnlegkjjpcfjclmcfggfefdm
+      - \bfogiafebfohielmmehodmfbbebbbpei
+      - \cgeeodpfagjceefieflmdfphplkenlfk
+      - \hcflpincpppdclinealmandijcmnkbgn
+      - \ffnbelfdoeiohenkjibnmadjiehjhajb
+      - \cjelfplplebdjjenllpjcblmjkfcffne
+      - \kpfopkelmapcoipemfendmdcghnegimn
+      - \kjmoohlgokccodicjjfebfomlbljgfhk
+      - \aeachknmefphepccionboohckonoeemg
+      - \bfnaelmomeimhlpmgjnjophhpkkoljpa
+      - \aodkkagnadcbobfpggfnjeongemjbjca
+      - \gaedmjdfmmahhbjefcbgaolhhanlaolb
+      - \ookjlbkiijinhpmnjffcofjonbfbgaoc
+      - \hdokiejnpimakedhajhdlcegeplioahd
+      - \dkdedlpgdmmkkfjabffeganieamfklkm
+      - \nkbihfbeogaeaoehlefnkodbefgpgknn
+      - \fhilaheimglignddkjgofkcbgekhenbh
+      - \hmeobnfnfcmdkdcmlblgagmfpfboieaf
+      - \dngmlblcodfobpdpecaadgfbcggfjfnm
+      - \djclckkglechooblngghdinmeemkbgci
+      - \efbglgofoippbgcjepnhiblaibcnclgk
+      - \ilgcnhelpchnceeipipijaljkblbcobl
+      - \oboonakemofpalcgghocfoadofidjkkk
+      - \naepdomgkenhinolocfifgehidddafch
+      - \jnmbobjmhlngoefaiojfljckilhhlhcj
+      - \hnfanknocfeofbddgcijnmhnfnkdnaad
+      - \mcohilncbfahbmgdjkbpemcciiolgcge
+      - \fdjamakpfbbddfjaooikfcpapjohcfmg
+      - \flpiciilemghbmfalicajoolhkkenfel
+      - \pnlccmojcmeohlpggmfnbbiapkmbliob
+      - \cphhlgmgameodnhkjdmkpanlelnlohao
+      - \bhghoamapcdpbohphigoooaddinpkbai
+      - \mgffkfbidihjpoaomajlbgchddlicgpn
+      - \fooolghllnmhmmndgjiamiiodkpenpbb
+      - \aiifbnbfobpmeekipheeijimdpnlpgpp
+      - \mnfifefkajgofkcjkemidiaecocnkjeh
+      - \lpfcbjknijpeeillifnkikgncikgfhdo
+      - \lpilbniiabackdjcionkobglmddfbcjo
+      - \kkpllkodjeloidieedojogacfhpaihoh
+      - \oeljdldpnmdbchonielidgobddffflal
+      - \nhnkbkgjikgcigadomkphalanndcapjk
+      - \epapihdplajcdnnkdeiahlgigofloibg
+      - \aijcbedoijmgnlmjeegjaglmepbmpkpi
+      - \ejbalbakoplchlghecdalmeeeajnimhm
+      - \gjagmgiddbbciopjhllkdnddhcglnemk
+      - \bhhhlbepdkbapadjdnnojkbgioiodbic
+      - \bmikpgodpkclnkgmnpphehdgcimmided
+  condition: selection
+falsepositives:
+  - Legitimate browser extension updates or installations by the user.
+level: high

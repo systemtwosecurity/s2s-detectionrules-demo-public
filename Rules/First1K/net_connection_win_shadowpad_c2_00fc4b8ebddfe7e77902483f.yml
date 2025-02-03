@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections to known ShadowPad command and control (C2) server IP addresses, helping identify potential malicious activity linked to ShadowPad. It's important to note that legitimate IP reassignment could lead to false positives.
+title: ShadowPad C2 Network Connection Detected
+id: b8da5ac8-00fc-4b8e-bddf-e7e77902483f
+status: experimental
+description: Detects network connections to known ShadowPad command and control (C2) server IP addresses.
+references:
+  - https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 216.83.40.84
+      - 185.132.125.72
+  condition: selection
+falsepositives:
+  - Legitimate connections to IP addresses that have been reassigned after the threat report
+level: high

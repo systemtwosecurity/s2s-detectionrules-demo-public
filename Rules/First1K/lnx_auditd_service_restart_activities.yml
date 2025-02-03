@@ -1,0 +1,31 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects service restart or re-enabling activities using systemctl commands like daemon-reload or reenable syslogd. These actions may indicate an attempt to establish persistence, especially when associated with malicious services like those used by the Linux.Gomir malware. While these commands are also used in legitimate administrative tasks, their occurrence should be closely monitored in case of abuse by adversaries.
+title: Detection of Service Restart Activities
+id: c602c723-4384-449d-b551-7818b3a969a3
+status: experimental
+description: Detects the restarting or re-enabling of services using systemctl or service tools on Linux systems, which may indicate an adversary leveraging this technique for persistence.
+references:
+  - https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+  - attack.t1543
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords:
+    - systemctl daemon-reload
+    - systemctl reenable syslogd
+  condition: keywords
+falsepositives:
+  - Legitimate administrative activities that involve restarting or re-enabling services.
+level: medium

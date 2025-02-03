@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors the addition of custom domains to Microsoft Entra ID, a potential indicator of threat actor activity such as domain impersonation or preparation for malicious campaigns. While legitimate domain additions by administrators can trigger false positives, correlating this event with unusual behavior or unapproved domains enhances detection accuracy. Proper governance and context analysis are key to mitigating risks associated with unauthorized domain additions
+
+title: Suspicious Domain Added to Microsoft Entra ID
+id: 721b8a1d-d670-46ad-82ae-1600bd3077da
+status: experimental
+description: Detects the addition of a suspicious domain to Microsoft Entra ID
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.resource-development
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Add domain
+    ActivityDisplayName: Add custom domain
+  condition: selection
+falsepositives:
+  - Legitimate domain additions by administrators
+level: medium

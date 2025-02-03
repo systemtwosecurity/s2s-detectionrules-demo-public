@@ -1,0 +1,33 @@
+# review_report_url: https:https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is fully aligned with the CTI report by detecting ASP-based web shells deployed by HAFNIUM. The code pattern and file type monitoring ensure effective detection of this specific threat. To further enhance detection, it is recommended to create complementary rules for monitoring post-exploitation activities, including memory dumps, mailbox extractions, and reverse shells. The current rule is ready for deployment with these improvements.
+title: HAFNIUM - Web Shell Deployment via ASP Code
+id: ad54454a-78af-40c0-be83-e9d776002715
+status: experimental
+description: Detects the deployment of web shells using ASP code as performed by HAFNIUM operators.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.t1505.003
+  - attack.persistence
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-uri-stem|endswith: .asp
+    cs-uri-query|contains|all:
+      - <%System.IO.File.WriteAllText(Request.Item["
+      - Request.Item["c"]);%>
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves the use of ASP code to write files.
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma Rule matches perfectly with the CTI report
+title: Detect HTTP POST to Specific URI Indicative of Cobalt Strike
+id: 4528cfe7-25f0-4644-ba9c-6ad69a0f5fb6
+status: experimental
+description: Detects HTTP POST requests to a specific URI used by Cobalt Strike beacons as identified in CTI reports.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: POST
+    uri|endswith: /en-CA/livetile/preinstall
+  condition: selection
+falsepositives:
+  - Legitimate traffic to the specified URI if used by normal applications or services
+level: high

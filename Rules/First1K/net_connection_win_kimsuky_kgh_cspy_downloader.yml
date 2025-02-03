@@ -1,0 +1,31 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections from the malicious executable winload.exe to a known Kimsuky C2 domain wave.posadadesantiago.com. The winload.exe file is linked to Kimsuky's CSPY Downloader, used for downloading and executing additional malware payloads. While some legitimate software may use the same filename or domain, such cases should be investigated as potential false positives.
+
+title: Detection of Kimsuky KGH CSPY Downloader
+id: ff685423-62c4-45bb-a779-693a4cce0cd8
+status: experimental
+description: Detects the communication of the malicious executable winload.exe with a known Kimsuky C2 domain.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    Image|endswith: \winload.exe
+    DestinationHostname: wave.posadadesantiago.com
+  condition: selection
+falsepositives:
+  - Legitimate software with the same name communicating with the domain for non-malicious purposes.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately captures malicious shell script files linked to Volt Typhoon by their SHA256 hashes (Kv-all.sh and another unnamed shell file) as reported in the CTI. It is well-aligned and ready for testing, with a low probability of false positives.
+title: Detection of Malicious Shell Script Files by SHA256 Hash
+id: 247d5429-7f8c-44c1-b503-ce750f5850be
+status: experimental
+description: Detects the creation or presence of shell script files identified by their SHA256 hashes as reported in CTI findings.
+references:
+  - https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1059.004
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: file_delete
+detection:
+  selection:
+    sha256|contains:
+      - 7043ffd9ce3fe48c9fb948ae958a2e9966d29afe380d6b61d5efb826b70334f5
+      - 36c63d0c2a78497ccf555e84f0233a514943faeff38281d99d00baf5df23f184
+  condition: selection
+falsepositives:
+  - Legitimate shell scripts that happen to have the same hash values (highly unlikely)
+level: high

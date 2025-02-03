@@ -1,0 +1,35 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url:  https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects attempts to download the Conti ransomware playbook via known torrent trackers and port 6969, typically associated with Conti ransomware. False positives may occur from legitimate use of these torrent trackers.
+
+title: Conti Ransomware Playbook Download Attempt via Torrent
+id: ee84e670-1a8a-48cc-8d07-80d673078b9f
+status: experimental
+description: Detects attempts to download the Conti ransomware playbook via torrent trackers known to be used by the group.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.resource-development
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationPort: 6969
+    Protocol: udp
+    DestinationHostname|contains:
+      - tracker.opentrackr.org
+      - tracker.coppersurfer.tk
+      - tracker.leechers-paradise.org
+      - exodus.desync.com
+      - 9.rarbg.to
+  condition: selection
+falsepositives:
+  - Legitimate use of the listed torrent trackers
+level: high

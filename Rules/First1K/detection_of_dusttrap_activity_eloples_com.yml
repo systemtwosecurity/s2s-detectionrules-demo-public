@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description as it  identifying DUSTTRAP activity via the domain www.eloples.com, which is associated with APT41. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. You can check alternative sigma from rule ID: f92d90fa-f12c-4245-876e-08694296219b
+title: Detection of DUSTTRAP Activity Related to www.eloples.com
+id: cdf069ea-3dc8-4d4c-bc10-ca7201be879e
+status: experimental
+description: Detects network traffic to a known DUSTTRAP command and control domain www.eloples.com.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names|contains: Host
+    uri|contains: www.eloples.com
+  condition: selection
+falsepositives:
+  - Legitimate access to a domain with a similar name
+level: high

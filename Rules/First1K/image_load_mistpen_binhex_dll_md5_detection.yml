@@ -1,0 +1,32 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the MISTPEN malware by identifying the presence of a specific binhex.dll file through its MD5 hashes. The rule aligns well with the CTI report, which lists these exact MD5 hashes for the binhex.dll file associated with MISTPEN.The detection key uses appropriate logical operators, combining the ImageLoaded field with an endswith modifier and the Hashes field with a contains modifier. This structure allows for flexible matching of the DLL file path while precisely targeting the specific MD5 hashes. The IOCs used in this rule are exact matches to those in the CTI report, reducing the risk of false positives
+title: Detection of MISTPEN Malware via binhex.dll MD5 Hashes
+id: ac52a0a8-63d4-4d24-8e5e-1bafddcc2761
+status: experimental
+description: Detects the presence of the binhex.dll file associated with the MISTPEN malware family by checking for specific MD5 hashes.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: binhex.dll
+    Hashes|contains:
+      - eca8eb8871c7d8f0c6b9c3ce581416ed
+      - cd6dbf51da042c34c6e7ff7b1641837d
+  condition: selection
+falsepositives:
+  - Unknown. Any detection should be investigated.
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: URL
+# review_date: 2024-09-20
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is relevant and useful based on the described attack method.
+title: O365 Multi-Source Failed Authentications Spike
+id: 026c72c3-b7e6-4aa9-a6c7-fc0ca02f41c5
+status: experimental
+description: Detects spikes in failed authentications from multiple sources in Office 365 indicating potential password spray attacks.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.initial-access
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload: UserLoginFailed
+    eventName: Sign-in activity
+    eventSource: Azure Active Directory
+    status: '50126'
+  condition: selection | stats dc(src_ip.user) as uniqueIpUserCombinations, dc(user) as uniqueUsers, dc(src_ip) as uniqueIPs by _time | uniqueIpUserCombinations > 20 and uniqueUsers > 20 and uniqueIPs > 20
+falsepositives:
+  - Legitimate failed login attempts due to system or network issues.
+  - Failed login attempts from security testing or authorized penetration testing.
+level: high

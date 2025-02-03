@@ -1,0 +1,29 @@
+# review_report_url: https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation or modification of files in the System32 MUI directory, which could indicate suspicious activity related to persistence techniques used by the FIN7 group. The MUI directory is critical to system localization, and malicious modifications here could enable stealthy malware operations. However, legitimate software installations or updates may also modify files in this directory, leading to possible false positives.
+title: Suspicious File Creation or Modification in System32 MUI Directory
+id: ae8a9491-c87d-4a4d-ae99-8c0f5f8f5706
+status: experimental
+description: Detects the creation or modification of files in the System32 MUI directory, which could indicate malicious activity associated with the FIN7 group.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief
+author: System Two Security
+date: 2024/10/14
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: '%WinDir%\\System32\\MUI\\'
+  condition: selection
+falsepositives:
+  - Legitimate software installation or updates that modify files in the System32 MUI directory.
+level: high

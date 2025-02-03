@@ -1,0 +1,29 @@
+# review_report_url: https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of the ldb_e.log file, which is used by the Pillowmint malware to store stolen credit card data. Monitoring for this file is important as it could indicate malicious data collection activity. However, legitimate software might also generate a log file with the same name, leading to potential false positives.
+title: Detection of Pillowmint Malware File Write Activity
+id: 411568a4-1f39-4a21-a21c-6f7a7768c7d6
+status: experimental
+description: Detects the creation of a specific log file used by the Pillowmint malware to store stolen credit card data.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief
+author: System Two Security
+date: 2024/10/14
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \ldb_e.log
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same file name for logging purposes
+level: high

@@ -1,0 +1,34 @@
+# review_report_url: https://labs.watchtowr.com/auth-bypass-in-un-limited-scenarios-progress-moveit-transfer-cve-2024-5806/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-tailored to detect CVE-2024-5806 exploitation attempts by monitoring for the specific HTTP POST pattern used to inject SSH keys into MOVEit’s system logs. This rule aligns with the CTI report’s documentation, confirming that such requests to /guestaccess.aspx with transaction=signoff and SSH key data in Arg12 parameter can indicate malicious activity.
+
+title: MOVEit Transfer CVE-2024-5806 SSH Key Injection via HTTP POST
+id: 6ef1979b-521c-4dd6-b801-8ea4b4923648
+status: experimental
+description: Detects the injection of an SSH public key into system log files via an HTTP POST request to the `/guestaccess.aspx` endpoint with the `transaction` and `Arg12` parameters, which is indicative of the exploitation of CVE-2024-5806.
+references:
+  - https://labs.watchtowr.com/auth-bypass-in-un-limited-scenarios-progress-moveit-transfer-cve-2024-5806
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    c-uri|contains: /guestaccess.aspx
+    c-request-body|contains|all:
+      - Arg12=
+      - transaction=signoff
+      - '---- BEGIN SSH2 PUBLIC KEY ----'
+  condition: selection
+falsepositives:
+  - Legitimate use of the guestaccess.aspx endpoint with unusual parameters that accidentally contain SSH key patterns.
+level: high

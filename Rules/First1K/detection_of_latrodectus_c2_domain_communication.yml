@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies DNS queries to the LATRODECTUS command and control domain "aytobusesre.com," which may suggest possible C2 communication. False positives are likely to occur if the domain is repurposed or accessed for legitimate reasons so that the detections must be closely scrutinized.
+title: Detection of LATRODECTUS C2 Domain Communication
+id: 028e4b28-6224-4a9c-ab63-7f6e09b5b1ca
+status: experimental
+description: Detects network connections to known LATRODECTUS command and control (C2) domain.
+references:
+  - https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: aytobusesre.com
+  condition: query
+falsepositives:
+  - Legitimate access to the domain, if the domain is hijacked or reused for legitimate purposes after the report.
+level: high

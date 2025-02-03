@@ -1,0 +1,28 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies DNS queries for dersmarketim.com, a domain flagged as a C2 indicator in the Diamond Sleet campaign linked to North Korean threat actors. It uses Zeek DNS logs to detect potential malicious communication. Analysts should verify connections to this domain with updated intel to rule out any benign usage.
+title: Detection of C2 Domain dersmarketim.com
+id: 1da905fe-7b51-4870-902b-03eb75cbfc27
+status: experimental
+description: Detects network connections to the known command and control (C2) domain dersmarketim.com, which has been identified as part of the Diamond Sleet campaign.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: dersmarketim.com
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked and used for benign purposes after the report.
+level: high

@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects SSH servers running on non-standard ports (e.g., 58749 and 2222), which could indicate malicious activity or compromised devices, such as Ubiquiti routers being targeted by threat actors.
+
+title: SSH Server Running on Unusual Ports
+id: c74f2dde-8e65-47c6-965c-48c4b61b7246
+status: experimental
+description: Detects SSH servers running on non-standard ports, potentially indicating compromised Ubiquiti devices or other malicious activity.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    DestinationPort:
+      - 58749
+      - 2222
+    Protocol: tcp
+  condition: selection
+falsepositives:
+  - Legitimate SSH servers running on non-standard ports for specific purposes.
+level: medium

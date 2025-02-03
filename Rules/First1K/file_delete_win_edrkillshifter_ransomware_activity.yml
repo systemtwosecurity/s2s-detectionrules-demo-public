@@ -1,0 +1,31 @@
+# review_report_url: https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects potential EDRKillShifter ransomware activity by monitoring for the creation and subsequent deletion of a "Config.ini" file in the same location where the binary is executed. This behavior matches the ransomware’s tactic of creating and loading an encrypted configuration file, then deleting it as part of its evasion techniques. The rule alerts on any similar pattern, which may indicate malicious actions associated with this ransomware loader.
+title: Detection of EDRKillShifter Ransomware Activity
+id: abb0c94d-4368-4d10-abce-66c4b0b023fb
+status: experimental
+description: Detects the creation and subsequent deletion of a "Config.ini" file in the same filesystem location where the binary was executed, which may indicate EDRKillShifter ransomware activity.
+references:
+  - https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+author: System Two Security
+date: 2024/10/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection_create:
+    TargetFilename|endswith: Config.ini
+  selection_delete:
+    TargetFilename|endswith: Config.ini
+  condition: selection_create and selection_delete
+falsepositives:
+  - Legitimate applications that create and delete a Config.ini file within a short time frame.
+level: high

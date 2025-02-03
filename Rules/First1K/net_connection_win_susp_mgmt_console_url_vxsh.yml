@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects connections to the suspicious URL temp.vxsh.net, which is associated with AV/EDR bypass tools. False positives may occur if there are legitimate connections to the URL.
+
+title: Suspicious Management Console URL - Threat Hunting
+id: bc868329-4f07-4f07-8dda-c7361db18a66
+status: experimental
+description: Detects connections to a suspicious management console URL associated with AV/EDR bypass tools.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname: temp.vxsh.net
+  condition: selection
+falsepositives:
+  - Legitimate connections to the URL (if any)
+level: medium

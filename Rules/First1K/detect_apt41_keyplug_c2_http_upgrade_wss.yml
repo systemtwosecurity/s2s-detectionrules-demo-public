@@ -1,0 +1,35 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments 
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects APT41 KEYPLUG malware by identifying specific HTTP headers used for WebSocket Secure (WSS) C2 communication via Cloudflare. It targets GET requests with headers indicating an upgrade to WebSocket and hostnames ending in `.workstation.eu.org:443`.
+title: Detect APT41 KEYPLUG C2 via HTTP Upgrade to WSS Protocol
+id: bf4c2df1-9c30-460b-b897-792e2814f3ad
+status: experimental
+description: Detects the specific HTTP request headers used by APT41 KEYPLUG malware to initiate and upgrade to the WebSocket Secure (WSS) protocol through Cloudflare infrastructure for C2 communication.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection1:
+    c_http_request_line|startswith: GET / HTTP/1.1
+  selection2:
+    c_http_connection|contains: Upgrade
+  selection3:
+    c_http_upgrade|contains: websocket
+  selection4:
+    c_http_host|endswith: .workstation.eu.org:443
+  condition: all of selection*
+falsepositives:
+  - Legitimate use of WebSockets over TLS that coincidentally match the pattern
+level: high

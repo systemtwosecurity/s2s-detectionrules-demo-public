@@ -1,0 +1,33 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects vulnerability assessments that involve specific CVE IDs linked to Onyx Sleet activities, leveraging data from Azure audit logs to identify any updates or scans targeting these vulnerabilities. While it aims to capture suspicious or malicious assessments, it also accounts for the possibility of legitimate security activities that may include these CVEs, suggesting further analysis to confirm the activity's intent.
+title: Detect Onyx Sleet Vulnerability Assessment Activity
+id: 1959c053-8661-47b6-93d4-516bc6e0e733
+status: experimental
+description: Detects the assessment of vulnerabilities associated with Onyx Sleet by checking for specific CVE IDs in the DeviceTvmSoftwareVulnerabilities table.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/07/26
+tags:
+  - attack.reconnaissance
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    ActivityDisplayName|contains: Update software
+    properties.message|contains|all:
+      - CVE-2021-44228
+      - CVE-2023-27350
+      - CVE-2023-42793
+  condition: selection
+falsepositives:
+  - Legitimate vulnerability assessment activities that are not related to Onyx Sleet may trigger this rule. It is important to correlate with other indicators of compromise and the context of the assessment.
+level: high

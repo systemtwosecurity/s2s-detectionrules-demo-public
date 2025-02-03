@@ -1,0 +1,35 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-hafnium-exchange-server-zero-day-activity-in-splunk.html
+# review_date: 2024-10-28
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - "The sigma rule aligns closely with the CTI report's findings by focusing on detecting the creation of compressed archives in C:\ProgramData\ as part of HAFNIUM’s exfiltration strategy. The CTI report further enhances the detection strategy by recommending specific Sysmon and Event log queries to capture suspicious processes and archive-related activities. This comprehensive approach strengthens detection and minimizes the chance of missing malicious behavior.
+title: Suspicious Archive Creation in ProgramData Directory
+id: 8f41b4b8-cffd-42f8-9fa3-49982681e921
+status: experimental
+description: Detects the creation of suspicious zip, rar, and 7z files in C:\ProgramData\ which may indicate data staging for exfiltration.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-hafnium-exchange-server-zero-day-activity-in-splunk.html
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.exfiltration
+  - attack.t1560.001
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|endswith:
+      - .zip
+      - .rar
+      - .7z
+    TargetFilename|startswith: C:\\ProgramData\\
+  condition: selection
+falsepositives:
+  - Legitimate archival software used by system administrators or backup solutions
+level: high

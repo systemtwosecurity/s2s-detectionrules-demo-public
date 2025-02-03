@@ -1,0 +1,35 @@
+# review_report_url:https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - There is a strong match between the Sigma rule's detection logic and the behavior described in the CTI report. Both focus on detecting Cobalt Strike's DNS beaconing patterns, specifically using recognizable subdomain patterns (post. or .stage.) in DNS queries for malicious C2 communication.This analysis confirms that the Sigma rule correctly targets the DNS C2 traffic patterns associated with Cobalt Strike, as highlighted in the CTI report.
+title: Cobalt Strike DNS Beaconing
+id: 2975af79-28c4-4d2f-a951-9095f229df29
+status: test
+description: Detects suspicious DNS queries known from Cobalt Strike beacons
+references:
+    - https://www.icebrg.io/blog/footprints-of-fin7-tracking-actor-patterns
+    - https://www.sekoia.io/en/hunting-and-detecting-cobalt-strike/
+author: Florian Roth (Nextron Systems)
+date: 2018-05-10
+modified: 2022-10-09
+tags:
+    - attack.command-and-control
+    - attack.t1071.004
+logsource:
+    category: dns
+detection:
+    selection1:
+        query|startswith:
+            - 'aaa.stage.'
+            - 'post.1'
+    selection2:
+        query|contains: '.stage.123456.'
+    condition: 1 of selection*
+falsepositives:
+    - Unknown
+level: critical

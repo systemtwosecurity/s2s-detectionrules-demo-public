@@ -1,0 +1,33 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the download of a malware REvil payload, specifically pload.exe, from one particular IP address used in connection with the REvil ransomware attack: 45.153.241.113. It looks for network connections to the IP over port 80 or 443 in which the executable pload.exe is being downloaded. The rule has a high severity level. False positives may appear if the re-used IP address is later used for legitimate purposes outside of the attack window.
+title: Download of Malicious REvil Payload
+id: ad1a53bd-769e-44c4-bf43-c3ef223660f2
+status: experimental
+description: Detects the download of an executable file from a specific IP address associated with the REvil ransomware attack.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 45.153.241.113
+    DestinationPort:
+      - '80'
+      - '443'
+    Image|endswith: \pload.exe
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools downloading updates from the specified IP address, if the IP was reused for legitimate purposes after the attack.
+level: high

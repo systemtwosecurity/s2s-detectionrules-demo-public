@@ -1,0 +1,33 @@
+# review_report_url: https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. Howver, we can finture this query to improves accuracy by adding the specific C2 URLs associated with WikiLoader while maintaining general pattern detection to capture any similar threats. It covers both exact indicators and more general patterns that could be used by WikiLoader’s C2 infrastructure.
+title: Detection of WikiLoader C2 URLs
+id: b12426ed-342b-480f-bb3a-59e97eaf7835
+status: experimental
+description: Detects command and control (C2) URLs associated with the WikiLoader malware variant.
+references:
+  - https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.t1102.002
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_urls:
+    uri|contains:
+      - /wp-content/themes/twentytwentyfour/
+      - /plugins/search/contacts/
+      - .php?id=1
+  condition: c2_urls
+falsepositives:
+  - Legitimate access to compromised websites that host similar legitimate content.
+level: high

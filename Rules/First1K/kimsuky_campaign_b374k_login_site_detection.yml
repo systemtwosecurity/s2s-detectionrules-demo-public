@@ -1,0 +1,31 @@
+# review_report_url: https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Kimsuky Campaign - B374k Login Site Detection
+id: 32958744-3836-4cad-9093-0cd57e32412b
+status: experimental
+description: Detects access to a known b374k login site used by Kimsuky in a phishing campaign to steal credentials and gather strategic intelligence.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /config.php
+  filter:
+    client_header_names|contains: www.nknews.pro
+  condition: selection and filter
+falsepositives:
+  - Legitimate access to a benign config.php file on a different domain
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies the creation of the file n.x in the AppData\Local\Temp directory, which is linked to the KGH backdoor's payload download process on Windows systems. Monitoring for this file creation can help detect early stages of persistence, but false positives may arise if legitimate software uses similar file naming conventions. The rule focuses on spotting malicious activity during the backdoor's installation phase.
+
+title: Detection of KGH Backdoor Payload Download
+id: 107aebfb-6e7d-4636-95db-50d6ad815b6d
+status: experimental
+description: Detects the creation of a specific payload file associated with the KGH backdoor on a Windows system.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Local\Temp\n.x
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally uses the same file name pattern for temporary files.
+level: high

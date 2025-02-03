@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule detects the writing of the mpsvc.dll file to disk, which is indicative of REvil ransomware using a DLL side-loading technique as part of its payload deployment. This rule helps identify the presence of the malicious payload by monitoring for the creation of this specific DLL file, which is crucial to the execution of the ransomware. Marked as high severity, this rule flags suspicious activity tied to ransomware execution. Although unlikely, false positives could occur if legitimate software happens to use the same filename (mpsvc.dll) for its own modules. Careful contextual analysis should be performed to confirm malicious intent when this activity is detected.
+title: Detection of REvil Ransomware Dropper Signed with PB03 TRANSPORT LTD Certificate
+id: 756d825d-6200-4527-8722-eb76e9f11082
+status: experimental
+description: Detects the execution of a ransomware dropper (agent.exe) signed with the certificate "PB03 TRANSPORT LTD" which is known to be used by REvil ransomware.
+references:
+  - https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image|endswith: \agent.exe
+    Signature: PB03 TRANSPORT LTD
+  condition: selection
+falsepositives:
+  - Legitimate software signed with a certificate that has the same name as the malicious one (unlikely)
+level: critical

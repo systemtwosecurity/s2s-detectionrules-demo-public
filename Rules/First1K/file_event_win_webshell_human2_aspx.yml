@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the creation or presence of the human2.aspx webshell, a known indicator of compromise associated with MOVEit Transfer CVE-2023-34362 exploitation. False positives are rare, as legitimate use of this filename is highly unlikely.
+
+title: Suspicious Webshell Filename human2.aspx
+id: 7ef5b9b8-e258-4c37-a9a3-5a5c2b194bce
+status: experimental
+description: Detects the creation or presence of the human2.aspx webshell, often associated with exploitation of the MOVEit Transfer vulnerability CVE-2023-34362.
+references:
+  - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .human2.aspx
+  condition: selection
+falsepositives:
+  - Legitimate use of a file named human2.aspx (unlikely)
+level: high

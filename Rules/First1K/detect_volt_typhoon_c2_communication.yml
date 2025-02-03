@@ -1,0 +1,31 @@
+# review_report_url: https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule correctly detects communications from Cisco RV320 and RV325 routers to known Volt Typhoon C2 IP addresses, as described in the CTI report. The identified IPs, 159.203.113.25 and 174.138.56.21, are confirmed as C2 nodes. This rule aligns perfectly with the CTI report’s findings and is ready for testing,
+title: Detect Volt Typhoon C2 Communication
+id: 738fd8ad-666f-42b7-92cf-f7c5eb1892f5
+status: experimental
+description: Detects network communication to known Volt Typhoon command and control (C2) IP addresses from Cisco RV320 and RV325 routers.
+references:
+  - https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: cisco
+  service: syslog
+detection:
+  c2_communication:
+    SrcIP|contains:
+      - 159.203.113.25
+      - 174.138.56.21
+  condition: c2_communication
+falsepositives:
+  - Legitimate traffic to the IP addresses if they have been reassigned after the report
+level: high

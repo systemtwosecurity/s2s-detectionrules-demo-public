@@ -1,0 +1,40 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule looks at network activity related to BEACON shellcode establishing contact with a C2 server; it is a high-severity indicator of post-compromise activity. False positives could be produced where legitimate applications contact the same IP and port, or where certutil is used for the download of benign files.
+
+title: Detection of BEACON Shellcode C2 Activity
+id: f6259682-18f6-492e-ba51-b50410d906f1
+status: experimental
+description: Detects network connections related to BEACON shellcode communicating with a C2 server, which is indicative of post-exploitation activity following a successful compromise.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.command_and_control
+  - attack.t1102.003
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    DestinationIp: 91.208.184[.]78
+    DestinationPort: '443'
+  selection2:
+    CommandLine|contains|all:
+      - http://91.208.184[.]78/2.exe
+      - certutil
+      - -split
+      - -urlcache
+      - -f
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate applications using the same IP and port for benign purposes
+  - Legitimate use of certutil for downloading files from trusted sources
+level: high

@@ -1,0 +1,33 @@
+# review_report_url:  https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects post-exploitation activity from Cobalt Strike BEACON in the form of download of the TzGG shellcode through certutil.exe. It fires based upon HTTP requests carrying certain parameters and destination ports. False positives can result due to legitimate uses of certutil for downloading files from known good sources.
+title: Downloading TzGG Shellcode for Cobalt Strike BEACON
+id: 1f171620-6efa-4086-a2fc-dff84231e2a0
+status: experimental
+description: Detects the specific HTTP request pattern used to download the 'TzGG' shellcode for Cobalt Strike BEACON, which is indicative of post-exploitation activity following exploitation of CVE-2020-10189.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '443'
+    Image|endswith: \certutil.exe
+    CommandLine|contains|all:
+      - -f http://
+      - -urlcache
+  condition: selection
+falsepositives:
+  - Legitimate use of certutil to download files from trusted sources
+level: high

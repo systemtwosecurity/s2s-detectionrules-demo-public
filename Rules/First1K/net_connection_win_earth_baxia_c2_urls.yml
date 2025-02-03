@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects C2 activity associated with Earth Baxia by monitoring network connections to known C2 URLs used by APT41. It is useful for identifying C2 traffic and potential data exfiltration during spear-phishing attacks.
+
+title: Earth Baxia C2 Communication - Specific URLs
+id: c9b571a4-e27b-4c18-ba71-3edc8ab71e6a
+status: experimental
+description: Detects network connections to known Earth Baxia C2 URLs
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname:
+      - /rocean.oca.pics
+      - /zeopstores.top
+      - /etc.clientlibs/microsoft/clientlibs/clientwf-new/resources/fonts
+      - /jquery-3.3.1.min.js
+  condition: selection
+falsepositives:
+  - Legitimate connections to these URLs if they are used for other purposes
+level: medium

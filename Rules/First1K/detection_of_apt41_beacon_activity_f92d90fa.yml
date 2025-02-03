@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule description as it capture the domain ns1.akacur.tk. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detection of APT41 BEACON Activity
+id: f92d90fa-f12c-4245-876e-08694296219b
+status: experimental
+description: Detects network traffic to known APT41 BEACON domain ns1.akacur.tk
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: ns1.akacur.tk
+  condition: selection
+falsepositives:
+  - Legitimate traffic to the domain if it has been hijacked or repurposed for legitimate content
+level: high

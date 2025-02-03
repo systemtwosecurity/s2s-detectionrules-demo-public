@@ -1,0 +1,30 @@
+# review_report_url: https://blog.reveng.ai/latrodectus-distribution-via-brc4/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a specific file (disk1.cab) that contains a packed Brute Ratel C4 Badger implant, identified by its SHA-256 hash. The detection is triggered when the file is loaded into memory with the given hash, which indicates it may be part of the Brute Ratel C4 delivery chain. The CAB file is typically extracted and used in the infection process. False positives are unlikely but could occur if legitimate software distribution uses the same filename and hash.
+title: Detection of Brute Ratel C4 Packed in CAB Archive
+id: 08303d00-b381-4c4b-ad1a-3a867d784a31
+status: experimental
+description: Detects the presence of a file with a specific SHA-256 hash that is indicative of a packed Brute Ratel C4 Badger within a CAB archive.
+references:
+  - https://blog.reveng.ai/latrodectus-distribution-via-brc4
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: disk1.cab
+    sha256: c89d15789fd9e0b23e62bbf038d2ddbcea5618573517f3382790b4b0434933df
+  condition: selection
+falsepositives:
+  - Legitimate software distribution that uses the same filename and hash (unlikely)
+level: high

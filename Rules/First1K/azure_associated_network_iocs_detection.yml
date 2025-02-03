@@ -1,0 +1,43 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies network events linked to specific remote IP addresses and URLs that are known indicators of compromise (IOCs). It utilizes Azure signin logs to monitor for potential malicious activity, triggering alerts if any of the specified IPs or resource display names are involved. While aimed at enhancing security by flagging suspicious connections, the rule also recognizes the possibility of legitimate traffic being incorrectly classified as IOCs.
+title: Detecting Associated Network IOCs
+id: a372222c-7c38-4ff4-97ae-b0e540c1d997
+status: experimental
+description: Detect network events involving specific remote IP addresses and URLs that are indicators of compromise (IOCs).
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/07/26
+tags:
+  - attack.command_and_control
+  - attack.t1071
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection1:
+    ClientApp|contains:
+      - 147.78.149.201
+      - 45.155.37.101
+      - 162.19.71.175
+      - 213.139.205.151
+      - 109.248.150.147
+      - 84.38.134.56
+  selection2:
+    ResourceDisplayName|contains:
+      - 84.38.134.56/procdump.gif
+      - advice.uphearth.com
+      - privatemake.bounceme.net
+      - americajobmail.site
+      - ww3c.bounceme.net
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to the listed IPs or URLs that have been mistakenly flagged as IOCs.
+level: high

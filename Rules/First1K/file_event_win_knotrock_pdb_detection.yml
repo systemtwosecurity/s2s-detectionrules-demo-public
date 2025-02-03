@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a specific Program Database (PDB) path, \LinkShares.pdb, in binaries, which can indicate potential KNOTROCK malware activity. It is important to consider that legitimate software development tools may also generate similar PDB paths, which could lead to false positives.
+
+title: Detection of KNOTROCK Malware PDB Path
+id: 9ba91ecc-4da7-4f1c-bc10-a64028b3fcca
+status: experimental
+description: Detects the presence of a specific PDB path in a binary which can be an indicator of the KNOTROCK malware family.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \LinkShares.pdb
+  condition: selection
+falsepositives:
+  - Legitimate software development tools and processes that generate PDB paths in binaries.
+level: high

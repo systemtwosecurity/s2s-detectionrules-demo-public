@@ -1,0 +1,69 @@
+# review_report_url: https://news.sophos.com/en-us/2021/03/05/hafnium-advice-about-the-new-nation-state-attack/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule aligns perfectly with the corresponding CTI report, ensuring that all suspicious .aspx filenames, directories, and regex patterns are accurately covered, with no discrepancies or missing elements
+title: Detection of HAFNIUM Web Shells
+id: d31249e5-4623-45e1-bae6-823cddb05c80
+status: experimental
+description: Detects the creation or modification of suspicious .aspx files in directories commonly targeted by the HAFNIUM group for web shell deployment.
+references:
+  - https://news.sophos.com/en-us/2021/03/05/hafnium-advice-about-the-new-nation-state-attack
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \OutlookJP.aspx
+      - \RedirSuiteServerProxy.aspx
+      - \xx.aspx
+      - \t.aspx
+      - \errorcheck.aspx
+      - \supp0rt.aspx
+      - \MultiUp.aspx
+      - \healthcheck.aspx
+      - \aspnet_www.aspx
+      - \shell.aspx
+      - \document.aspx
+      - \system_web.aspx
+      - \errorEEE.aspx
+      - \Logout.aspx
+      - \web.aspx
+      - \aspnet_client.aspx
+      - \error.aspx
+      - \one.aspx
+      - \OutlookRU.aspx
+      - \aspnet_iisstart.aspx
+      - \discover.aspx
+      - \TimeoutLogout.aspx
+      - \aspnettest.aspx
+      - \shellex.aspx
+      - \OutlookEN.aspx
+      - \errorEW.aspx
+      - \errorEE.aspx
+      - \errorFF.aspx
+      - \HttpProxy.aspx
+      - \help.aspx
+  directories:
+    TargetFilename|contains|all:
+      - \\FrontEnd\\HttpProxy\\owa\\auth\\Current\\
+      - \\FrontEnd\\HttpProxy\\owa\\auth\\
+      - \\inetpub\\wwwroot\\aspnet_client\\
+      - \\inetpub\\wwwroot\\aspnet_client\\system_web\\
+      - \\FrontEnd\\HttpProxy\\owa\\auth\\*\\
+  regex:
+    TargetFilename: '[0-9a-zA-Z]{8}\\.aspx'
+  condition: selection or directories or regex
+falsepositives:
+  - Legitimate creation or modification of .aspx files by administrators or developers in the specified directories.
+level: high

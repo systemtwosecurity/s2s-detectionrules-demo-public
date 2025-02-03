@@ -1,0 +1,42 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This is a direct domain IOC match with the given CTI and it is useful
+title: Detection of FROZEN#SHADOW Attack Campaign via Malicious Domain Requests
+id: 6088e16f-5265-401b-bd04-840af7b5b667
+status: experimental
+description: Detects network requests to specific malicious domains associated with the FROZEN#SHADOW attack campaign through a Next Generation Firewall.
+references:
+  - https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign
+author: System Two Security
+date: 2024/08/30
+tags:
+  - attack.command-and-control
+logsource:
+  service: globalprotect
+  product: paloalto
+detection:
+  selection:
+    keywords|contains:
+      - skinnyjeanso.com
+      - simplyfitphilly.com
+      - maramaravilha.com
+      - krd6.com
+      - sokingscrosshotel.com
+      - danteshpk.com
+      - wireoneinternet.info
+      - winarkamaps.com
+      - titnovacrion.top
+      - t0talwar.screenconnect.com
+      - stratimasesstr.com
+      - globalsolutionunlimitedltd.com
+      - kasnackamarch.info
+  condition: selection
+falsepositives:
+  - Legitimate access to a domain that has been compromised and is also used for legitimate purposes
+level: high

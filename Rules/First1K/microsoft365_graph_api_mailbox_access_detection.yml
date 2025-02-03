@@ -1,0 +1,32 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting unauthorized mailbox access via the Graph API aligns well with the CTI report, which describes similar use of the MailItemsAccessed event and AppId for monitoring email access activities.
+title: Hunting Query to Flag Graph API Mailbox Access
+id: ffc4472b-0b4f-4324-9025-e15d7476acee
+status: experimental
+description: Detects unauthorized access to mailboxes via the Graph API in Microsoft 365 Exchange Online.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.collection
+  - attack.t1114.002
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload:
+      AppId: 00000003-0000-0000-c000-000000000000
+    eventName: MailItemsAccessed
+  condition: selection
+falsepositives:
+  - Legitimate use of Graph API by approved applications
+level: high

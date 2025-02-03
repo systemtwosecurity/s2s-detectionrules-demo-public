@@ -1,0 +1,39 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect network connections to specific CloudFront URLs used as command and control (C2) servers for Brute Ratel. The rule is highly relevant and accurate, as it directly corresponds to the IOCs listed in the CTI report for Theme 2. The detection logic effectively captures the exact CloudFront domains and paths mentioned in the threat intelligence.
+title: Detection of Brute Ratel C2 via CloudFront URLs
+id: 31c59bed-91dd-45f0-b44f-4834a607bc29
+status: experimental
+description: Detects network connections to specific CloudFront URLs used as command and control (C2) servers for Brute Ratel.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  userAgent|contains: cloudfront
+  requestParameters:
+    - d1209brpqetpa4.cloudfront.net/HubsExtension/Browse/resourceType/id.php
+    - d2v6ycjbdzo6ui.cloudfront.net/HubsExtension/Resource/Type/c8d984.php
+    - d2z6sfzo660xrm.cloudfront.net/HubsExtension/Resource/Type/c8d984.php
+    - d3qrqtfazjdt5i.cloudfront.net/HubsExtension/Resource/Type/c8d984.php
+    - d2v6ycjbdzo6ui.cloudfront.net/HubsExtension/Browse/resourceType/id.php
+    - d1209brpqetpa4.cloudfront.net/HubsExtension/Resource/Type/c8d984.php
+    - d2z6sfzo660xrm.cloudfront.net/HubsExtension/Browse/resourceType/id.php
+    - d3qrqtfazjdt5i.cloudfront.net/HubsExtension/Browse/resourceType/id.php
+    - d2wpc9lcvgj680.cloudfront.net/HubsExtension/Browse/resourceType/id.php
+    - d2wpc9lcvgj680.cloudfront.net//HubsExtension/Resource/Type/c8d984.php
+  condition: userAgent|contains and requestParameters
+falsepositives:
+  - Legitimate access to CloudFront URLs that coincidentally match the indicators of compromise.
+level: high

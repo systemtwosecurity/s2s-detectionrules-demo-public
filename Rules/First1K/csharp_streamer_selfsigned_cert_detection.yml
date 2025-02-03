@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is a match for the behaviour described in the CTI report. Also, the rule aligns with multiple MITRE ATT&CK techniques such as web protocols,. proxy communication and encrypted channels.
+title: Detection of CSharp Streamer Command and Control Server with Self-Signed Certificate
+id: d94ed5ae-212e-47d3-b4ff-7e214a10213f
+status: experimental
+description: Detects Zeek notice messages alerting on the self-signed certificate used by the CSharp Streamer command and control server.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: x509
+detection:
+  selection:
+    certificate.serial|contains: SSL certificate validation failed with (unable to get local issuer certificate)
+  condition: selection
+falsepositives:
+  - Legitimate self-signed certificates used in internal networks may trigger this rule. It is recommended to whitelist known internal self-signed certificates.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of UpdateAgent malware by identifying a specific SHA256 hash in Windows image load events. The rule aligns with the CTI report, which mentions UpdateAgent as part of North Korean threat group activities. The rule's relevance and accuracy are high, as it directly corresponds to the IOC provided in the CTI report. The IOC used (SHA256 hash) matches exactly with the CTI report, reducing false positive risks.
+title: Detection of UpdateAgent Malicious Activity
+id: 0e751fcb-22b5-4927-a502-e5c05a3edf25
+status: experimental
+description: Detects the presence of known malicious UpdateAgent SHA256 hashes in the event logs.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256: 6c121f2b2efa6592c2c22b29218157ec9e63f385e7a1d7425857d603ddef8c59
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to specific files, and false positives are unlikely. Any match should be investigated.
+level: high

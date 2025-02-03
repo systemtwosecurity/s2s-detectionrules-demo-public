@@ -1,0 +1,33 @@
+# review_report_url: https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule aligns perfectly with the tactics described in the CTI report. Both the Sigma rule and the report focus on the use of makecab to compress files located in directories such as ..\backup and ..\webapps\adssp\html\Lock.lic. The use of makecab in this manner is indicative of data exfiltration efforts, which is the behavior targeted by the Sigma rule. 
+title: Suspicious Makecab Usage for Data Exfiltration
+id: 0f7c8854-df9d-4c4a-996b-c15c0c11c1ab
+status: experimental
+description: Detects the use of makecab.exe to compress files in a way that is commonly used for data exfiltration.
+references:
+  - https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.exfiltration
+  - attack.t1560.001
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    CommandLine|contains|all:
+      - ..\webapps\adssp\html\Lock.lic
+      - ..\backup
+      - makecab
+  condition: selection
+falsepositives:
+  - Legitimate use of makecab.exe to compress files as part of normal administrative tasks or software deployment processes.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP POST requests to the endpoint with Base64-encoded data in the `Authorization` header, associated with Glove Stealer's data exfiltration. It uses Zeek HTTP logs and is flagged as high severity, with possible false positives from legitimate software utilizing similar patterns.
+title: Detection of Glove Stealer Data Exfiltration
+id: faa2e8bd-972a-4862-8954-5dbb549778e4
+status: experimental
+description: Detects POST requests to a known C&C server with data encoded by Base64, which is indicative of Glove Stealer malware activity.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: POST
+    uri: /index2.php
+    client_header_names|contains: Authorization
+  condition: selection
+falsepositives:
+  - Legitimate software that uses Base64 encoding for POST requests to similar endpoints
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma Rule matched with the CTI report for the detection of PondRAT C2 domains (jdkgradle.com and rebelthumb.net). The Sigma rule is appropriately designed to detect these domains in DNS logs.
+title: Detection of PondRAT C2 Network Connections
+id: 173dfe60-3bd0-4f9d-ae90-aa1a7037188f
+status: experimental
+description: Detects network connections to known PondRAT command and control (C2) servers.
+references:
+  - https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - rebelthumb.net
+    - jdkgradle.com
+  condition: query
+falsepositives:
+  - Legitimate connections to domains with similar names
+level: high

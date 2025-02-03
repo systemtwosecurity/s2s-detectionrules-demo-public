@@ -1,0 +1,32 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects binaries in the /tmp directory that attempt to connect to external IP addresses on ports 4438 and 4439, potentially indicating command-and-control activity. False positives may occur if legitimate applications use these ports for communication.
+title: Suspicious Binaries in /tmp Reaching Out to External IPs on Ports 4438 and 4439
+id: 0a9d8cbc-5c35-4184-80a2-d8c0dc8791a9
+status: experimental
+description: Detects binaries located in the /tmp directory initiating network connections to external IP addresses on ports 4438 and 4439.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: network_connection
+detection:
+  selection:
+    Image|startswith: /tmp/
+    DestinationPort:
+      - '4439'
+      - '4438'
+  condition: selection
+falsepositives:
+  - Legitimate applications that use ports 4438 and 4439 for communication.
+level: medium

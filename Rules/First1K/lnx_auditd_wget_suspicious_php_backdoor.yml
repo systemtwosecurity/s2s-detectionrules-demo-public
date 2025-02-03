@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the use of the wget command to download a PHP backdoor from a specific URL, a common indicator of compromise on Linux systems. It focuses on identifying potentially malicious activity associated with unauthorized downloads, crucial for detecting early stages of exploitation.
+title: Detection of Wget Downloading Suspicious PHP Backdoor
+id: a77b330c-2b32-47fc-97de-61a394158ff7
+status: experimental
+description: Detects the use of wget command to download a backdoor from a specific URL, which is indicative of a compromised Linux system.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords: wget http://91.92.241.103:8002/gk.php
+  condition: keywords
+falsepositives:
+  - Legitimate use of wget to download files from the specified URL by authorized personnel, though this is highly unlikely and should be investigated.
+level: high

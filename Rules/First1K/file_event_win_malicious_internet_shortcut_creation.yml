@@ -1,0 +1,33 @@
+# review_report_url: https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the creation or modification of Internet Shortcut (.url) files that contain suspicious URLs pointing to potentially malicious file shares. It helps identify malicious activity linked to the execution of remote files via Internet Shortcut files.
+title: Detection of Malicious Internet Shortcut File Creation
+id: 6bdb4952-a378-4cbe-b66e-28f51cb1663d
+status: experimental
+description: Detects the creation or modification of Internet Shortcut files (.url) with a URL field pointing to a suspicious file share.
+references:
+  - https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.t1547.009
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .url
+    CommandLine|contains|all:
+      - URL=file://10.10.10.10
+      - '[InternetShortcut]'
+  condition: selection
+falsepositives:
+  - Legitimate use of file shares with Internet Shortcut files in a controlled environment
+level: high

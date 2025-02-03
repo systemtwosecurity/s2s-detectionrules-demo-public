@@ -1,0 +1,32 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-tailored for detecting network activity linked to APT41’s CRACKSHOT backdoor by monitoring DNS queries for known C&C domains. The rule effectively leverages the domains identified in the CTI report, allowing for targeted detection of APT41's C&C activity within network logs.
+title: APT41 CRACKSHOT Backdoor C&C Domain Activity
+id: 7d642508-ccc8-46a3-85ad-1ccba6579db1
+status: experimental
+description: Detects network connections to C&C domains associated with APT41's CRACKSHOT backdoor.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_activity:
+    query|contains:
+      - bugcheck.xigncodeservice.com
+      - infestexe.com
+      - gxxservice.com
+  condition: domain_activity
+falsepositives:
+  - Legitimate connections to domains that have a similar name to the IOCs but are not related to the malicious activity.
+level: high

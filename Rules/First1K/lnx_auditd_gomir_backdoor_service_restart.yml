@@ -1,0 +1,36 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects suspicious service restart activities where the 'gomir' process is the parent process for executing systemctl or service commands, specifically targeting reenable or daemon-reload for the syslogd service. This activity is likely linked to the persistence mechanism of the Linux.Gomir backdoor. While such actions could occur during legitimate administrative tasks, their association with the 'gomir' process should be investigated as potential malware behavior.
+title: Detection of Gomir Backdoor Service Restart Activity
+id: 7f5c1dfb-ddcc-4441-98af-079cdb6b9508
+status: experimental
+description: Detects the use of the 'gomir' process as the parent process for restarting services using systemctl or service commands, which may indicate malicious activity.
+references:
+  - https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0|contains|all:
+      - systemctl
+      - service
+    a1|contains:
+      - reenable
+      - daemon-reload
+    a2|contains: syslogd
+    exe: gomir
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves restarting services using the systemctl or service commands.
+level: high

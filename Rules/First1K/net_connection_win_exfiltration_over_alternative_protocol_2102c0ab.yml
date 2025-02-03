@@ -1,0 +1,35 @@
+# review_report_url: https://www.trendmicro.com/en_no/research/24/i/earth-preta-new-malware-and-strategies.html
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of alternative protocols for data exfiltration by monitoring the execution of tools like curl and PTSOCKET, which are commonly associated with malicious exfiltration techniques. It helps identify potential unauthorized data transfers. False positives may arise from legitimate use of these tools by administrators or developers.
+
+title: Exfiltration Over Alternative Protocol
+id: 2102c0ab-1517-459b-90b0-8fd8450c443b
+status: experimental
+description: Detects potential data exfiltration over alternative protocols using tools like cURL or PTSOCKET
+references:
+  - https://www.trendmicro.com/en_no/research/24/i/earth-preta-new-malware-and-strategies.html
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.t1048
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    CommandLine|contains:
+      - curl.exe
+      - curl
+      - PTSOCKET
+      - PTSOCKET.exe
+  condition: selection
+falsepositives:
+  - Legitimate use of cURL or PTSOCKET by system administrators or authorized users for data transfer
+level: high

@@ -1,0 +1,40 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is properly aligned with the CTI report. It accurately detects APT28 DLL backdoor beaconing activity using network communication patterns over HTTP/HTTPS with GET requests and Base64-encoded query strings, as described in the CTI report. No discrepancies were found.
+
+title: APT28 DLL Backdoor Beaconing Activity
+id: 12c2ad0d-b119-484f-88e3-6422aa9da273
+status: experimental
+description: Detects network activity indicative of APT28 DLL backdoor beaconing to a command-and-control server using a GET request with a Base64 encoded query string over HTTPS or HTTP.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort:
+      - '443'
+      - '80'
+    Initiated: true
+    Protocol: tcp
+    Image|endswith: \\svchost.exe
+    CommandLine|contains|all:
+      - GET
+      - HTTP/1.1
+    CommandLine|contains: malaytravelgroup.com
+  condition: selection
+falsepositives:
+  - Legitimate traffic to domains with similar patterns
+  - Legitimate use of svchost.exe for network communication
+level: high

@@ -1,0 +1,37 @@
+# review_report_url: https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well mapped with the CTI report, it is looking for the phishing pages so inclusion of main URI hosted on Sniper Dz Phaas Platform will help in more detection.
+title: Detection of Sniper Dz Live Phishing Pages
+id: 11ed55db-e5d1-463f-8142-fa03eb43c1a2
+status: experimental
+description: Detects network connections or HTTP requests to URLs indicative of the Sniper Dz PhaaS platform.
+references:
+  - https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.credential-access
+  - attack.t1566
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains:
+      - /about/z2to.html?u=ff-reward/?i=
+      - /about/z1to.html?u=ff-insta/?i=
+      - /about/z1to.html?u=eb-log/?i=
+      - /about/z1to.html?u=s-mobi/?i=
+      - /about/z2to.html?u=ff-spiner/?i=
+  selection2:
+    uri|contains: pro.riccardomalisano.com
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate access to the affected domain by authorized users, if the domain is hijacked.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network traffic to known C2 server IP addresses associated with APT41 activity. It focuses on DNS queries to specific IPs identified as malicious, helping to reveal potential command and control communications within the network.
+title: Detection of C2 Server IP Addresses
+id: 98371b6d-c351-44c0-b8c6-2986a0e11337
+status: experimental
+description: Detects network connections to known malicious C2 server IP addresses.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.t1584.004
+  - attack.command_and_control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query:
+      - 58.64.204.145
+      - 103.96.131.84
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP addresses if they have been reused after the malicious campaign ended.
+level: high

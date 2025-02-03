@@ -1,0 +1,29 @@
+# review_report_url: https://www.aquasec.com/blog/hadooken-malware-targets-weblogic-applications/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of a known unpacked cryptominer file on Linux systems by monitoring file deletion events and matching the file's MD5 hash. The rule is highly relevant to the threat described in the CTI report, as it directly targets a specific IOC (the MD5 hash of the unpacked cryptominer). Its accuracy is high due to the use of a precise hash match
+title: Detection of Unpacked Cryptominer File
+id: 83a03ec6-f9b6-4386-9164-ae9e27b6d136
+status: experimental
+description: Detects the presence of a known unpacked cryptominer file based on its MD5 hash.
+references:
+  - https://www.aquasec.com/blog/hadooken-malware-targets-weblogic-applications
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: linux
+  category: file_delete
+detection:
+  selection:
+    Hashes|contains: 9bea7389b633c331e706995ed4b3999c
+  condition: selection
+falsepositives:
+  - Unknown or new benign software using the same hash
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description as it only required  hashes for WikiLoader backdoor. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs like hashes for WikiLoader shellcode loader DLLs. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detection of WikiLoader Backdoor SHA-256 Hashes
+id: 6111af32-0625-4991-a358-15f9341e3886
+status: experimental
+description: Detects the presence of WikiLoader backdoor by SHA-256 hashes as reported in CTI.
+references:
+  - https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    sha256|contains:
+      - 4044a0d7a0ed7f66efc2bd13616ec63a5722fc7a73a28fe3bda513f60ef24dd9
+      - c9eaaa6aee55704ce651c8b4cde7949cfa9711e05a136fa15f234d1bb2ea994c
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to have the same hash as the malicious software (very rare)
+level: high

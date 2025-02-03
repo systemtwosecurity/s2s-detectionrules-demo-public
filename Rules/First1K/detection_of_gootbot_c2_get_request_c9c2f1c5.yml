@@ -1,0 +1,36 @@
+# review_report_url: https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation/
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - There is a direct match between the Sigma rule and the CTI report. Both describe a GootBot variant communicating with a C2 server via GET requests to /xmlrpc.php and using the same HTTP headers (User-Agent, Cookie, Pragma, Cache-Control, Expires).
+title: Detection of GootBot C2 GET Request
+id: c9c2f1c5-f295-4227-8806-8a006ed68a1e
+status: experimental
+description: Detects GET requests to a C2 server with specific HTTP headers indicative of GootBot activity.
+references:
+  - https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: GET
+    uri: /xmlrpc.php
+    client_header_names|contains|all:
+      - Cookie
+      - Expires
+      - User-Agent
+      - Pragma
+      - Cache-Control
+  condition: selection
+falsepositives:
+  - Legitimate use of xmlrpc.php by applications or services that mimic the user agent or header format.
+level: high

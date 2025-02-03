@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The original Sigma rule accurately detects the Gzip payload by its hash.However, the CTI report lists additional malicious files and hashes not covered by the rule. An optimised rule for Added context about the CLOUD#REVERSER attack is added with windows as logsource product and category as file_create. 
+title: Detection of Gzip Payload by SHA256 Hash
+id: 2d36e256-9e8e-49dc-a13b-181015370a05
+status: experimental
+description: Detects the presence of a specific Gzip payload file by its SHA256 hash value as reported in a CTI report.
+references:
+  - https://www.securonix.com/blog/analysis-and-detection-of-cloudreverser-an-attack-involving-threat-actors-compromising-systems-using-a-sophisticated-cloud-based-malware
+author: System Two Security
+date: 2024/09/16
+tags:
+  - attack.execution
+logsource:
+  product: linux
+  category: file_delete
+detection:
+  selection:
+    sha256: f4275b0d3c4b6f3a165984b862f4890df14cc346013a22412f7288c9fdc65690
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash was reported as malicious. Any detection should be investigated.
+level: high

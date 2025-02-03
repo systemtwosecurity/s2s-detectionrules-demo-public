@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule captures network connections to the LATRODECTUS C2 domain "scifimond.com." High severity, possible command and control. It would make use of Zeek DNS logs to attempt to identify queries for this domain. False positives if ever repurposed for good.
+title: Detection of LATRODECTUS C2 Domain scifimond.com
+id: f84e1c9f-e9ff-47de-af13-d2fe02be8e65
+status: experimental
+description: Detects network connections to the known LATRODECTUS C2 domain scifimond.com which may indicate command and control activity.
+references:
+  - https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: scifimond.com
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or reused for legitimate purposes after the report.
+level: high

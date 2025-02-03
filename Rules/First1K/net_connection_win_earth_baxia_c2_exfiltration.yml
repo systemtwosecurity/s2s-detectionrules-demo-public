@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule effectively detects outbound connections to a known Earth Baxia C2 server (152.42.243.170), which has been associated with APT41's data exfiltration activities. By focusing on network traffic to this specific IP, the rule is well-suited for identifying C2 communications during the initial access and exploitation stages of an attack.
+
+title: Earth Baxia C2 Exfiltration Activity
+id: abbaa8ad-6681-47f5-b0e8-4666348db434
+status: experimental
+description: Detects outbound connections to Earth Baxia C2 server.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.exfiltration
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: 152.42.243.170
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP if it is repurposed for legitimate services.
+level: high

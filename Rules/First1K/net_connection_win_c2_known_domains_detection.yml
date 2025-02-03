@@ -1,0 +1,40 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -  The Sigma rule is valid based strictly on the CTI data provided.
+title: Detection of Known Command and Control Domains
+id: 5b1fbe8a-0094-4b93-a2ad-a8f0ac0ca658
+status: experimental
+description: Detects network connections to a list of known command-and-control domains.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+  - attack.t1568
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - gallerycenter.org
+      - olapdatabase.com
+      - techiefly.com
+      - financialmarket.org
+      - datazr.com
+      - mobilnweb.com
+      - aimsecurity.net
+      - infinitysoftwares.com
+      - ervsystem.com
+      - swipeservice.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains that have been compromised or share the same name
+level: high

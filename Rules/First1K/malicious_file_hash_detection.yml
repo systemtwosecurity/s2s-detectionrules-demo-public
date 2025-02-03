@@ -1,0 +1,55 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects the creation, access, or execution of files with specific SHA-256 hashes associated with malicious activity. The file hashes provided correspond to known indicators of compromise (IOCs) from a CTI report, helping identify malware or other malicious artifacts linked to the OCEANMAP campaign. The rule focuses on monitoring specific file hashes to detect potentially malicious files that could compromise the system.
+
+title: Malicious File Hash Detection
+id: 3e68af61-d89d-4b5d-a82f-b2e85bf0378f
+status: experimental
+description: Detects the creation, access, or execution of files with SHA-256 hashes associated with malicious activity.  This rule is based on IOCs from a CTI report.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+  - attack.t1608.001
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  sha256:
+    - 4c1b8d070885e92d61b72dc9424d9b260046f83daf00d93d3121df9ed669a5f9
+    - a333243927bb6956dc051ecea5f91b26a6c233b8164fafb9202e1f1e70ce045f
+    - 0429bdc6a302b4288aea1b1e2f2a7545731c50d647672fa65b012b2a2caa386e
+    - 770206424b8def9f6817991e9a5e88dc5bee0adb54fc7ec470b53c847154c22b
+    - b61e0f68772f3557024325f3a05e4edb940dbbe380af00f3bdaaaeabda308e72
+    - abf0c2538b2f9d38c98b422ea149983ca95819aa6ebdac97eae777ea8ba4ca8c
+    - 1b598c7c35f00d2c940dfd3745bd9e5d036df781d391b8f3603a2969c666761b
+    - 593583b312bf48b7748f4372e6f4a560fd38e969399cf2a96798e2594a517bf4
+    - 18f891a3737bb53cd1ab451e2140654a376a43b2d75f6695f3133d47a41952b6
+    - 9959c04723b51190536d1cd149083d3719488baa8f5dfcfa00fad8def003c8ef
+    - 2d844afe1a9f5c59ca96d2ab738ef43aec2391c8a37107d496d1d6cf260cede8
+    - 3384a9ef3438bf5ec89f268000cc7c83f15e3cdf746d6a93945add300423f756
+    - 50b000a7d61885591ba4ec9df1a0a223dbceb1ac2facafcef3d65c8cbbd64d46
+    - 516591eda6636ac1852ebac4b9b68e2a14d37e419d71f1697c34b55ee4d18bb4
+    - d84c39579e61c406380f37da7c2a6758ed9a4c9a0e7697c073e2ddbb563360cd
+    - fe00bd6fba209a347acf296887b10d2574c426fa962b6d4d94c34b384d15f0f1
+    - faf8db358e5d3dbe2eb9968d8b19f595f45991d938427124161f5ed45ac958d5
+    - 24fd571600dcc00bf2bb8577c7e4fd67275f7d19d852b909395bebcbb1274e04
+    - c22868930c02f2d6962167198fde0d3cda78ac18af506b57f1ca25ca5c39c50d
+    - 2328921cd1ec88aa3dec45c3367782b7760f6a7aa615b15feaad2e34e206e2f0
+    - 19d0c55ac466e4188c4370e204808ca0bc02bba480ec641da8190cb8aee92bdc
+    - 12a6ed6b24b77eaad892d7484ba3f150e0d3b3007d78d142dc407158ef77c107
+    - 516970af209f517b312317b69f2091583fb631422fa0efc2f7cc3b1bfaf4bbf0
+    - c8b6291fc7b6339d545cbfa99256e26de26fff5f928fef5157999d121fe46135
+    - 4b71f745707832671067c4d534b486840565ba2cda04e7daf2e2ac1324ff3db8
+    - 6fb2facdb906fc647ab96135ce2ca7434476fb4f87c097b83fd1dd4e045d4e47
+    - 628bc9f4aa71a015ec415d5d7d8cb168359886a231e17ecac2e5664760ee8eba
+  condition: sha256
+falsepositives:
+  - Legitimate software updates or installations may trigger this rule.  Review the context of the event to determine if it is malicious.
+level: high

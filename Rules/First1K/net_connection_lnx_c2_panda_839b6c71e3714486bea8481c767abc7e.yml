@@ -1,0 +1,29 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network communication to the IP address 192.248.152.58, associated with attacks exploiting CVE-2022-1040 ("Personal Panda"). It helps identify potential C2 traffic on Linux systems. False positives could occur if the IP is reused for legitimate purposes.
+title: Detection of C2 Communication to Personal Panda IP
+id: 839b6c71-e371-4486-bea8-481c767abc7e
+status: experimental
+description: Detects network communication to a known command and control (C2) IP address associated with CVE-2022-1040 "Personal Panda" attacks.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.command-and-control
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  c2_communication:
+    DestinationIp: 192.248.152.58
+  condition: c2_communication
+falsepositives:
+  - Legitimate traffic to the IP if it has been reused after the threat activity
+level: high

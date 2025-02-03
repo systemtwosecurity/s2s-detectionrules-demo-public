@@ -1,0 +1,28 @@
+# review_report_url: https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detect C2 Domain suzuki.datastore.pe.hu
+id: f6928388-a5ea-4784-bcaf-727cd8eeae08
+status: experimental
+description: Detects network connections or DNS queries to a known C2 server domain suzuki.datastore.pe.hu
+references:
+  - https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: suzuki.datastore.pe.hu
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or used for legitimate purposes outside the attacker infrastructure.
+level: high

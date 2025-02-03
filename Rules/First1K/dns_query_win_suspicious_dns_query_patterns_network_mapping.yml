@@ -1,0 +1,38 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies suspicious DNS query patterns often associated with network reconnaissance, such as LDAP, Kerberos, and service discovery queries. These queries may indicate efforts to map network resources or identify critical infrastructure components. While legitimate network scans or automated service discovery can trigger false positives, unexpected or unauthorized queries warrant further investigation. Continuous monitoring and anomaly detection are essential to mitigate reconnaissance-related risks.
+
+title: Suspicious DNS Query Patterns Indicative of Network Mapping
+id: 16098de4-b2cd-4af3-aa4e-9da938bf0809
+status: experimental
+description: Detects patterns of DNS queries that may suggest network reconnaissance activity.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.discovery
+  - attack.t1590.002
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName:
+      - '*._ldap._tcp.*'
+      - '*._kerberos._udp.*'
+      - '*._ldap._tcp.dc._msdcs.*'
+      - '*._kerberos._tcp.*'
+      - '*._gc._tcp.*'
+      - '*_tcp.*'
+      - '*_udp.*'
+      - '*.kerberos.*'
+  condition: selection
+falsepositives:
+  - Legitimate network scans performed by IT administrators.
+  - Automated service discovery mechanisms.
+level: medium

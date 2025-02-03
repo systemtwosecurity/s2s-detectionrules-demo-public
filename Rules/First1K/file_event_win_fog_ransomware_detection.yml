@@ -1,0 +1,31 @@
+# review_report_url: https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects file modifications or creations with the extensions .FOG or .FLOCKED, which are specifically associated with Fog Ransomware encryption activity. By focusing on these unique file extensions, it helps identify ongoing ransomware attacks that may have already begun encrypting files
+title: Detection of Fog Ransomware File Encryption Activity
+id: d4e44788-0a16-4259-937e-6915303477d3
+status: experimental
+description: Detects the creation or modification of files with extensions specific to Fog Ransomware (.FOG or .FLOCKED) which indicates that the system might be compromised by ransomware.
+references:
+  - https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - .FLOCKED
+      - .FOG
+  condition: selection
+falsepositives:
+  - Legitimate applications or services that use similar file extensions by coincidence.
+level: high

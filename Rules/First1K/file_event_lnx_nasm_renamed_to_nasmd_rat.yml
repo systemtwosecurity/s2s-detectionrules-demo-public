@@ -1,0 +1,32 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the renaming of the legitimate 'nasm' binary to 'nasmd' and its replacement with a Remote Access Trojan (RAT), which could be an attempt to establish persistence on a Linux system. It triggers if the file 'nasm' is renamed to 'nasmd.' The detection level is high, with false positives potentially arising from legitimate binary renaming or automated software deployments that involve file renaming
+title: Renaming of Nasm Binary to Nasmd and Replacement with RAT
+id: d3c12bb3-ddbb-44a6-b57e-6e42dd227ee7
+status: experimental
+description: Detects the renaming of a legitimate binary 'nasm' to 'nasmd' and its replacement with a Remote Access Trojan (RAT) for persistence, as described in the CTI report.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: nasm
+  renamed_to_nasmd:
+    TargetFilename|endswith: nasmd
+  condition: selection and renamed_to_nasmd
+falsepositives:
+  - Legitimate renaming of binaries which are not related to the nasm binary
+  - Automated software deployment or updates that include renaming of files
+level: high

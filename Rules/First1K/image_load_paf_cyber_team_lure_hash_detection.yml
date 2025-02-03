@@ -1,0 +1,28 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects a specific PAF cyber team lure file using its SHA256 hash in Windows image load events. The rule accurately targets a known threat identified in the CTI report, demonstrating high relevance and precision
+title: Detection of PAF Cyber Team Lure File Hash
+id: cc20fa4c-aac7-40dd-ab38-2386d769afcb
+status: experimental
+description: Detects the file hash associated with a PAF cyber team lure as part of a targeted attack campaign.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: cbafcf65b40d95e4699859a523ef4d300c57f93de6fbc6e194d1b922e9f3aba6
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to specific files, so false positives are unlikely but possible in the case of hash collisions or legitimate files sharing the same hash.
+level: high

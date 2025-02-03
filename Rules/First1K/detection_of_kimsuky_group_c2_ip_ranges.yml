@@ -1,0 +1,38 @@
+# review_report_url: https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-1.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report mentions the exact IP ranges and domains highlighted in the Sigma rule. The report provides specific examples of infrastructure used by the Kimsuky group, and this rule directly matches those indicators of compromise (IOCs).
+
+title: Detection of Kimsuky Group C2 IP Ranges
+id: 47d73686-1a95-4711-bbc7-5c6c74bb1689
+status: experimental
+description: Detects network connections to IP ranges known to be used by the Kimsuky cyber espionage group for command and control (C2) servers.
+references:
+  - https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-1.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  c2_ips:
+    id.resp_p:
+      - 185.224.138.0/23
+      - 185.224.137.0/23
+  c2_domains:
+    query:
+      - user-daum-centre.pe.hu
+      - rrnaver.com
+      - nortice-centre.esy.es
+      - kakao-check.esy.es
+  condition: c2_ips or c2_domains
+falsepositives:
+  - Legitimate traffic to IP ranges that have been repurposed after the report
+level: high

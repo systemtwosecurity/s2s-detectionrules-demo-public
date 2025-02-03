@@ -1,0 +1,34 @@
+# review_report_url:https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The detection rule identifies the execution of a malicious JavaScript function getVideo, which connects to the suspicious hostname oast[.]fun and redirects to a search: URI. This behavior is part of a phishing campaign using compromised email accounts, directing victims to deceptive web pages. 
+
+title: Malicious JavaScript Execution and Suspicious Hostname Connection
+id: 224d3475-4fae-41db-97fc-a2bc05d1af32
+status: experimental
+description: Detects the execution of a malicious JavaScript function named `getVideo` that triggers a connection to a suspicious hostname and redirects to a URI of type `search:`.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains: search:displayname=Downloads&subquery=\\\\124.168.91.178@80\\webdav\\pol.search-ms
+  selection2:
+    client_header_names|contains: Referer
+    uri|contains: https://czyrqdnvpujmmjkfhhvs9647ioh30wxvd.oast.fun
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate use of search URI schemes in applications
+  - Legitimate connections to the non-malicious domain that matches the pattern
+level: high

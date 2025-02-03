@@ -1,0 +1,34 @@
+# review_report_url: https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies the abuse of the legitimate imecmnt.exe process, renamed as update.exe, for DLL sideloading of the malicious imjp14k.dll module associated with the ShadowPad malware. It specifically monitors for the injection of code into dllhost.exe during this activity, helping to detect the advanced evasion techniques used in targeted attacks.
+title: ShadowPad Malware DLL Sideloading via imecmnt.exe
+id: 8c2753e7-4a96-47bd-b867-f29f71ece0dd
+status: experimental
+description: Detects the abuse of the legitimate process imecmnt.exe via DLL sideloading to load the ShadowPad module imjp14k.dll
+references:
+  - https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \update.exe
+    Image|endswith: \dllhost.exe
+  filter:
+    CommandLine|contains|all:
+      - imjp14k.dll
+      - imecmnt.exe
+  condition: selection and filter
+falsepositives:
+  - Legitimate use of imecmnt.exe with a legitimate DLL that has a similar name to imjp14k.dll
+level: high

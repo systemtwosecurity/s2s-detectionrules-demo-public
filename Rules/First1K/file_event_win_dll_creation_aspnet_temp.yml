@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule identifies potential malicious activity by detecting DLL file creation in ASP.NET temporary file directories, which could indicate persistence techniques or code injection. False positives may occur during legitimate application updates or development activities.
+
+title: Suspicious DLL Creation in Temporary ASP.NET Files Location
+id: a7cb7f4b-4074-42b9-836d-c6aeb6f4bef3
+status: experimental
+description: Detects the creation of DLL files in the temporary ASP.NET files location, which may indicate malicious activity.
+references:
+  - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1574.002
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .dll
+    TargetFilename|startswith:
+      - C:\Windows\Microsoft.NET\Framework
+      - C:\Windows\Microsoft.NET\Framework64
+  condition: selection
+falsepositives:
+  - Legitimate application installations or updates
+level: medium

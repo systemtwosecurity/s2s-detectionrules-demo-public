@@ -1,0 +1,37 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP network traffic to known Cobalt Strike C2 URLs, such as those containing "/cache?time=" and "/api/view.php," as well as traffic to specific C2 hosts. False positives may occur if legitimate traffic uses similarly named domains or URLs.
+title: Detection of Cobalt Strike C2 URLs
+id: 9e9fbc66-ea09-4e04-9eea-7559b0a9d4b4
+status: experimental
+description: Detects network traffic to known Cobalt Strike command and control (C2) URLs used by malware.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_urls:
+    uri|contains|all:
+      - /cache?time=
+      - /api/view.php
+  c2_hosts:
+    client_header_names|contains:
+      - checkupdate.maskrisks.com
+      - mail.maskrisks.com
+      - 154.205.138.202
+      - update.maskrisks.com
+  condition: c2_urls and c2_hosts
+falsepositives:
+  - Legitimate traffic to similarly named domains or URLs that are not related to the threat actor.
+level: high

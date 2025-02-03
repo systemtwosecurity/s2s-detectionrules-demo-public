@@ -1,0 +1,30 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of hidden files in the /Users/Shared directory with a random name of six characters, a technique often associated with the BlueNoroff Hidden Risk backdoor. Such behavior aligns with the threat actor's second-stage payload, which uses the SaveAndExec function to generate hidden files in /Users/Shared, write C2-received payloads, and execute them with elevated permissions (chmod 777). The detection focuses on identifying uncommon file-naming patterns (.XXXXXX) that are unlikely to be used by legitimate applications.
+
+title: Detection of Hidden File Creation in /Users/Shared with Random Name
+id: 34963ffc-a563-4205-bc18-e50a98805148
+status: experimental
+description: Detects the creation of hidden files in /Users/Shared with a random name of length 6, which may indicate the presence of the BlueNoroff Hidden Risk backdoor on macOS systems.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.persistence
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: /Users/Shared/.??????
+  condition: selection
+falsepositives:
+  - Legitimate applications that create hidden files in /Users/Shared with a random name of length 6, although this is uncommon and should be investigated.
+level: high

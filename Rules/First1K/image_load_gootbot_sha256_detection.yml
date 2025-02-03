@@ -1,0 +1,29 @@
+# review_report_url: https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation/
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This quire is correct and usefule. But to cover all the IOCs we are proving finetuned sigma too.
+title: Detection of GootBot Malware by SHA256 Hash
+id: 26776228-986c-4553-9fc4-f88021ee7ca6
+status: experimental
+description: Detects the presence of the GootBot malware based on SHA256 hash indicators of compromise.
+references:
+  - https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256: 95dbd3f273d621fa71631882d00bef71f902a4cc536ee150ec748aae4f47e4d5
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to specific files, and false positives are rare. Any detection should be investigated.
+level: high

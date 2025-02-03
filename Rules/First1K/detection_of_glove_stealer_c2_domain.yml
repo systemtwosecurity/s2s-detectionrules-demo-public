@@ -1,0 +1,28 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries to a known Glove Stealer C2 domain using Zeek DNS logs. It is flagged as high severity, with any traffic to this domain requiring further investigation to rule out false positives.
+title: Detection of Glove Stealer C2 Domain
+id: 981eb859-e058-4407-8acc-ddb94533e8ae
+status: experimental
+description: Detects network connections to a known Glove Stealer command and control (C&C) server domain.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: master.hdsjfkgsadoghdsiougds.space
+  condition: query
+falsepositives:
+  - Unknown, traffic should be investigated
+level: high

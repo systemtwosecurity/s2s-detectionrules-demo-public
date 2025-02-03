@@ -1,0 +1,35 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This sigma rule detects Windows file events using SHA-256 hashes associated with generic REvil ransomware samples. False positives may include legitimate tools whose file hashes occur by coincidence, but this should be rare.
+title: Detection of REvil Ransomware Generic Samples
+id: 58dd4177-2f4c-4bc6-88b6-900161c7b6e3
+status: experimental
+description: Detects file creation or modification events with SHA-256 hashes associated with REvil ransomware generic samples.
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - df2d6ef0450660aaae62c429610b964949812df2da1c57646fc29aa51c3f031e
+      - 45AEBD60E3C4ED8D3285907F5BF6C71B3B60A9BCB7C34E246C20410CF678FC0C
+      - 81d0c71f8b282076cd93fb6bb5bfd3932422d033109e2c92572fc49e4abc2471
+      - 36a71c6ac77db619e18f701be47d79306459ff1550b0c92da47b8c46e2ec0752
+      - 8e846ed965bbc0270a6f58c5818e039ef2fb78def4d2bf82348ca786ea0cea4f
+      - e2a24ab94f865caeacdf2c3ad015f31f23008ac6db8312c2cbfb32e4a5466ea2
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to have a file hash that matches the indicators of compromise
+level: high

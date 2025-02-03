@@ -1,0 +1,31 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This sigma rule was intended to detect the deletion of agent.crt and cert.exe files and might, therefore, highlight the REvil ransomware activity on Windows systems. False positive may involve legitimate software or administrative task that deletes these files for regular system operations.
+title: REvil Ransomware - Deletion of agent.crt and cert.exe
+id: 416e16c4-d001-4322-a868-709d154d1ad5
+status: experimental
+description: Detects the deletion of agent.crt and cert.exe files which is indicative of REvil ransomware activity.
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - C:\\Windows\\cert.exe
+      - c:\\kworking\\agent.crt
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative scripts that delete these files as part of their normal operation.
+level: high

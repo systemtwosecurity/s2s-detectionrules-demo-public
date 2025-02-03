@@ -1,0 +1,29 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well-supported by the CTI report. The report confirms that DarkSide ransomware creates a file named bfabc626.ico in C:\%USERNAME%\AppData\Local, making this rule a valid and effective method for identifying potential ransomware activity. 
+title: Suspicious .ico File Creation in AppData\Local Directory
+id: 3edd994c-2b43-4298-8c21-d5d5ac328238
+status: experimental
+description: Detects the creation of a suspicious .ico file in the user's AppData\Local directory which is associated with DarkSide ransomware.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Local\bfabc626.ico
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similarly named .ico files in the AppData\Local directory
+level: high

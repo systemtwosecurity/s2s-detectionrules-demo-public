@@ -1,0 +1,30 @@
+# review_report_url: https://socradar.io/dark-web-profile-abyss-ransomware/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of a ransom note named README_TO_RESTORE, which is a key indicator of Abyss Ransomware infections. Monitoring file creation events that match this specific filename can help identify potential ransomware activity in its early stages. Care should be taken with false positives as legitimate applications might use similarly named files. Adjustments may be needed for production environments to reduce unnecessary alerts from benign sources.
+
+title: Abyss Ransomware README_TO_RESTORE File Creation
+id: c33f55d5-43c6-4af5-8137-0bd6ec0065f5
+status: experimental
+description: Detects the creation of a ransom note named README_TO_RESTORE which is indicative of Abyss Ransomware activity
+references:
+  - https://socradar.io/dark-web-profile-abyss-ransomware
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: /README_TO_RESTORE
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a README_TO_RESTORE file for its own purposes
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - captures the essence of Base64-encoded metadata in HTTP requests as discussed in CTI. However, there might be variations in encoding patterns or headers beyond the default Base64, reducing full coverage.
+title: Detect HTTP C2 Requests with Base64 Metadata Encoding
+id: 97453997-acfe-4814-8f32-5e6f2bd7f61d
+status: experimental
+description: Detects command and control (C2) HTTP requests with Base64 metadata encoding which is indicative of Cobalt Strike activity.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-metadata-encoding-decoding
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+  - attack.t1132
+logsource:
+  product: paloalto
+  category: appliance
+detection:
+  keywords:
+    - Base64 metadata encoding detected
+    - C2 HTTP request with Base64 encoding
+  condition: keywords
+falsepositives:
+  - Legitimate applications that use Base64 encoding within HTTP requests
+level: high

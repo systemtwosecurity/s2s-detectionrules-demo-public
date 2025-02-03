@@ -1,0 +1,35 @@
+# review_report_url: https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule effectively identifies potential data exfiltration by KLogExe by targeting multipart/form-data POST requests that exhibit specific characteristics, including the presence of key headers and a designated URI. The inclusion of request_body_len: '>0' ensures that only requests with actual data payloads are flagged, reducing the likelihood of false positives from benign traffic.
+title: Detection of KLogExe Data Exfiltration
+id: be0ac775-05cd-4ad0-b175-3a924f61a4d9
+status: experimental
+description: Detects the exfiltration of data by KLogExe malware using a multipart/form-data POST request with a specific boundary pattern.
+references:
+  - https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.exfiltration
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: POST
+    uri|contains: /wp-content/include.php
+    client_header_names|contains|all:
+      - Content-Length
+      - Content-Type
+      - User-Agent
+    request_body_len: '>0'
+  condition: selection
+falsepositives:
+  - Legitimate multipart/form-data POST requests with non-malicious boundaries
+level: high

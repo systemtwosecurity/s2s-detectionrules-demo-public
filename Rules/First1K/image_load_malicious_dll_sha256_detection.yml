@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report lists several IOCs associated with the "Tickler" malware used by the "Peach Sandstorm" threat actor in their long-running intelligence-gathering operations. This rule focuses on detecting one of the malicious DLLs mentioned in the report. The specific role of this DLL in the malware's functionality is not detailed in the provided information, but it's likely a crucial component of the Tickler malware.This rule does not rely on filenames at all for detection, which is a strength. It uses only the SHA-256 hash, avoiding any potential issues related to filename-based detection. This approach prevents false positives that could occur if legitimate files had similar names, and it also catches the malicious DLL even if it's renamed.
+title: Detection of Malicious DLL with Specific SHA-256 Hash
+id: dc1ec086-15b3-45ee-aac8-a6d5342e33d9
+status: experimental
+description: Detects the execution or presence of a malicious DLL file with a known SHA-256 hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.persistence
+  - attack.t1055.001
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: fb70ff49411ce04951895977acfc06fa468e4aa504676dedeb40ba5cea76f37f
+  condition: sha256
+falsepositives:
+  - Unknown. Any detection should be investigated.
+level: high

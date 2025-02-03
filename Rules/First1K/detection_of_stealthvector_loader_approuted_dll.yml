@@ -1,0 +1,30 @@
+# review_report_url:  https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of the 'AppRouted.dll' file, associated with the 2024 StealthVector loader, by its MD5 hash. It flags executable files matching the hash, which are indicative of potential malicious activity linked to APT41's operations.
+title: Detection of 2024 StealthVector Loader 'AppRouted.dll'
+id: 16928e1f-dc1a-41d7-be3f-ed9e6685a82b
+status: experimental
+description: Detects the presence of a known malicious file 'AppRouted.dll' associated with the 2024 StealthVector loader by its MD5 hash.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    TargetFilename|endswith: \AppRouted.dll
+    md5: f062183da590aba5e911d2392bc29181
+  condition: selection
+falsepositives:
+  - Unknown. Hash values are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: high

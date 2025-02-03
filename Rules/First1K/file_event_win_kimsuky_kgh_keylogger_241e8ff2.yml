@@ -1,0 +1,31 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the creation of files by the Kimsuky KGH keylogger that store stolen data, specifically targeting files that follow a naming pattern that starts with C:\Users\user\AppData\Roaming\lg\ and ends with .x. By focusing on this specific path and file extension, the rule aims to identify potential keylogger activity while considering the possibility of false positives from legitimate applications that may use similar naming conventions. The detection is categorized under the attack.collection tactic, indicating its relevance to data exfiltration activities.
+
+title: Detection of Kimsuky KGH Keylogger Data Storage File Creation
+id: 241e8ff2-1377-4177-8754-57a962ef6e38
+status: experimental
+description: Detects the creation of a file used by the Kimsuky KGH keylogger to store stolen data, which follows a specific naming pattern including the current date.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\\Users\\user\\AppData\\Roaming\\lg\\
+    TargetFilename|endswith: .x
+  condition: selection
+falsepositives:
+  - Legitimate applications that use a similar naming convention for temporary files.
+level: high

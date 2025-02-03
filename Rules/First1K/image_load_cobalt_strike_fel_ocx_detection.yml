@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of the Cobalt Strike file "fel.ocx" with a specific SHA-256 hash, indicating potential lateral movement within a network. Any detection should be thoroughly investigated, as false positives are unlikely.
+title: Detection of Cobalt Strike File "fel.ocx"
+id: f976a98b-b441-4750-9d10-dc45c80f50d0
+status: experimental
+description: Detects the presence of a known Cobalt Strike file with a specific hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.lateral-movement
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: fel.ocx
+    sha256: 827f7178802b2e92988d7cff349648f334bc86317b0b628f4bb9264285fccf5f
+  condition: selection
+falsepositives:
+  - Unknown. Any detection should be investigated.
+level: high

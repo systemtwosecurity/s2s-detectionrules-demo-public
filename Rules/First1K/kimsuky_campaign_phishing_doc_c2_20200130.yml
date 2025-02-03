@@ -1,0 +1,29 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: false
+# review_rule_classification: Duplicate
+# review_rule_classification_reason: Analyst command
+# review_rule_ttp_match: yes
+# review_notes:
+#  - We have already used this detection in the Rule ID - 204693b5-23f6-47a2-8046-86887f77d4b1
+
+title: 'Kimsuky Campaign: Hosting Phishing Document PM_Abe_draft_letter_on_UN_NK_20200130.doc'
+id: 26ebcf04-6fc4-46e7-b11b-3219e6095200
+status: experimental
+description: Detects the hosting of a specific phishing document with a known C2 URL pattern associated with the Kimsuky campaign.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: modsecurity
+  category: application
+detection:
+  c2_url: myaccounts.posadadesantiago.com/test/Update.php?wShell=201
+  condition: c2_url
+falsepositives:
+  - Legitimate access to the URL pattern by authorized personnel or systems if the domain is reused after takedown.
+level: high

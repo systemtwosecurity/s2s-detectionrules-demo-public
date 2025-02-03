@@ -1,0 +1,31 @@
+# review_report_url: https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the writing of a base64 encoded file named agent.crt to the c:\kworking\ directory by the agentmon.exe process, which is indicative of REvil ransomware activity, specifically tied to the Kaseya supply chain attack. The rule identifies the execution of the Kaseya Agent Monitor (agentmon.exe) writing this file, which is part of the ransomware's deployment process. Marked as high severity, the rule highlights a critical activity related to malware impact. False positives could occur in environments where the agentmon.exe process legitimately uses the c:\kworking\ directory, so careful context-based analysis should be conducted if such activity is observed.
+title: Detection of REvil Ransomware Dropper via Kaseya Agent Monitor
+id: a30fe0e6-1bd7-4102-bb9e-df464564f936
+status: experimental
+description: Detects the writing of a base64 encoded file named "agent.crt" to the path "c:\\kworking\\" by the Kaseya Agent Monitor (agentmon.exe), which is indicative of REvil ransomware activity.
+references:
+  - https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image|endswith: \agentmon.exe
+    TargetFilename|endswith: \agent.crt
+    CommandLine|contains: c:\\kworking\\
+  condition: selection
+falsepositives:
+  - Legitimate use of agentmon.exe writing to c:\\kworking\\ if it is part of normal operations within the environment.
+level: high

@@ -1,0 +1,36 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques/
+# review_date: 2024/04/15
+# review_author: Sergio Nevarez
+# review_rule_useful: true
+# review_rule_classification: Prone to FPs
+# review_rule_classification_reason: Common utility
+# review_notes: Consider additional context to reduce false positives
+title: Suspicious AWS SSM Start-Session Command Usage
+id: f2b5a7e6-fdf0-49fe-8508-949d4b4d8a6f
+status: experimental
+description: Detects the use of the AWS SSM Start-Session command which can be used by an attacker to establish a connection to EC2 instances without requiring SSH inbound rules.
+references:
+    - https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques
+author: System Two Security
+date: 2024/04/15
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.discovery
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection1:
+        eventName: StartSession
+        eventSource: ssm.amazonaws.com
+    selection2:
+        eventName: SendCommand
+        eventSource: ssm.amazonaws.com
+        requestParameters:
+            documentName:
+                - AWS-RunShellScript
+    condition: selection1 or selection2
+falsepositives:
+    - Legitimate use of the StartSession command by system administrators for maintenance or other operational tasks.
+level: high

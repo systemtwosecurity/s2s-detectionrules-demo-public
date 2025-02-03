@@ -1,0 +1,33 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the presence of specific malicious files associated with a potential Nitrogen infection within the %AppData%\Roaming\Notepad folder. The inclusion of slv.py, pycryptodome, and python.exe as indicators enhances the identification of unauthorized persistence mechanisms.
+title: Suspicious Python Executable and Sliver Beacon Placement
+id: 772722ae-041d-46e9-ae09-54651251638c
+status: experimental
+description: Detects the creation of a specific folder and placement of python.exe, pycryptodome, and a Sliver beacon which could indicate a Nitrogen infection.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - \AppData\Roaming\Notepad\
+      - slv.py
+      - pycryptodome
+      - python.exe
+  condition: selection
+falsepositives:
+  - Legitimate use of Notepad folder by custom or non-standard applications
+level: high

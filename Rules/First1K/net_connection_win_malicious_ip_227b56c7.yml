@@ -1,0 +1,28 @@
+# review_report_url: https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - "This sigma rule detects network connections to a specific known malicious IP address (92.42.96.30), which may indicate command and control activity or data exfiltration. The rule is focused on identifying suspicious outbound or inbound traffic that could be part of a malicious operation.
+title: Network Connection to Malicious IP Address
+id: 227b56c7-9269-425d-9b01-4232293495c4
+status: experimental
+description: Detects network connections to a known malicious IP address which may indicate command and control activity or data exfiltration.
+references:
+  - https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  DestinationIp: 92.42.96.30
+  condition: DestinationIp
+falsepositives:
+  - Legitimate connections to the IP address if it has been reused after the malicious activity was reported.
+level: high

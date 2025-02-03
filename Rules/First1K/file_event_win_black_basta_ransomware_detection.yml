@@ -1,0 +1,29 @@
+# review_report_url: https://www.cybereason.com/blog/cybereason-vs.-black-basta-ransomware
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule "Detection of Black Basta Ransomware File Encryption Activity" is designed to detect ransomware activity by identifying files encrypted with the .basta extension used by Black Basta. 
+title: Detection of Black Basta Ransomware File Encryption Activity
+id: d7bb583b-16f8-4a2b-89ea-63859912eb08
+status: experimental
+description: Detects the encryption of files by Black Basta ransomware which appends the .basta extension to encrypted files.
+references:
+  - https://www.cybereason.com/blog/cybereason-vs.-black-basta-ransomware
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .basta
+  condition: selection
+falsepositives:
+  - Legitimate applications that use the .basta extension, although this is highly unlikely.
+level: critical

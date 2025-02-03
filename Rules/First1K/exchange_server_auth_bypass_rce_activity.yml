@@ -1,0 +1,35 @@
+# review_report_url: https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is properly aligned with the CTI report. It accurately detects authentication bypass and RCE activity in Exchange servers by monitoring POST requests to specific paths (/ecp/*.js, /ecp/main.css, /ecp/default.flt, /owa/auth/Current/), as described in the CTI report. 
+title: Exchange Server Authentication Bypass and RCE Activity
+id: 60079774-a68f-46db-bac0-fad5dabc4b24
+status: experimental
+description: Detects potential authentication bypass and remote code execution (RCE) activity in Exchange servers by monitoring IIS logs for specific POST requests.
+references:
+  - https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+  - attack.t1114.002
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|endswith:
+      - /ecp/*.js
+      - /ecp/main.css
+      - /ecp/default.flt
+      - /owa/auth/Current/
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that coincidentally matches the indicators of compromise.
+level: high

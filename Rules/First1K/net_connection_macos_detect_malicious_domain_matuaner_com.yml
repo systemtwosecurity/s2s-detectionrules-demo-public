@@ -1,0 +1,30 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to the domain matuaner.com, a known malicious domain linked to the BlueNoroff Hidden Risk threat actor. The domain has been explicitly identified as part of the actor's infrastructure, used to download malicious payloads onto macOS systems during their campaigns.
+
+title: Detect Download from Known Malicious Domain matuaner.com
+id: cfccab88-e79f-4e85-b908-009c6170c063
+status: experimental
+description: Detects network connections to a known malicious domain used by BlueNoroff threat actor for downloading malicious files to Mac systems.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.execution
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  domain_matuaner:
+    DestinationHostname|contains: matuaner.com
+  condition: domain_matuaner
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or reused for legitimate purposes after the time of the report.
+level: high

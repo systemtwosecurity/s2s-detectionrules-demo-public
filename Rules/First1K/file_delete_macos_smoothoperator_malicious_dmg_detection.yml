@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of a specific malicious DMG file associated with the SmoothOperator malware campaign on macOS systems. The rule's relevance and accuracy are high, as it directly corresponds to the SHA256 hash provided in the CTI report for the "Malicious 3CX DMG" file under the SmoothOperator section. The rule's efficacy is strong for identifying this exact file, but it's limited to detecting only this specific instance of the malware.
+title: Detection of SmoothOperator Malicious 3CX DMG
+id: 86ebda21-6483-439e-956a-48467b50d074
+status: experimental
+description: Detects the presence of a known malicious DMG file associated with the SmoothOperator malware campaign.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.initial-access
+logsource:
+  category: file_delete
+  product: macos
+detection:
+  selection:
+    sha256: e6bbc33815b9f20b0cf832d7401dd893fbc467c800728b5891336706da0dbcec
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: high

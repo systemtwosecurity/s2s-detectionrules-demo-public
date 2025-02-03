@@ -1,0 +1,29 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively detects the SQL command associated with removing the "Health Check Service" user account, as outlined in the CTI report. This detection rule is crucial for identifying malicious attempts by attackers to clean up or evade detection by removing backdoor accounts that provide persistent access to the compromised environment. 
+
+title: Detection of Malicious SQL Command Deletion of Health Check Service User
+id: 1095beb0-02cb-4223-a8ec-58d0980acab0
+status: experimental
+description: Detects the execution of a SQL command that deletes a user with the RealName 'Health Check Service', which may indicate malicious activity.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  category: application
+  product: sql
+detection:
+  keywords: Delete FROM users WHERE RealName='Health Check Service'
+  condition: keywords
+falsepositives:
+  - Legitimate administrative activity that involves deleting the Health Check Service user account.
+level: high

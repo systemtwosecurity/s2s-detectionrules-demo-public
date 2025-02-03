@@ -1,0 +1,35 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches the CTI report for detecting Cobalt Strike activity via the domain theyardservice.com.
+title: Detection of Cobalt Strike Beacon via theyardservice.com Domains
+id: 02677d06-c6df-412a-bd62-dc96baff9771
+status: experimental
+description: Detects network connections related to Cobalt Strike Beacon using the domain theyardservice.com and associated file hashes.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    client_header_names|contains: Host
+  selection2:
+    uri|endswith: /jquery-3.3.1.min.woff2
+  selection3:
+    client_header_names|contains: User-Agent
+  selection4:
+    method: GET
+  condition: selection1 and selection2 and selection3 and selection4
+falsepositives:
+  - Legitimate access to the theyardservice.com domain by benign users or applications.
+level: high

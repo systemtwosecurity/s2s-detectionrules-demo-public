@@ -1,0 +1,29 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting DarkSide ransomware C2 communication aligns well with the CTI report, confirming the use of a unique malformed User-Agent string as an IoC. The detection logic is robust and reliable for identifying potential ransomware activity
+title: Detection of DarkSide Ransomware C2 Communication
+id: dca8e4df-1c64-4f08-adb5-26e391d111e9
+status: experimental
+description: Detects the use of a specific malformed User-Agent string in C2 communication, which could be a unique identifier for the DarkSide ransomware.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    UserAgent|contains: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:79.0) Gecko/20100101 Firefox/80
+  condition: selection
+falsepositives:
+  - Legitimate software or services with a similar User-Agent string by coincidence
+level: high

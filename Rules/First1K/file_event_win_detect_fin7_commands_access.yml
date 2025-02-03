@@ -1,0 +1,29 @@
+# review_report_url: https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects access to a specific file, commands.txt, located in the \sysvols\ directory, which is associated with FIN7's Pillowmint malware for command-and-control purposes. Monitoring access to this file is critical as it may indicate unauthorized access or malware activity. However, legitimate administrative activities might also access similarly named files, leading to potential false positives.
+title: Detect Access to FIN7 Commands File
+id: 7394c0ce-4422-4e39-8f72-4976eeef9d7c
+status: experimental
+description: Detects the access to a specific commands file used by the FIN7 threat group as part of the Pillowmint malware.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief
+author: System Two Security
+date: 2024/10/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \sysvols\commands.txt
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that happens to access a file with a similar name in the sysvols directory.
+level: high

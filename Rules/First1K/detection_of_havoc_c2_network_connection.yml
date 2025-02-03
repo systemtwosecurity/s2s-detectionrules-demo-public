@@ -1,0 +1,29 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a known Havoc C2 server by identifying a specific URI pattern in Zeek HTTP logs. The rule's relevance and accuracy are high, as it directly corresponds to the Havoc C2 URL mentioned in the CTI report. Its efficacy is strong for detecting this exact C2 infrastructure
+title: Detection of Havoc C2 Network Connection
+id: f5900312-96e7-45eb-ab02-328570e27595
+status: experimental
+description: Detects network connections to a known Havoc command and control (C2) server URL which is a strong indicator of compromise.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /qq.com/ab735a258a90e8e1f3e3dcf231bf53a9/mail/
+  condition: selection
+falsepositives:
+  - Legitimate connections to the C2 server URL if it is reused for non-malicious purposes, although highly unlikely.
+level: high

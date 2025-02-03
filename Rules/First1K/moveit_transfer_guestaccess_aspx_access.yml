@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule monitors access to guestaccess.aspx, which may indicate an attempt to exploit the MOVEit Transfer vulnerability. While legitimate access is possible, it is uncommon and should be verified carefully.
+
+title: MOVEit Transfer Exploitation Attempt - guestaccess.aspx Access
+id: 97019fb1-6d72-49f8-b1f3-4b3f1c091993
+status: experimental
+description: Detects attempts to exploit the MOVEit Transfer vulnerability by accessing the guestaccess.aspx file.
+references:
+  - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-uri-stem: /guestaccess.aspx
+  condition: selection
+falsepositives:
+  - Legitimate access to guestaccess.aspx (if exists)
+level: high

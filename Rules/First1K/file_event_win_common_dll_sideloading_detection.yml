@@ -1,0 +1,50 @@
+# review_report_url: https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-aligned with the CTI report regarding WikiLoader’s use of DLL sideloading with commonly abused DLL names. The rule correctly identifies the creation of .exe and .dll files outside the typical directories.
+title: Common DLL Sideloading Targets Detection
+id: d2f918b0-7ba0-4bce-a622-e413b60eb69f
+status: experimental
+description: Detects the writing of both a .exe and a .dll file where the .dll file has a name commonly abused for search order hijacking, excluding user and program files directories.
+references:
+  - https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+  - attack.t1574.002
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image|endswith: \explorer.exe
+    TargetFilename|endswith:
+      - .exe
+      - .dll
+    TargetFilename|contains:
+      - iphlpapi.dll
+      - vcruntime140.dll
+      - msfte.dll
+      - wininet.dll
+      - rw32core.dll
+      - secur32.dll
+      - nw.dll
+      - oci.dll
+      - version.dll
+      - vcruntime.dll
+  filter1:
+    TargetFilename|startswith: C:\\Users\\
+  filter2:
+    TargetFilename|startswith: C:\\Program Files
+  filter3:
+    TargetFilename|startswith: C:\\Program Files (x86)
+  condition: selection and not filter1 and not filter2 and not filter3
+falsepositives:
+  - Legitimate software installation or update processes that use similar naming conventions for DLL files.
+level: high

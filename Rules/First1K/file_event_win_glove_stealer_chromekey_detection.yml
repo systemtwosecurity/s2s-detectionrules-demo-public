@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule detects the creation or modification of chromekey.txt, a file used by Glove Stealer to store decrypted App-Bound encryption keys. The referenced CTI confirms this behavior as part of its credential-stealing process. This rule effectively identifies potential Glove Stealer activity based on this indicator.
+title: Detection of Glove Stealer Module Activity
+id: 4fc5cb65-827b-4dda-9bf5-772cd3670268
+status: experimental
+description: Detects the creation or modification of the "chromekey.txt" file which is indicative of Glove Stealer activity where it stores the decrypted App-Bound encryption key.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \chromekey.txt
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools that use a similarly named file for configuration or operation.
+level: high

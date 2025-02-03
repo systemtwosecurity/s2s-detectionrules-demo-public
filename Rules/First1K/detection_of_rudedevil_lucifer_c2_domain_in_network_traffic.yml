@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DNS queries for the domain nishabii.xyz, linked to the RUDEDEVIL/LUCIFER C2 infrastructure, indicating possible command-and-control communications. By monitoring Zeek DNS logs for this domain, it helps identify compromised systems engaging with known malicious actors.
+title: Detection of RUDEDEVIL/LUCIFER C2 Domain in Network Traffic
+id: b77dde14-fc54-4deb-9cf6-df56b558041a
+status: experimental
+description: Detects network connections to the RUDEDEVIL/LUCIFER command and control (C2) domain which is indicative of a compromised system.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    query|contains: nishabii.xyz
+  condition: query
+falsepositives:
+  - Legitimate connections to a domain with a similar name
+level: high

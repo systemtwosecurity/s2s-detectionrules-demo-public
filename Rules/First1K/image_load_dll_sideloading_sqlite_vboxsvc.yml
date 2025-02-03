@@ -1,0 +1,35 @@
+# review_report_url: https://redcanary.com/threat-detection-report/trends/info-stealers
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies the loading of sqlite.dll by vboxsvc.exe from unusual paths, such as user directories, which is indicative of a DLL sideloading attack. Legitimate software rarely uses this combination or directory structure, making it a strong indicator of malicious activity.
+title: Detection of DLL Sideloading Technique Involving sqlite.dll
+id: dbb939f0-395d-4ecf-a3be-83e35e21e811
+status: experimental
+description: Detects the loading of sqlite.dll by vboxsvc.exe from an unusual path, which is indicative of a DLL sideloading technique.
+references:
+  - https://redcanary.com/threat-detection-report/trends/info-stealers
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|contains: sqlite.dll
+    Image|endswith: \vboxsvc.exe
+    ImageLoaded|startswith: C:\users\
+    ImageLoaded|contains|all:
+      - \localcache\roaming\
+      - \appdata\local\packages\google\
+      - \hvn\
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar naming or loading patterns by design
+level: high

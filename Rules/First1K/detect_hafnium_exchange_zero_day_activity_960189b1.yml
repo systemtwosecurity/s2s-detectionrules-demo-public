@@ -1,0 +1,30 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-hafnium-exchange-server-zero-day-activity-in-splunk.html
+# review_date: 2024-10-28
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule is well-aligned with the behavior described in the CTI report. It captures the critical aspect of HAFNIUM’s exploitation, focusing on POST requests to /owa/auth/Current/themes/resources/. The detection logic in the Sigma rule mirrors the detection query recommended in the CTI, making it an effective method for identifying these malicious activities.
+title: Detecting HAFNIUM Exchange Server Zero-Day Activity
+id: 960189b1-6bc5-472a-9de1-453ec6b78d3f
+status: experimental
+description: Detects HTTP POST requests to specific directories used by HAFNIUM to exploit Exchange servers. Requires IIS logs from the Exchange OWA server.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-hafnium-exchange-server-zero-day-activity-in-splunk.html
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|startswith: /owa/auth/Current/themes/resources/
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that happens to use the same URI path.
+level: high

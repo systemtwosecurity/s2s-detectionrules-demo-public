@@ -1,0 +1,30 @@
+# review_report_url: https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The combination of the CTI report and the related Sigma rules emphasizes the need for robust monitoring and response strategies against advanced persistent threats like FIN7. By actively employing these detection mechanisms, organizations can better safeguard against potential breaches and enhance their overall security posture.
+title: FIN7 WsTaskLoad.exe Malicious File Download Detected
+id: 465b1e2d-96ab-49b3-a418-11ab9f292c3f
+status: experimental
+description: Detects the download and execution of the malicious executable WsTaskLoad.exe associated with the FIN7 APT group targeting the U.S. Automotive Industry.
+references:
+  - https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: WsTaskLoad.exe
+  condition: selection
+falsepositives:
+  - Legitimate software with a coincidental file name
+  - Legitimate administrative tools that use the same file name
+level: high

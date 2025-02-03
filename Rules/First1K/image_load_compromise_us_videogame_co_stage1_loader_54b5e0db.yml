@@ -1,0 +1,30 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution or creation of a file associated with the Stage 1 Loader used in the compromise of a U.S. video game company by APT41. A false negative could occur if the malware changes its file hash or if the same hash is used by benign software, though hash collisions are rare.
+
+title: Compromise of a U.S. Video Game Company with Stage 1 Loader
+id: 54b5e0db-a098-4efd-ab51-fa36b2b9c17f
+status: experimental
+description: Detects the execution or creation of a file with a specific MD5 hash associated with the Stage 1 Loader used in the compromise of a U.S. video game company by APT41.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Hashes|contains: 830a09ff05eac9a5f42897ba5176a36a
+  condition: selection
+falsepositives:
+  - Unknown. Hashes should be unique to the malware, but there is always a possibility of hash collisions or legitimate software with the same hash.
+level: high

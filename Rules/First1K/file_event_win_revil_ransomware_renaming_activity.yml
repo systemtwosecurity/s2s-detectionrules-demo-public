@@ -1,0 +1,30 @@
+# review_report_url:https://www.varonis.com/blog/revil-msp-supply-chain-attack
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects activity of the renaming of a .pdf file by the program MsMpEng.exe, which is known related to REvil ransomware attacks on Kaseya VSA. Such false positives are related to administrator's legit activities involving the renaming of files by the program MsMpEng.exe.
+title: REvil Ransomware File Renaming Activity
+id: a12cda8c-296c-4f29-964c-a9fc2a614d46
+status: experimental
+description: Detects file renaming activities by MsMpEng.exe which is indicative of REvil ransomware attack on Kaseya VSA
+references:
+  - https://www.varonis.com/blog/revil-msp-supply-chain-attack
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image: MsMpEng.exe
+    TargetFilename|endswith: .pdf
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve renaming files using MsMpEng.exe
+level: high

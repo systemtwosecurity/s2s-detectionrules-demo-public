@@ -1,0 +1,33 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description as  the IP address 152.89.244.185 and the URI /conn.exe, which are associated with the delivery of the DUSTPAN threat.. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. You can check alternative sigma from rule ID: f92d90fa-f12c-4245-876e-08694296219b
+title: Detection of DUSTPAN Delivery from IP 152.89.244.185
+id: b2ce7aae-7dfb-4aa2-84cf-24ce35419ced
+status: experimental
+description: Detects network connections to a known malicious IP address associated with the delivery of the DUSTPAN threat.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri: /conn.exe
+    client_header_names|contains: Host
+    status_code: 200
+  filter:
+    client_header_names|contains: 152.89.244.185
+  condition: selection and filter
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the last known malicious activity.
+level: high

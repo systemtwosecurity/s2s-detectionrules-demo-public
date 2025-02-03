@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report’s detail about the creation of multiple service principals in a short timeframe, effectively detecting such activities.
+title: O365 Multiple Service Principals Created by Service Principal
+id: 14a91a79-22f6-4024-8f84-78a0d105d43a
+status: experimental
+description: Detects the creation of multiple service principals by a service principal within a short period of time, which could indicate an attempt to bypass admin consent processes.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.persistence
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue: Add app role assignment to service principal.
+    Workload: AzureActiveDirectory
+  condition: selection | stats count() by user | search count > 3
+falsepositives:
+  - Legitimate bulk operations performed by service principals as part of automated workflows or during service provisioning.
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://labs.withsecure.com/publications/fin7-target-veeam-servers
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule provides highly accurate detection of FIN7 activity based on real-world TTPs. The CTI report confirms the rule’s relevance, and implementing this detection will strengthen defenses against FIN7-related campaigns. For optimal performance, complement this rule with network traffic analysis and PowerShell monitoring to capture broader attack patterns.
+title: FIN7 Process Injection Into svchost.exe
+id: bd38788d-3183-4d0c-b6e9-0fd451055b95
+status: experimental
+description: Detects process injection into svchost.exe with specific payload names as used by FIN7.
+references:
+  - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1055
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: create_remote_thread
+detection:
+  selection:
+    TargetImage: C:\\Windows\\system32\\svchost.exe
+    StartFunction|contains:
+      - Plug&Play
+      - DoomLaunch
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar injection techniques for non-malicious purposes
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is effectively tailored to detect the exact indicator detailed in the CTI report, specifically the JSP web shell file update.jsp with the hash. This rule provides a robust mechanism to identify instances of the CL0P ransomware’s malicious JSP web shell, given the unique hash, thereby reducing the likelihood of false positives. 
+
+title: Detection of CL0P Ransomware JSP Web Shell
+id: 6a5e3f2f-ac29-411e-a124-cef8d629605c
+status: experimental
+description: Detects the presence of a Java Server Pages (JSP) web shell file named update.jsp with specific hash, which is associated with CL0P ransomware campaign.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  category: application
+  product: spring
+detection:
+  keywords:
+    - eb9f5cbe71f9658d38fb4a7aa101ad40534c4c93ee73ef5f6886d89159b0e2c2
+    - update.jsp
+  condition: keywords
+falsepositives:
+  - Unknown. The hash is unique and should not lead to false positives.
+level: critical

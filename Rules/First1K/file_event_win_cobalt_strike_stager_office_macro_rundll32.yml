@@ -1,0 +1,46 @@
+
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule is useful and matches with the CTI. we are proving another alternative where we have added the hash value as well which is actully the 2nd part of this Stager execution and can also be indicative of this TTP
+title: Detection of Cobalt Strike Stager via rundll32.exe and Office Macros
+id: d7ca34f5-8ac4-4aa6-9590-f90c8939e5c9
+status: experimental
+description: Detects the execution of a Cobalt Strike stager as part of an attack by WIZARD SPIDER eCrime operators, which involves process injection via rundll32.exe and abuse of Microsoft Office VBA macros.
+references:
+  - https://www.crowdstrike.com/blog/how-falcon-complete-disrupts-ecrime-operators-wizard-spider
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    CommandLine|contains|all:
+      - C:\\Users\\Public\\Music\\
+      - rundll32.exe
+  selection2:
+    Image|endswith: \\rundll32.exe
+    CommandLine|contains:
+      - PING.EXE
+      - rundll32.exe
+      - FIRSTRUN.EXE
+      - schtasks.exe
+      - EXCEL.EXE
+  selection3:
+    ParentImage|endswith: \\EXCEL.EXE
+    CommandLine|contains: rundll32.exe
+  selection4:
+    TargetFilename|endswith: \\test.dll
+  condition: selection1 or selection2 or selection3 or selection4
+falsepositives:
+  - Legitimate use of rundll32.exe with scripts or utilities that use the Public Music directory.
+  - Legitimate development or administrative activities that involve rundll32.exe.
+level: high

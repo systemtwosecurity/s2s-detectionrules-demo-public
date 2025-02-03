@@ -1,0 +1,35 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively detects file system events involving the creation or access of specific directories and files used by Glove Stealer for data exfiltration. It aligns with CTI-reported behaviors, focusing on key file and directory patterns indicative of malicious activity.
+id: d9ed4ac0-2a50-4ecc-b428-91d07fa11d6f
+status: experimental
+description: Detects the creation of text files in a specific directory structure used by Glove Stealer malware to store stolen data.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \\Wallets\\
+      - \\Autofill\\
+      - \\OTP\\
+      - \\INFS.txt
+      - \\AllPws.txt
+      - \\Cookies\\
+      - \\Restore\\
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar directory structures and file names for storing data.
+level: high

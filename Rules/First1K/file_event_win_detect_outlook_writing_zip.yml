@@ -1,0 +1,31 @@
+# review_report_url:https:https://www.splunk.com/en_us/blog/security/kaseya-sera-what-revil-shall-encrypt-shall-encrypt.html
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule recognizes activity where the Outlook.exe application is writing ZIP files and hence might indicate malicious activity, such as exfiltration or pre-exfiltration. It scans for instances where the Outlook executable creates .zip files. False positives are very likely in cases of legitimate archiving or backups. The rating of the rule is set at a medium level of severity.
+title: Detect Outlook Writing ZIP Files
+id: 002d891f-e9bd-405b-b633-2ba3f5423d9a
+status: experimental
+description: Detects the activity of Outlook.exe writing ZIP files, which could indicate malicious activity such as data exfiltration or staging for exfiltration.
+references:
+  - https://www.splunk.com/en_us/blog/security/kaseya-sera-what-revil-shall-encrypt-shall-encrypt.html
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image|endswith: \\OUTLOOK.EXE
+    TargetFilename|endswith: .zip
+  condition: selection
+falsepositives:
+  - Legitimate archival or backup operations by the user
+  - Automated processes that generate ZIP files as part of normal operations
+level: medium

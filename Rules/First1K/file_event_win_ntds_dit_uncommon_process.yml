@@ -1,0 +1,56 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule for detecting the creation of ntds.dit by uncommon processes or in suspicious directories maps closely with the TTPs outlined in both CTI reports. Specifically, both reports describe PRC state-sponsored actors using tools such as cmd.exe and ntdsutil.exe to create copies of ntds.dit in non-standard directories like C:\Windows\Temp\, aligning with the rule's detection logic targeting similar processes and paths. The rule’s focus on detecting abnormal ntds.dit file creation events by uncommon processes such as cmd.exe and monitoring unusual paths like \Temp\ and \Public\ effectively matches the credential dumping activities mentioned in the CTI reports. Additionally, the inclusion of ESENT logs (e.g., Event IDs 216, 325, and 327) in the reports provides further corroboration for monitoring ntds.dit creation in these directories. This makes the Sigma rule highly effective for detecting malicious ntds.dit file manipulations, particularly in cases involving advanced living-off-the-land techniques used by threat actors to extract sensitive Active Directory data
+
+title: NTDS.DIT Creation By Uncommon Process
+id: 11b1ed55-154d-4e82-8ad7-83739298f720
+related:
+    - id: 4e7050dd-e548-483f-b7d6-527ab4fa784d
+      type: similar
+status: test
+description: Detects creation of a file named "ntds.dit" (Active Directory Database) by an uncommon process or a process located in a suspicious directory
+references:
+    - https://stealthbits.com/blog/extracting-password-hashes-from-the-ntds-dit-file/
+    - https://adsecurity.org/?p=2398
+author: Florian Roth (Nextron Systems), Nasreddine Bencherchali (Nextron Systems)
+date: 2022-01-11
+modified: 2022-07-14
+tags:
+    - attack.credential-access
+    - attack.t1003.002
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_ntds:
+        TargetFilename|endswith: '\ntds.dit'
+    selection_process_img:
+        Image|endswith:
+            # Add more suspicious processes as you see fit
+            - '\cmd.exe'
+            - '\cscript.exe'
+            - '\mshta.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            - '\wscript.exe'
+            - '\wsl.exe'
+            - '\wt.exe'
+    selection_process_paths:
+        Image|contains:
+            - '\AppData\'
+            - '\Temp\'
+            - '\Public\'
+            - '\PerfLogs\'
+    condition: selection_ntds and 1 of selection_process_*
+falsepositives:
+    - Unknown
+level: high

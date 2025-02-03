@@ -1,0 +1,43 @@
+# review_report_url: https://hunt.io/blog/latrodectus-malware-masquerades-as-ahnlab-security-software-to-infect-victims
+# review_date: 2024-11-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections originating from specific files related to Latrodectus malware, which masquerades as legitimate security software. It checks for executable files (e.g., confrontation_d46a184c.exe, GoogleAuthSetup.ex, MeDExt.dll) attempting to communicate with known malicious domains associated with the malware campaign. The rule triggers when both conditions are met—presence of the malicious files and connections to the listed domains. False positives could arise from legitimate software using similar file names or domain names with coincidental substrings.
+title: Latrodectus Malware Masquerading as Security Software
+id: 8b28cb53-ad70-47bd-8995-bb1ccbff26ba
+status: experimental
+description: Detects network connections from files with specific names indicative of Latrodectus malware communicating with known malicious domains.
+references:
+  - https://hunt.io/blog/latrodectus-malware-masquerades-as-ahnlab-security-software-to-infect-victims
+author: System Two Security
+date: 2024/09/04
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    Image|endswith:
+      - \confrontation_d46a184c.exe
+      - \GoogleAuthSetup.ex
+      - \MeDExt.dll
+  selection2:
+    DestinationHostname|contains|all:
+      - spikeliftall.]com
+      - riscoarchez.]com
+      - stripplasst.]com
+      - godfaetret.]com
+      - carflotyup.]com
+      - steamcommunity.]com
+      - coolartiion.]com
+      - worlpquano.]com
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate software with file names matching the malicious patterns, which are unlikely but possible.
+  - Legitimate domains that coincidentally contain the malicious domain substrings.
+level: high

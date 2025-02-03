@@ -1,0 +1,33 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of email forwarding rules in Office 365, focusing on the UpdateInboxRules event with a RuleOperation of AddMailboxRule. This activity is a known adversary technique used to establish persistence or exfiltration mechanisms by redirecting emails to attacker-controlled addresses. The detection aligns with MITRE ATT&CK T1114.003 (Email Forwarding Rule), a tactic frequently observed in account compromise scenarios.
+
+title: Suspicious Email Forwarding Rule Creation Detected
+id: f20908b1-cd05-4e22-b6f5-15345bd56d60
+status: experimental
+description: Detects the creation of email forwarding rules which could be indicative of an attacker establishing persistence or data exfiltration mechanisms in Office 365.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.t1114.003
+  - attack.persistence
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    eventName: UpdateInboxRules
+    eventSource: RuleOperation
+    status: AddMailboxRule
+  condition: selection
+falsepositives:
+  - Legitimate creation of forwarding rules by the user or administrator
+level: medium

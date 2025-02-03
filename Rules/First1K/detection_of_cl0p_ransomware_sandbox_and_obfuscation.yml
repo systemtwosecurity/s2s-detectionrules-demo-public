@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule precisely captures the indicator of compromise highlighted in the CTI report, focusing on a specific executable that exhibits sandbox evasion and string obfuscation tactics used by CL0P ransomware. Implementing this Sigma rule enhances the detection of malicious executables associated with CL0P and is critical for identifying attempts to bypass security mechanisms. 
+
+title: Detection of CL0P Ransomware - Sandbox Detection and String Obfuscation
+id: f9cefd22-5a03-4994-b605-5a37a9abcc33
+status: experimental
+description: Detects the execution of a file with specific hash value that is known to employ sandbox detection and string obfuscation techniques, which are indicative of the CL0P Ransomware.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    TargetFilename|endswith: \extracted_at_0xe5c8f00.exe
+    sha256: f2f08e4f108aaffaadc3d11bad24abdd625a77e0ee9674c4541b562c78415765
+  condition: selection
+falsepositives:
+  - Unknown. As this detection is based on a specific hash, false positives are expected to be low. However, any legitimate software or system processes that happen to use the same file name or hash should be investigated and whitelisted as necessary.
+level: high

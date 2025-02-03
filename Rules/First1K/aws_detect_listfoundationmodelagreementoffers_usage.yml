@@ -1,0 +1,33 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule "Detection of ListFoundationModelAgreementOffers API Usage" identifies potential reconnaissance or malicious activity by flagging usage of the ListFoundationModelAgreementOffers API in AWS CloudTrail logs, focusing on unusual interactions with AWS Bedrock services; legitimate administrative activities may trigger false positives and require contextual validation.
+# review_tags:fixed.manual
+title: Detection of ListFoundationModelAgreementOffers API Usage
+id: 6f9dcaee-1a08-482d-80aa-bd526578e1fb
+status: experimental
+description: Detects the usage of the ListFoundationModelAgreementOffers API call in AWS CloudTrail logs, which could indicate potential malicious activity or reconnaissance by an attacker.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.reconnaissance
+  - attack.defense-evasion
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: ListFoundationModelAgreementOffers
+    eventSource: bedrock.amazonaws.com
+    eventType: AwsApiCall
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that use the ListFoundationModelAgreementOffers API call.
+level: medium

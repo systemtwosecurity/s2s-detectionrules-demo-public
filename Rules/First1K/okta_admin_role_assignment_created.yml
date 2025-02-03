@@ -1,0 +1,30 @@
+# review_report_url: https://pushsecurity.com/blog/identity-attacks-in-the-wild
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects when a new admin role is assigned in Okta, which could indicate privilege escalation or persistence attempts by malicious actors. It specifically looks for the iam.resourceset.bindings.add event type in Okta logs. While the rule helps identify unauthorized admin role assignments, legitimate administrative activity can trigger it as well, so false positives are possible.
+title: Okta Admin Role Assignment Created
+id: 139bdd4b-9cd7-49ba-a2f4-744d0a8f5d8c
+status: test
+description: Detects when a new admin role assignment is created. Which could be a sign of privilege escalation or persistence
+references:
+    - https://developer.okta.com/docs/reference/api/system-log/
+    - https://developer.okta.com/docs/reference/api/event-types/
+author: Nikita Khalimonenkov
+date: 2023-01-19
+tags:
+    - attack.persistence
+logsource:
+    product: okta
+    service: okta
+detection:
+    selection:
+        eventtype: 'iam.resourceset.bindings.add'
+    condition: selection
+falsepositives:
+    - Legitimate creation of a new admin role assignment
+level: medium

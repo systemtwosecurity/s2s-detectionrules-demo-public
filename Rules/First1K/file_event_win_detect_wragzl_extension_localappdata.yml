@@ -1,0 +1,30 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies the presence of files with a .wragzl extension in the %LOCALAPPDATA% directory, which may signal attempts at privilege escalation through BloodHound-related activities. It assists in detecting potentially malicious file usage within user-specific application data.
+title: Detection of Files with .wragzl Extension in %LOCALAPPDATA%
+id: 4f75235f-ab60-4a8a-ab0c-0ba9a09d0bd7
+status: experimental
+description: Detects the presence of files with a .wragzl extension in the %LOCALAPPDATA% directory, which may indicate malicious activity related to privilege escalation using BloodHound.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .wragzl
+    Image|contains: \%LOCALAPPDATA\%
+  condition: selection
+falsepositives:
+  - Legitimate applications that use .wragzl extension for their files (very unlikely)
+level: high

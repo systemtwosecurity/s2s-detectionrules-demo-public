@@ -1,0 +1,36 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors anomalous modifications to critical Azure resources such as network security groups, role assignments, and storage accounts, which may indicate malicious activity or persistence attempts. While legitimate administrative changes and automated updates can trigger false positives, unexpected or unauthorized modifications should be investigated. Regularly auditing resource changes and correlating with user activities can help identify potential threats and maintain security posture.
+
+title: Anomalous Modification of Azure Resources
+id: 2348b186-220a-44b3-9fab-e59ec3a9e286
+status: experimental
+description: Detects anomalous modifications of resources in the Azure Activity log.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.t1484
+  - attack.persistence
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue:
+      - Microsoft.Network/networkSecurityGroups/write
+      - Microsoft.Authorization/roleAssignments/write
+      - Microsoft.Storage/storageAccounts/write
+      - Microsoft.KeyVault/vaults/write
+      - Microsoft.Authorization/policyAssignments/write
+      - Microsoft.Compute/virtualMachines/write
+  condition: selection
+falsepositives:
+  - Legitimate administrative modifications
+  - Automated resource updates
+level: medium

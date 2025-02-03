@@ -1,0 +1,30 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is aligned with the CTI report. It accurately detects the execution of the APT28 DLL backdoor by matching the SHA256 hash (b40909ac0b70b7bd82465dfc7761a6b4e0df55b894dd42290e3f72cb4280fa44) listed in the CTI report. 
+
+title: APT28 DLL Backdoor Detected
+id: 5e7b0507-d712-4db2-9d1b-f695c96bb5b5
+status: experimental
+description: Detects the execution or creation of files associated with the APT28 DLL backdoor by SHA256 hash.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256: b40909ac0b70b7bd82465dfc7761a6b4e0df55b894dd42290e3f72cb4280fa44
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to specific files, and this hash is associated with a known APT28 backdoor. Any detection should be considered a true positive unless the hash has been reused for legitimate software, which is highly unlikely.
+level: critical

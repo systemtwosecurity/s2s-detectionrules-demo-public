@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP requests to the URL path /wp-content/plugins/wp-contact/contact.php, associated with malicious callbacks from second-stage payloads. Designed for use with Zeek HTTP logs, it identifies suspicious traffic that may indicate C2 communication. Analysts should verify the domain and source to avoid false positives from legitimate plugin use.
+title: Detection of Callback URL from Second-Stage PE
+id: 5b489362-8e70-4bd8-bb77-0b1b1a378972
+status: experimental
+description: Detects network connections to a known malicious callback URL used by second-stage persistent executables.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /wp-content/plugins/wp-contact/contact.php
+  condition: selection
+falsepositives:
+  - Legitimate access to the wp-contact plugin from trusted external sources.
+level: high

@@ -1,0 +1,38 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of new systemd service files, a common technique used by adversaries to establish persistence by executing malicious code. It monitors file creation in key directories like /usr/lib/systemd/system/, /etc/systemd/system/, and /.config/systemd/user/, which are typically used for service definitions. While legitimate administrative activities might trigger this detection, it should be investigated as it could indicate the installation of unauthorized or malicious services.
+title: Systemd Service Creation
+id: 1bac86ba-41aa-4f62-9d6b-405eac99b485
+status: test
+description: Detects a creation of systemd services which could be used by adversaries to execute malicious code.
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1543.002/T1543.002.md
+author: 'Pawel Mazur'
+date: 2022-02-03
+modified: 2022-02-06
+tags:
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    product: linux
+    service: auditd
+detection:
+    path:
+        type: 'PATH'
+        nametype: 'CREATE'
+    name_1:
+        name|startswith:
+            - '/usr/lib/systemd/system/'
+            - '/etc/systemd/system/'
+    name_2:
+        name|contains: '/.config/systemd/user/'
+    condition: path and 1 of name_*
+falsepositives:
+    - Admin work like legit service installs.
+level: medium

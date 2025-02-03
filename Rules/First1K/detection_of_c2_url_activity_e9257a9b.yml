@@ -1,0 +1,29 @@
+# review_report_url: https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects outbound network connections to a known C2 URL (o61666ch.getenjoyment.net/post.php), which is associated with adversary communication in Kimsuky APT campaigns. It monitors HTTP traffic logs (via Zeek) for this specific URI pattern. False positives may occur from legitimate traffic to this domain and should be carefully reviewed.
+title: Detection of C2 URL Activity
+id: e9257a9b-e55e-443e-a138-f69e55f4ce68
+status: experimental
+description: Detects network connections to a known C2 URL used by adversaries to communicate with compromised systems.
+references:
+  - https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+  - attack.t1102.002
+logsource:
+  product: zeek
+  service: http
+detection:
+  uri: o61666ch.getenjoyment.net/post.php
+  condition: uri
+falsepositives:
+  - Legitimate connections to the domain, which should be investigated and whitelisted if found to be benign.
+level: high

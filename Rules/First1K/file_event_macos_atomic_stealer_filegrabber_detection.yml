@@ -1,0 +1,33 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of directories or files named "FileGrabber," which are commonly associated with Atomic Stealer activity on macOS systems. Investigate any matches for potential unauthorized data collection because legitimate uses of this directory are rare.
+title: Detection of Atomic Stealer FileGrabber Directory Creation
+id: d287d66c-b469-4c73-a65b-3b56a640d351
+status: experimental
+description: Detects the creation of a directory or file with the name "FileGrabber" within an exfiltration directory, which is indicative of Atomic Stealer activity on macOS systems.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|endswith:
+      - /FileGrabber/Sysinfo.txt
+      - /FileGrabber/password-entered
+      - /FileGrabber/login-keychain
+      - /FileGrabber
+  condition: selection
+falsepositives:
+  - Legitimate applications or scripts that create a directory or file named "FileGrabber" for non-malicious purposes.
+level: high

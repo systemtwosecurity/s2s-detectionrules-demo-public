@@ -1,0 +1,37 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns correctly with the CTI report’s disk enumeration detection logic. The detection logic effectively identifies SoreFang malware's reconnaissance behavior through specific disk-related strings.
+title: Detection of SoreFang Disk Enumeration Strings
+id: e0455cb8-496a-48a7-bb11-228710309185
+status: experimental
+description: Detects specific strings related to disk information gathering, which can be indicative of reconnaissance activity by SoreFang malware.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.reconnaissance
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - 'Serial number:'
+      - '\x0D\x0AFree on disk:'
+      - 'File system:'
+      - I can not get information about this disk\x0D\x0A
+      - 'Total disk:'
+      - '\x0D\x0AVolume label:'
+      - Error in GetDiskFreeSpaceEx\x0D\x0A
+      - Error in GetVolumeInformation\x0D\x0A
+  condition: selection
+falsepositives:
+  - Legitimate disk management software or scripts that use similar strings for non-malicious purposes.
+level: high

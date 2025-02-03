@@ -1,0 +1,31 @@
+
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - whatever the review notes you created.
+title: Detect C2 Domain Communication
+id: 8c984230-499d-4bb3-82bd-7175b6cc4330
+status: experimental
+description: Detects network communication to a known command and control (C2) domain used by malware.
+references:
+  - https://www.crowdstrike.com/blog/how-falcon-complete-disrupts-ecrime-operators-wizard-spider
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.command-and-control
+  - attack.t1568
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query: serviapd[.]com
+  condition: selection
+falsepositives:
+  - Legitimate traffic to domains with similar names, ensure to verify the context of the traffic.
+level: high

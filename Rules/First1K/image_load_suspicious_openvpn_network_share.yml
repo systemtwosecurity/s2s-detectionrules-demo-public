@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects when the openvpn.exe process loads an image from a network share, which could indicate lateral movement or remote code execution attempts. The network share paths are identified by the use of UNC paths (e.g., \\), and false positives may occur during legitimate software updates from network shares.
+title: Suspicious Image Load from Network Share Into OpenVPN Process
+id: 645bf688-2240-4cfd-8b29-706b29181952
+status: experimental
+description: Detects the loading of an image into the OpenVPN process from a network share, which could indicate lateral movement or remote execution attempts.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/08/chained-for-attack-openvpn-vulnerabilities-discovered-leading-to-rce-and-lpe
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.lateral-movement
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image|endswith: openvpn.exe
+    ImageLoaded|startswith: \\\\
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves loading images from network shares into the OpenVPN process.
+level: medium

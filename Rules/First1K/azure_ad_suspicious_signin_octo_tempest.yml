@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule is designed to identify potential security incidents related to the tactics used by the Octo Tempest threat actor group. By monitoring Azure Active Directory (Azure AD) risk events such as unfamiliar sign-in properties, impossible travel, and anomalous token alerts, the rule focuses on detecting early signs of account compromise and lateral movement. These types of events often signal attempts to bypass standard authentication mechanisms or exploit stolen credentials to gain unauthorized access. While the detection is robust, it may generate false positives under specific legitimate scenarios, such as users traveling across multiple locations or changes in their usual login behavior. It's essential to correlate these events with additional logs, user activity, or other threat indicators to validate the findings and reduce the impact of false positives. By doing so, security teams can effectively identify and respond to suspicious Azure AD sign-in activities associated with advanced persistent threats like Octo Tempest.
+
+title: Suspicious Azure AD Sign-in Activities (Octo Tempest)
+id: 78405443-7ad9-4ee9-a794-7fb8f2993a73
+status: experimental
+description: Detects impossible travel, unfamiliar sign-in properties, and anomalous token alerts, commonly associated with Octo Tempest intrusions.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: azure
+  service: riskdetection
+detection:
+  selection:
+    riskEventType:
+      - unfamiliarSignInProperties
+      - anomalousToken
+      - impossibleTravel
+  condition: selection
+falsepositives:
+  - Legitimate travel that triggers impossible travel alerts.
+  - Changes in user sign-in patterns that trigger unfamiliar sign-in alerts.
+  - Legitimate token issuance or revocation events that trigger anomalous token alerts.
+level: medium

@@ -1,0 +1,30 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matches the behavior and detection described in the CTI report. As the rule will be effective in detecting the SolarWinds-related malware mentioned in the report.
+title: Detection of Solorigate Malicious File Creation
+id: a6ac2601-ef80-4a1b-8002-a662b157bca5
+status: experimental
+description: Detects the creation of a known SolarWinds.Orion.Core.BusinessLayer.dll malicious file with a specific SHA1 hash and signed by SolarWinds Worldwide, LLC.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \SolarWinds\Orion\SolarWinds.Orion.Core.BusinessLayer.dll
+    sha1: 2f15a7411d015d0*ae4558358400191645023
+  condition: selection
+falsepositives:
+  - Legitimate updates or modifications to the SolarWinds.Orion.Core.BusinessLayer.dll file by SolarWinds Worldwide, LLC that match the same file hash.
+level: high

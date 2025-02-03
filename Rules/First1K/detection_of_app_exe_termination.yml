@@ -1,0 +1,29 @@
+# review_report_url: https://www.welivesecurity.com/en/eset-research/cosmicbeetle-steps-up-probation-period-ransomhub/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the termination of the app.exe process, commonly linked to older ScHackTool builds used by attackers. False positives may occur due to legitimate administrative tasks that terminate this process during routine operations.
+title: Detection of app.exe Process Termination
+id: a1abd856-db86-4f07-83ba-d1121e9787e9
+status: experimental
+description: Detects the termination of the process app.exe, which is associated with older ScHackTool builds.
+references:
+  - https://www.welivesecurity.com/en/eset-research/cosmicbeetle-steps-up-probation-period-ransomhub
+author: System Two Security
+date: 2024/09/28
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: process_termination
+detection:
+  selection:
+    Image|endswith: \app.exe
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that may terminate app.exe as part of normal operations.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma detects the creation of the hidden file .zsh_init_success, a known persistence mechanism used by the BlueNoroff Hidden Risk threat actor on macOS systems. The rule monitors file creation events for this specific filename, indicating potential compromise where the threat actor leverages Zsh configuration to maintain persistence. 
+
+title: 'BlueNoroff Hidden Risk: Persistence via Zshenv'
+id: 0dcfa429-1d51-4a28-b461-9b6d3b919d64
+status: experimental
+description: Detects the creation of a hidden touch file used for persistence by the BlueNoroff threat actor on macOS systems.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.persistence
+  - attack.t1546.004
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: /.zsh_init_success
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similarly named file for initialization purposes
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of emails containing the domain kalpadvisory.com in their payload, which is associated with phishing and spamming activities targeting users with fake cryptocurrency news. The domain is a known indicator of compromise (IOC) linked to the BlueNoroff Hidden Risk campaign and is used in malicious email campaigns to gain initial access.The rule focuses on identifying this specific domain in email gateway logs, particularly in products like Microsoft 365 Threat Management. 
+
+title: Detection of Phishing Domain kalpadvisory.com in Email Gateway Logs
+id: ff1446fe-b99e-4ada-a46b-a12f0728ff54
+status: experimental
+description: Detects the use of the phishing domain kalpadvisory.com, which has been associated with spamming and malicious activity targeting users with fake cryptocurrency news.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.initial-access
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload: '*@kalpadvisory.com'
+  condition: selection
+falsepositives:
+  - Legitimate emails from a domain that is similar to the malicious domain but is not listed in the threat intelligence report.
+level: high

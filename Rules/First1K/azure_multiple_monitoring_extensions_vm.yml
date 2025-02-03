@@ -1,0 +1,38 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies the simultaneous deployment of multiple monitoring or data collection extensions on Azure virtual machines, which may indicate malicious reconnaissance or preparatory activity by threat actors. The use of multiple agents could be an attempt to collect extensive system data or bypass specific security controls. While legitimate scenarios, such as testing or multi-agent setups for diverse purposes, can trigger false positives, unexpected deployments should be investigated. Regularly auditing VM extensions and correlating this activity with other threat indicators can help mitigate risks associated with suspicious extension usage.
+
+title: Suspicious Usage of Multiple Monitoring or Data Collection Extensions on Virtual Machines
+id: 78a1172c-59c9-4b35-92a2-c0fe78993754
+status: experimental
+description: Detects the simultaneous use of multiple monitoring or data collection extensions on Azure virtual machines, which could indicate malicious activity.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.discovery
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue: Microsoft.Compute/virtualMachines/extensions/write
+    status: Succeeded
+  filter:
+    ModifiedProperties{}.NewValue|contains:
+      - AzureSecurityCenter
+      - AzureMonitorLinuxAgent
+      - OmsAgentForLinux
+      - LogAnalyticsAgent
+      - MicrosoftMonitoringAgent
+      - DependencyAgentLinux
+      - DiagnosticsExtension
+  condition: selection and all of filter and ModifiedProperties|length > 1
+falsepositives:
+  - Legitimate simultaneous deployment of multiple monitoring agents for different purposes.
+level: medium

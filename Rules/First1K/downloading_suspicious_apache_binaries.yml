@@ -1,0 +1,33 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects potential downloads of custom-built malware binaries (apache2 and apache2v86) from specific URLs by monitoring HTTP traffic for relevant URI patterns. It incorporates a filter for the Host header to minimize false positives from legitimate software downloads.
+title: Downloading Suspicious Apache Binaries
+id: b91f9b45-7c0c-4090-a603-e52263b39286
+status: experimental
+description: Detects the download of custom-built malware named apache2 and apache2v86 from specific URLs
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - /apache2v86
+      - /apache2
+  filter:
+    client_header_names|contains: Host
+  condition: selection and filter
+falsepositives:
+  - Legitimate software download from an internal or trusted external source that coincidentally has a similar name.
+level: high

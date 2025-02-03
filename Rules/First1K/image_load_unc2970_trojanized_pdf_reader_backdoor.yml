@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of the TEARPAGE malware family associated with UNC2970's backdoor deployment via a trojanized PDF reader. The rule effectively targets the specific file path and MD5 hash mentioned in the CTI report, aligning well with the provided indicators of compromise. The detection key uses appropriate logical operators, combining the file path (using endswith) and hash (using contains) with an AND condition. This approach minimizes false positives while maintaining detection accuracy. The IOC used in the rule matches exactly with the CTI report, reducing the risk of false negatives. 
+title: UNC2970 Backdoor Deployment via Trojanized PDF Reader
+id: 23c52c88-e4b2-4611-a911-1aaa6b4c25fe
+status: experimental
+description: Detects the presence of a file at the path %APPDATA%\\Roaming\\Microsoft\\BDE UI Launcher\\wtsapi32.dll with a specific MD5 hash associated with the TEARPAGE malware family.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \Roaming\Microsoft\BDE UI Launcher\wtsapi32.dll
+    Hashes|contains: 006cbff5d248ab4a1d756bce989830b9
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use the same file name and hash (highly unlikely)
+level: high

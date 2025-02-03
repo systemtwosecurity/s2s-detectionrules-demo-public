@@ -1,0 +1,29 @@
+# review_report_url: https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the writing of the mpsvc.dll file to disk, which is indicative of REvil ransomware using a DLL side-loading technique as part of its payload deployment. This rule helps identify the presence of the malicious payload by monitoring for the creation of this specific DLL file, which is crucial to the execution of the ransomware. Marked as high severity, this rule flags suspicious activity tied to ransomware execution. Although unlikely, false positives could occur if legitimate software happens to use the same filename (mpsvc.dll) for its own modules. Careful contextual analysis should be performed to confirm malicious intent when this activity is detected.
+title: REvil Ransomware Payload Writing to Disk
+id: d2544415-d1ce-4ca6-b50e-b3b3a44c2539
+status: experimental
+description: Detects the writing of the REvil ransomware payload "mpsvc.dll" to disk, which is indicative of the DLL Side-Loading technique used by the ransomware dropper.
+references:
+  - https://www.cybereason.com/blog/research/cybereason-vs-revil-ransomware-the-kaseya-chronicles
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: mpsvc.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename for its modules (very unlikely)
+level: high

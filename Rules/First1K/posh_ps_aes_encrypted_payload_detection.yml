@@ -1,0 +1,36 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well mapped with the CTI report, particularly in detecting the use of AES encryption and key assignments in PowerShell scripts. The YARA rule in the CTI report shares similar detection logic, making the Sigma rule’s detection criteria highly relevant.
+title: Detection of AES Encrypted Payload in PowerShell Scripts
+id: 40ad819a-f71d-4421-853b-ddc695d57304
+status: experimental
+description: Detects the use of AES encryption in PowerShell scripts which may indicate obfuscation of payloads.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: ps_script
+detection:
+  selection1:
+    ScriptBlockText|contains|all:
+      - '='
+      - .Key
+      - $
+      - System.Security.Cryptography.AesManaged
+      - System.Security.Cryptography.Aes
+  selection2:
+    ScriptBlockText|contains: System.Security.Cryptography.
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate use of AES encryption in custom administrative scripts
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/repellent-scorpius-cicada3301-ransomware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule correctly checks for the malicious IPs as mentioned in the CTI report
+title: Detection of Cicada3301 Ransomware Network Activity
+id: 28e121ca-41ab-4362-856b-5a2a9a61555d
+status: experimental
+description: Detects network connections to IP addresses associated with Cicada3301 Ransomware distribution.
+references:
+  - https://unit42.paloaltonetworks.com/repellent-scorpius-cicada3301-ransomware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  client_header_names:
+    - 103.42.240.37
+    - 91.238.181.238
+  condition: client_header_names
+falsepositives:
+  - Legitimate connections to the IP addresses if they are reused for benign purposes after the report.
+level: high

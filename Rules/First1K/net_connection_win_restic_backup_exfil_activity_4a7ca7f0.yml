@@ -1,0 +1,38 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of the Restic backup tool for data exfiltration by monitoring network connections to a specific IP and command-line parameters associated with Restic execution. It is designed to catch malicious activity leveraging Restic, while allowing for validation of legitimate use.
+title: Detection of Restic Backup Tool Exfiltration Activity
+id: 4a7ca7f0-e810-4836-a5e2-f2b994610027
+status: experimental
+description: Detects the use of Restic backup utility to exfiltrate data to an external server using HTTP, as indicated by a specific Suricata alert for Go-based HTTP client user-agent and HTTP content type used by Restic.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    DestinationIp: 195.123.226.84
+    DestinationPort: 8000
+  selection2:
+    CommandLine|contains|all:
+      - -r rest:http://195.123.226.84:8000/
+      - --password-file
+      - --verbose
+      - --use-fs-snapshot
+      - backup
+      - restic.exe
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate use of Restic backup utility to the specified IP and port, which should be validated by the security team.
+level: high

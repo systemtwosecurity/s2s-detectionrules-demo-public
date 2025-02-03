@@ -1,0 +1,31 @@
+# review_report_url:  https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects potential Cobalt Strike Beacon command-and-control (C2) activity by identifying DNS queries or web proxy requests to known Cobalt Strike C2 domains. This can help reveal malware communications used for remote access and control. Given its sensitivity to domain-based detection, there may be occasional false positives if similar domains are accessed legitimately. The rule is set to high priority, as Cobalt Strike is commonly employed in advanced, often malicious, attacks.
+title: Detection of Cobalt Strike Beacon C2 Activity
+id: 7b01bc64-462a-490f-ba65-0a56476c7b7e
+status: experimental
+description: Detects DNS queries or web proxy requests for known Cobalt Strike Beacon command and control (C2) domains.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+author: System Two Security
+date: 2024/10/30
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  queries:
+    query|contains:
+      - realsepnews.com
+      - zziveastnews.com
+  condition: queries
+falsepositives:
+  - Legitimate access to domains with similar names
+level: high

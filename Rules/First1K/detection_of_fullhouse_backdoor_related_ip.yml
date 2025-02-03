@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries for the IP address 38.132.124.88, known to be associated with the Fullhouse Backdoor’s command-and-control servers. Connections to this IP could indicate malicious activity linked to North Korean threat groups. However, false positives might arise if the IP address is later reassigned or used for legitimate services.
+title: Detection of Fullhouse Backdoor Related IP Address
+id: 811eb5be-6c87-4065-a988-52cea8764397
+status: experimental
+description: Detects network connections to an IP address associated with the Fullhouse Backdoor used by North Korean threat groups.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query: 38.132.124.88
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned or is used by a benign service.
+level: high

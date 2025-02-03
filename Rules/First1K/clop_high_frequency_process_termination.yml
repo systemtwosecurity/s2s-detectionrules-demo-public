@@ -1,0 +1,31 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detecting high-frequency process terminations aligns closely with the CTI report on Clop ransomware, focusing on process disruption activities consistent with Clop’s operational patterns. This rule complements other Clop detection mechanisms in the report, covering multiple ransomware behaviors and ensuring a well-rounded detection strategy across process and file activity without overlap.
+
+title: Clop High Frequency Process Termination
+id: 5fbd48b5-e0fb-4c13-abd0-25977fa5e4cc
+status: experimental
+description: Detects a high frequency of process termination events, which could indicate an attempt by malware to disrupt security processes. A threshold of 15 terminations within a 3-second bin is used for detection.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+author: System Two Security
+date: 2024/09/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: process_termination
+detection:
+  selection:
+    EventID: 5
+  condition: selection | count(EventID) by Computer > 15
+falsepositives:
+  - Legitimate software updates or installations that terminate multiple processes in a short time frame
+  - Scripts or administrative tools that may terminate processes as part of their normal operation
+level: high

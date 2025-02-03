@@ -1,0 +1,30 @@
+# review_report_url:https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of a specific temporary file named 3f34a.tmp in the %AppData%\Local\Temp directory, which is associated with the installation process of the Kimsuky KGH spyware. By focusing on this precise file path, the rule aims to identify potential malicious activities related to the spyware's persistence mechanisms. The rule accounts for possible false positives from legitimate applications that might use the same temporary filename, ensuring a targeted detection approach
+
+title: Detection of Kimsuky KGH Spyware Dropping Encrypted Blobs
+id: 63c600d3-eba8-4596-8120-cdf27754f5bb
+status: experimental
+description: Detects the creation of a specific temporary file used by Kimsuky KGH spyware as part of its installation process.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Local\Temp\3f34a.tmp
+  condition: selection
+falsepositives:
+  - Legitimate applications that coincidentally use the same temporary filename for their operations.
+level: high

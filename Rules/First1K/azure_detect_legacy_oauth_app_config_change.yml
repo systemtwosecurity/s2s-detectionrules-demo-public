@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is relevant and useful based on the CTI report provided. The CTI details a scenario where attackers altered an OAuth application's configuration and added new credentials, which aligns with the Sigma rule's detection criteria of monitoring the "Update application - Certificates and secrets management" event in Azure Active Directory logs. The rule accurately reflects the activities described in the CTI and is effective in detecting such compromise attempts.
+title: Detecting Compromise of Legacy OAuth Application via Configuration Changes
+id: e5b95db7-80a6-4ea9-b3be-388d93887407
+status: experimental
+description: Detects the alteration of an OAuth application configuration and the addition of new credentials, which could indicate a compromise. This rule monitors for the "Update application - Certificates and secrets management" event in Azure Active Directory logs.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    Workload: AzureActiveDirectory
+    Operation|startswith: Update application - Certificates and secrets management
+  condition: selection
+falsepositives:
+  - Legitimate configuration changes performed by administrators.
+level: high

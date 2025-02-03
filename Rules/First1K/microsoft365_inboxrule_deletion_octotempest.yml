@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies the creation of inbox rules designed to delete emails from specific vendors, which may indicate defense evasion tactics linked to Octo Tempest. The rule focuses on targeting keywords associated with data integration tools. While legitimate inbox rule creations by users or administrators can trigger false positives, unexpected or unauthorized activity should be investigated immediately. Regular monitoring of mailbox rules can help mitigate the risk of email manipulation for malicious purposes.
+
+title: Octo Tempest - Inbox Rule Creation to Delete Vendor Emails
+id: 6ccd8390-beb6-40a0-804b-60706e5965e6
+status: experimental
+description: Detects the creation of inbox rules designed to delete emails from specific vendors, indicative of Octo Tempest activity. This rule focuses on the creation of rules that delete emails containing keywords associated with data integration tools. This rule may require adjustments based on the specific logging capabilities of your Microsoft 365 environment.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+  - attack.t1564.008
+logsource:
+  product: m365
+  service: threat_detection
+detection:
+  selection:
+    eventName: New-InboxRule
+    eventSource: InboxRules
+    status: Success
+  condition: selection
+falsepositives:
+  - Legitimate inbox rules created by users or administrators.
+  - Accidental creation of rules with similar criteria.
+level: high

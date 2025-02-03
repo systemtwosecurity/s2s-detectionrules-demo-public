@@ -1,0 +1,37 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule aligns directly with the detection methodology mentioned in the CTI report. Both are designed to catch DNS lookups to the malicious domain avsvmcloud.com while excluding common mentioned web browsers.
+title: Detect DNS Lookups to Malicious Domain Excluding Common Browsers
+id: 4ab29190-ab64-4478-9d7e-1ca61ef82814
+status: experimental
+description: Detects DNS lookups to a known malicious domain (avsvmcloud.com) while excluding DNS queries made by common web browsers.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+  - attack.t1596.001
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: avsvmcloud.com
+  exclusion:
+    Image|endswith:
+      - \msedge.exe
+      - \firefox.exe
+      - \iexplore.exe
+      - \chrome.exe
+      - \opera.exe
+  condition: selection and not exclusion
+falsepositives:
+  - Legitimate connections to the domain avsvmcloud.com by processes other than the excluded browsers, if the domain is hijacked for legitimate purposes.
+level: high

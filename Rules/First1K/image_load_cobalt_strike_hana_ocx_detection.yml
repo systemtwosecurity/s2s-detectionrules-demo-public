@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a known Cobalt Strike file "hana.ocx" with a specific SHA-256 hash linked to malicious command-and-control activity. Due to the precise hash value, any detection is considered high fidelity and should be investigated promptly.
+title: Detection of Cobalt Strike File "hana.ocx"
+id: 2b355b79-7981-41b8-9130-5f618bfab8c6
+status: experimental
+description: Detects the presence of a known Cobalt Strike file with a specific hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: hana.ocx
+    sha256: de09ec092b11a1396613846f6b082e1e1ee16ea270c895ec6e4f553a13716304
+  condition: selection
+falsepositives:
+  - Unknown. Any detection should be treated as high fidelity due to the specificity of the hash.
+level: critical

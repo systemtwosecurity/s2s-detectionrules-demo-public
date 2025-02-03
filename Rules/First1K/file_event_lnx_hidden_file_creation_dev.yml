@@ -1,0 +1,31 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the creation of hidden files in the /dev/ and /dev/shm/ directories, which can be indicative of malicious activities associated with malware such as KAIJI, GSOCKET, and K4SPREADER. It uses a prefix match on file paths to identify potential threats, while acknowledging the possibility of false positives from legitimate software operations.
+title: Hidden File Creation in /dev/ Directory
+id: 8b6b2089-f769-4b66-9cf7-27f76b445d18
+status: experimental
+description: Detects the creation of hidden files in the /dev/ and /dev/shm/ directories, which is uncommon and can be indicative of malware activity such as KAIJI, GSOCKET, and K4SPREADER.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith:
+      - /dev/shm/.
+      - /dev/.
+  condition: selection
+falsepositives:
+  - Legitimate software that uses hidden files in these directories for benign purposes
+level: high

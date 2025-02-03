@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: We are trying to capture usage of Systemsetting.dll with DLL sideloading and the rule matches well with the objective of the detection.
+
+title: Suspicious Systemsetting.dll Side-Loading
+id: 238003e0-9a9b-4160-bade-6ab58b9c7e94
+status: experimental
+description: Detects potential DLL side-loading attempts involving Systemsetting.dll, often associated with Earth Baxia malware.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+  - attack.t1574.002
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded: C:\Windows\System32\Systemsetting.dll
+  filter:
+    Image: \Systemsetting.exe
+  condition: selection and not filter
+falsepositives:
+  - Legitimate applications using a similarly named DLL in the System32 directory.
+level: high

@@ -1,0 +1,67 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately detects network connections to Black Basta ransomware-associated IP addresses, with multiple matches found in the CTI report
+title: Black Basta Ransomware Associated IP Addresses
+id: f5a6d511-d12c-4bc3-aa58-0d3fe50b5ebe
+status: experimental
+description: Detects network connections to IP addresses associated with Black Basta ransomware.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a
+author: System Two Security
+date: 2024/09/18
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names:
+      - 80.239.207.200
+      - 185.220.100.240
+      - 34.149.36.179
+      - 83.243.40.10
+      - 107.189.30.69
+      - 88.198.198.90
+      - 95.181.173.227
+      - 72.14.196.2
+      - 5.78.115.67
+      - 185.220.101.149
+      - 185.219.221.136
+      - 104.21.40.72
+      - 34.250.161.149
+      - 35.190.31.54
+      - 116.203.186.178
+      - 35.227.194.51
+      - 104.21.26.145
+      - 34.251.163.236
+      - 72.14.196.192
+      - 34.149.120.3
+      - 35.212.86.55
+      - 185.7.214.79
+      - 34.160.17.71
+      - 72.14.196.226
+      - 207.126.152.242
+      - 183.181.86.147
+      - 66.249.66.18
+      - 35.244.153.44
+      - 46.161.27.151
+      - 5.183.130.92
+      - 188.130.137.181
+      - 72.14.196.50
+      - 155.138.246.122
+      - 64.176.219.106
+      - 34.120.190.48
+      - 34.160.81.203
+      - 188.130.218.39
+      - 46.8.10.134
+  condition: selection
+falsepositives:
+  - Legitimate connections to IP addresses that were previously associated with Black Basta ransomware but have since been reassigned.
+level: high

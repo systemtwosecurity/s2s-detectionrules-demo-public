@@ -1,0 +1,34 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS requests or network connections to known C2 domains like "maskrisks.com" associated with malicious activity. False positives may arise from legitimate connections to similarly named domains.
+title: Detection of C2 Domain Activity
+id: cd5f0552-7651-4b35-a6c1-a0b7bac05d5d
+status: experimental
+description: Detects DNS requests or network connections to known C2 domains extracted from CTI report.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+  - attack.t1102.001
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_activity:
+    query|contains:
+      - checkupdate.maskrisks.com
+      - maskrisks.com
+      - mail.maskrisks.com
+      - update.maskrisks.com
+  condition: domain_activity
+falsepositives:
+  - Legitimate connections to domains that have a similar name to the IOCs listed but are not a match.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule detects HTTP connections to the malicious domain update.maskrisks.com by matching the Host header and specific URIs in Zeek logs indicative of malware distribution or C2 activity. It considers potential false positives from legitimate traffic to similarly named domains, emphasizing the need for context verification.
+title: Detection of Network Connections to Malicious Domain update.maskrisks.com
+id: 0a411c75-f4c9-45ee-944d-9f2d2ceca9f8
+status: experimental
+description: Detects network connections to a known malicious domain used for distributing potentially unwanted programs or malware.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  domain:
+    client_header_names|contains: Host
+    uri|contains:
+      - update.maskrisks.com/?type=Edge
+      - update.maskrisks.com/?type=Chrome
+  condition: domain
+falsepositives:
+  - Legitimate connections to a domain with a similar name, ensure to verify the context of the traffic.
+level: high

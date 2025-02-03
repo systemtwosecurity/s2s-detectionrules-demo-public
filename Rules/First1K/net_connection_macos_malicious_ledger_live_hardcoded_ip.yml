@@ -1,0 +1,32 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections to a hardcoded IP address used by Atomic Stealer malware to download a malicious version of the Ledger Live application on macos system
+title: Detection of Malicious Ledger Live Download via Hardcoded IP
+id: f42c205d-e846-43fe-a386-517942faaa14
+status: experimental
+description: Detects network connections to a hardcoded IP address used by Atomic Stealer malware to download a malicious version of the Ledger Live application.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.persistence
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  selection:
+    DestinationIp: 77.221.151.29
+    Image|contains:
+      - /usr/bin/curl
+      - /tmp/file.bin
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address, if the IP is reused for non-malicious purposes
+level: high

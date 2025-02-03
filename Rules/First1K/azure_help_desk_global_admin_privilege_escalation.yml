@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors instances where Help Desk Administrators are granted privileges over Global Administrators, a critical misconfiguration that can lead to privilege escalation. While rare legitimate cases exist, such assignments should be thoroughly reviewed and validated. Regular audits of role assignments and adherence to the principle of least privilege are essential to mitigate risks associated with excessive permissions.
+
+title: Help Desk Admins with Privileges Over Global Admins
+id: 1b81d13e-9da5-4785-bd0f-fc9d59018eeb
+status: experimental
+description: Detects help desk administrators with excessive privileges over Global Administrators in Azure AD.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue: Add member to role
+    ResourceProviderValue: Microsoft.Authorization/roleAssignments
+    ModifiedProperties{}.NewValue|contains: Global Administrator
+    properties.message|contains|all:
+      - Global Administrator
+      - Help Desk
+  condition: selection
+falsepositives:
+  - Legitimate assignment of Global Administrator privileges to help desk personnel (rare)
+level: critical

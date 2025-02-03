@@ -1,0 +1,31 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matches the CTI report, as it detects the same User-Agent and host used by the Cobalt Strike Beacon.S
+title: Detection of Cobalt Strike Beacon via Specific User-Agent
+id: 79152960-594e-4df8-8a38-0375d134bd77
+status: experimental
+description: Detects network connections with a specific User-Agent string that is indicative of Cobalt Strike Beacon activity as reported in CTI.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-user-agent|contains: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
+  filter:
+    cs-host|contains: worldhomeoutlet.com
+  condition: selection and filter
+falsepositives:
+  - Legitimate traffic using the same User-Agent string by coincidence
+level: high

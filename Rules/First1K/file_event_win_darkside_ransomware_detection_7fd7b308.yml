@@ -1,0 +1,29 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule  is effectively validated by the findings in the CTI report. The report confirms that the hash 222792d2e75782516d653d5cccfcf33b is associated with DarkSide ransomware and is used in its payloads. This supports the rule’s objective of detecting potential ransomware activity through hash-based file identification.
+title: Detection of DarkSide Ransomware File Creation
+id: 7fd7b308-4510-435a-99c9-93fedb868f73
+status: experimental
+description: Detects the creation or execution of a file associated with the DarkSide ransomware that attacked Colonial Pipeline by using a known malicious hash value.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: 222792d2e75782516d653d5cccfcf33b
+  condition: selection
+falsepositives:
+  - Unknown. Hash values are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: critical

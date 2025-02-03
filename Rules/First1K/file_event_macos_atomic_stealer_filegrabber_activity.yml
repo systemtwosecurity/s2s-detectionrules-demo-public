@@ -1,0 +1,39 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies access or modification of specific file types in macOS Desktop or Documents directories, which may likely indicate Atomic macOS Stealer FileGrabber activity. Although valid access might occur, this should be investigated for anomaly patterns.
+title: Detection of Atomic macOS Stealer FileGrabber Activity
+id: 6deb4a25-0084-4df0-9641-6c8c2895c5b2
+status: experimental
+description: Detects access or modification of files with specific extensions in the Desktop or Documents directories that are likely to contain credentials, as part of Atomic macOS Stealer's FileGrabber module activity.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - /Users/*/Desktop/
+      - /Users/*/Documents/
+    TargetFilename|endswith:
+      - .keys
+      - .doc
+      - .key
+      - .txt
+      - .docx
+      - .wallet
+      - .rtf
+  condition: selection
+falsepositives:
+  - Legitimate access or modification of files with the listed extensions by authorized applications or users.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule effectively detects named pipe usage associated with KoboldLoader Generalizing the PipeName increases the likelihood of detecting variants of the malware that use similar naming conventions.
+Limitations:
+Attackers may change the naming convention, potentially bypassing the detection.
+There is a risk of false positives if legitimate software uses similar named pipes.
+title: Detection of KoboldLoader Named Pipe Creation
+id: 8f169d0f-cd66-47ca-a620-1350996c00a7
+status: experimental
+description: Detects the creation or connection to a specific named pipe used by KoboldLoader malware.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: pipe_created
+detection:
+  selection:
+    PipeName: \\.\pipe\servicepipe.zo9keez4weechei8johR.0521cc13
+  condition: selection
+falsepositives:
+  - Legitimate software using the same named pipe for inter-process communication
+level: high

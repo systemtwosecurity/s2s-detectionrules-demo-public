@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies activity associated with BlackCat ransomware, flagged by Microsoft Defender Antivirus as Behavior:Win32/BlackCat. This strongly suggests ransomware execution or preparation for impact. False positives may arise from legitimate security tools or testing that mimic BlackCat behavior, but all detections should be treated as critical. Prompt investigation and remediation are essential to mitigate the risk of data encryption or exfiltration.
+
+title: Suspicious BlackCat Ransomware Activity Detected
+id: f36cfea4-2ab0-443f-acf2-0afaa804949f
+status: experimental
+description: Detects activity related to BlackCat ransomware based on Microsoft Defender Antivirus detection.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    Image|contains: Behavior:Win32/BlackCat
+  condition: selection
+falsepositives:
+  - Legitimate security tools or tests that mimic BlackCat behavior.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects access to Microsoft Edge's user data directory, which might be an indication of attempts to steal sensitive information. The detection focuses on file system activity related to the path \\Microsoft\\Edge\\User Data. This can be a false positive for software that is accessing it legitimately, such as for maintenance or backup purposes, by using administrative tools.
+title: Detection of Microsoft Edge User Data Access
+id: 27c6d9df-1897-494b-90e2-2139f9ffaf11
+status: experimental
+description: Detects file system activity indicating access to Microsoft Edge User Data, which may suggest an attempt to steal information.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \Microsoft\Edge\User Data
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools accessing the data for non-malicious purposes
+level: high

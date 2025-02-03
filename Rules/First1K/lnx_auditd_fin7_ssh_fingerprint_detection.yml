@@ -1,0 +1,28 @@
+# review_report_url: https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detects SSH activity with the SHA256 fingerprint bc4ef49e904d63415ee1c810c90019e12a590ff3b6293f4b69af65713a8da9fa, used by FIN7 in attacks on the U.S. automotive industry.
+title: FIN7 SSH Fingerprint Detection
+id: 2764cc6b-6526-48b1-9198-7aa0a0830c55
+status: experimental
+description: Detects SSH activity with a specific sha256 fingerprint associated with FIN7 threat group targeting the U.S. Automotive Industry
+references:
+  - https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords: bc4ef49e904d63415ee1c810c90019e12a590ff3b6293f4b69af65713a8da9fa
+  condition: keywords
+falsepositives:
+  - Legitimate SSH traffic from known system administrators or automated processes that happen to use the same SSH fingerprint.
+level: high

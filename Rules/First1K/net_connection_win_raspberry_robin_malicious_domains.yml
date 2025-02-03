@@ -1,0 +1,45 @@
+# review_report_url: https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+# review_date: 2024-11-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule detects the download of ZIP files associated with the Raspberry Robin infection chain. It identifies specific ZIP files (e.g., min.zip, bootstrap.zip, bundle.zip, access.zip) that are used in the infection process. These files contain HTA files that execute scripts to retrieve and run DLLs from a WebDAV server. The rule is designed to capture these malicious file downloads, which are part of the initial access stage in the attack.
+title: Detection of Raspberry Robin Malicious Domains
+id: 11dc91ec-957b-47af-9ff8-01418dadd902
+status: experimental
+description: Detects network connections to specific malicious domains associated with the Raspberry Robin infection chain.
+references:
+  - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+author: System Two Security
+date: 2024/11/18
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  domain:
+    DestinationHostname|contains:
+      - concurrences.makeup
+      - noncancerous.beauty
+      - simple-life.lol
+      - rhinophidae.bond
+      - malalignment.bond
+      - superaccumulate.mom
+      - unfoolishly.christmas
+      - free-handedness.yachts
+      - deoppilant.monster
+      - sulphamidic.mom
+      - viticulture.rest
+      - summer-breathing.motorcycles
+      - bright-witted.skin
+      - dogtrotted.cyou
+      - luminosity.lol
+      - uteromaniacal.makeup
+  condition: domain
+falsepositives:
+  - Legitimate connections to domains that have a name similar to the malicious domains listed but are not associated with malicious activity.
+level: high

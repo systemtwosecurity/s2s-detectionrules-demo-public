@@ -1,0 +1,34 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of specific files by the COGSCAN tool, which is associated with UNC4393's reconnaissance activities on compromised hosts. It is important to consider potential false positives from legitimate administrative tools or scripts that may generate files with similar names in user directories.
+
+title: UNC4393 COGSCAN Tool File Creation Activity
+id: 53e8a50f-8543-48dd-bac3-8ca19fa1ea93
+status: experimental
+description: Detects the creation of specific files by COGSCAN tool as used by UNC4393 for internal reconnaissance on compromised hosts.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.discovery
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \ldap.txt
+      - \pc_sorted.txt
+      - \online.txt
+      - \pc.txt
+  condition: selection
+falsepositives:
+  - Legitimate administrative tools or scripts that create similarly named files in the users public directory or current directory.
+level: high

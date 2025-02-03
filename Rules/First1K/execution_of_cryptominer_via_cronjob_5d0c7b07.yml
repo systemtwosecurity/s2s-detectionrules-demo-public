@@ -1,0 +1,31 @@
+# review_report_url: https://www.aquasec.com/blog/hadooken-malware-targets-weblogic-applications/
+# review_date: 2024-10-09
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the execution of a cryptominer via a cronjob, specifically targeting the Hadooken malware's behavior of renaming and executing the cryptominer. . The rule is highly relevant to the threat described in the CTI report. It accurately captures key elements of the malware's execution pattern, including the renaming of 'crondr' to '-bash' and its subsequent execution with specific parameters. It employs three distinct string patterns that correspond to different stages of the malware's execution process. The use of the 'keywords' field with an OR condition (implied by the list structure) is appropriate for this scenario.
+title: Execution of Cryptominer via Cronjob
+id: 5d0c7b07-2c84-4c57-8e50-a5a1b8ecd7b4
+status: experimental
+description: Detects the execution of a cryptominer via a cronjob as described in the CTI report, where the cryptominer is renamed to '-bash' and executed.
+references:
+  - https://www.aquasec.com/blog/hadooken-malware-targets-weblogic-applications
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: cron
+detection:
+  keywords:
+    - rm -rf -- -bash
+    - ./-bash -c -p 80 -p 8080 -p 443 -tls -dp 80 -dp 8080 -dp 443 -tls -d
+    - cp -f -r /bin/crondr /bin/-bash
+  condition: keywords
+falsepositives:
+  - Legitimate cronjobs that use similar command patterns for maintenance tasks
+level: high

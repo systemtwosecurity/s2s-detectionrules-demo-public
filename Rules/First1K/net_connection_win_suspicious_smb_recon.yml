@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies suspicious SMB activity on port 445 that could indicate user and IP address reconnaissance, a tactic often used by attackers to map networks and identify potential targets. While legitimate network scans or applications using SMB may trigger false positives, activity from hosts without valid source hostnames warrants further investigation. Continuous monitoring and correlating this behavior with other threat indicators can help mitigate risks of unauthorized network mapping and reconnaissance.
+
+title: Suspicious SMB Activity Indicative of User and IP Address Reconnaissance
+id: 81e984c4-7ac7-4ab3-8b2c-16b0e7026b0c
+status: experimental
+description: Detects potentially malicious SMB activity that could indicate user and IP address reconnaissance. This behavior is often associated with attackers attempting to map the network and identify potential targets.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.discovery
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationPort: 445
+    Initiated: true
+  filter:
+    SourceHostname: 'null'
+  condition: selection and not filter
+falsepositives:
+  - Legitimate network scans or discovery tools
+  - Applications that use SMB for communication
+level: medium

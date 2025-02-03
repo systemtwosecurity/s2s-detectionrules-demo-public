@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors administrative operations on Azure Network Security Groups (NSGs), including creation, deletion, or modification, which could indicate an attempt to bypass or alter security controls. While legitimate administrative actions may trigger false positives, unexpected changes to NSGs should be investigated. Regularly auditing NSG configurations and correlating these actions with user activities can help detect and mitigate potential malicious activity.
+
+title: Azure NSG Administrative Operations
+id: 9b604074-4bdf-4985-8996-da981ceddc8c
+status: experimental
+description: Detects administrative operations performed on Azure Network Security Groups (NSGs)
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue:
+      - Microsoft.Network/networkSecurityGroups/write/action
+      - Microsoft.Network/networkSecurityGroups/delete/action
+      - Microsoft.Network/networkSecurityGroups/join/action
+      - Microsoft.Network/networkSecurityGroups/createOrUpdate/action
+      - Microsoft.Network/networkSecurityGroups/updateTags/action
+  condition: selection
+falsepositives:
+  - Legitimate administrative actions on NSGs
+level: medium

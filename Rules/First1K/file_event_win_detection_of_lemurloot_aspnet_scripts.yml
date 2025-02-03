@@ -1,0 +1,38 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is well-aligned with the CTI report’s YARA-based detection parameters for LEMURLOOT ASP.NET scripts, focusing on unique characteristics (e.g., ASP.NET headers, specific strings) that differentiate malicious webshell activity from benign scripts. Implementing this rule in environments where file events are logged on Windows would strengthen detection capabilities against LEMURLOOT webshells, allowing security teams to swiftly identify and mitigate CL0P’s persistence methods on compromised systems.
+
+title: Detection of LEMURLOOT ASP.NET Scripts
+id: 15d48128-9f4e-434a-b504-b8ea39a53487
+status: experimental
+description: Detects LEMURLOOT ASP.NET scripts that may be indicative of a webshell or other malicious activity.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    TargetFilename|endswith: .aspx
+  selection2:
+    MagicHeader|startswith: <%@ Page
+  selection3:
+    TargetFilename|contains:
+      - X-siLock-Step
+      - X-siLock-Comment
+      - attachment;filename={0}
+      - Health Check Service
+  condition: selection1 and selection2 and selection3
+falsepositives:
+  - Legitimate administrative scripts that use similar patterns
+level: high

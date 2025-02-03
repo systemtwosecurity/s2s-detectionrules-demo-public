@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is designed to detect the creation or execution of a DLL file named "SmallTiger.dll" on Windows systems. This rule directly corresponds to the SmallTiger malware campaign described in the CTI report, which targets South Korean defense and manufacturing organizations. The rule focuses on file events, specifically looking for the creation of a file with the exact name "SmallTiger.dll". By targeting the specific DLL name mentioned in the report, it provides a straightforward method to detect potential SmallTiger infections.
+title: Detection of SmallTiger Malware DLL Delivery
+id: 02aef14e-3125-4f1c-9ee7-522a1eebc564
+status: experimental
+description: Detects the creation or execution of a DLL file named SmallTiger.dll, which is associated with the SmallTiger malware campaign targeting South Korean defense and manufacturing organizations.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/07/25/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/09/09
+tags:
+  - attack.lateral-movement
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \SmallTiger.dll
+  condition: selection
+falsepositives:
+  - Legitimate software with a coincidental file name
+level: high

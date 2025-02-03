@@ -1,0 +1,34 @@
+# review_report_url: https://www.trendmicro.com/en_no/research/24/i/banking-trojans-mekotio-looks-to-expand-targets--bbtok-abuses-ut.html
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of PowerShell to copy and extract files, which is commonly used in Mekotio and BBTok malware infection chains. The combination of Copy-Item, Expand-Archive, and -Destination in the command line can signify suspicious behavior, though legitimate software installations might trigger this as a false positive. Please see suggested rule for more detection on the basic of directory naming defined in the CTI report.
+
+title: Mekotio and BBTok Malware Infection Chain
+id: befb6a89-6fad-4406-8ad9-b541dc005733
+status: experimental
+description: Detects the creation of a directory and copying of the executable and ZIP file into it as part of the Mekotio and BBTok malware infection chain.
+references:
+  - https://www.trendmicro.com/en_no/research/24/i/banking-trojans-mekotio-looks-to-expand-targets--bbtok-abuses-ut.html
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    CommandLine|contains|all:
+      - -C Copy-Item
+      - powershell.exe
+      - Expand-Archive
+      - -Destination
+  condition: selection
+falsepositives:
+  - Legitimate software installation scripts that use PowerShell to copy and extract files.
+level: high

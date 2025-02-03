@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries to domains (hlapps[.]site, video-box[.]org, avkit[.]org) that are linked to the TaskLoader killchain. The rule aims to identify malicious C2 communication by TaskLoader malware.
+
+title: Suspicious Domains Related to TaskLoader Killchain (June 2023)
+id: 74cda696-67b1-4c68-9b55-aadb28e2d4a9
+status: experimental
+description: Detects DNS queries or network connections to domains associated with the TaskLoader killchain as reported in June 2023.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName:
+      - hlapps[.]site
+      - video-box[.]org
+      - avkit[.]org
+  condition: selection
+falsepositives:
+  - Legitimate communication with these domains if they are used for benign purposes.
+level: medium

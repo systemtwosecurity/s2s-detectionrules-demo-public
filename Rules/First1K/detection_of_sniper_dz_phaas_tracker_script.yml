@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma is well mapped with the CTI report, detecting execution of the tracker script associated with the Sniper Dz Phaas by targeting .js file with the host uri raviral[.]com.
+title: Detection of Sniper Dz PhaaS Tracker Script
+id: a1fcb3c1-3fbe-47bf-b1ec-4e2980ce105d
+status: experimental
+description: Detects the loading or execution of the tracker script associated with the Sniper Dz Phishing-as-a-Service platform.
+references:
+  - https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.initial-access
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    Request_URI|contains: /host_style/style/js-track/track.js
+  filter:
+    Request_URI|contains: raviral.com
+  condition: selection and filter
+falsepositives:
+  - Legitimate access to a similarly named tracker script that is not associated with Sniper Dz PhaaS.
+level: high

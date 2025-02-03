@@ -1,0 +1,32 @@
+# review_report_url: https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the creation of .sys files in the AppData\Local\Temp directory under user-specific paths (e.g., C:\Users\...). Such activity may indicate that ransomware or an EDR evasion tool is dropping an exploitable driver file, as seen in certain ransomware behaviors. Monitoring for .sys files in this temporary location helps identify potential malicious drivers used to bypass endpoint defenses. The rule can be generate few FP if .sys comes in between any filenames, which is highly unlikely. But we can change it as suggested
+title: Ransomware Dropping Exploitable Driver File in Temp Folder
+id: e51d8a20-613b-4ed8-8cfe-96df67761ce5
+status: experimental
+description: Detects the creation of a sys file in the AppData\Local\Temp folder which may indicate the presence of a ransomware EDR killer dropping an exploitable driver.
+references:
+  - https://news.sophos.com/en-us/2024/08/14/edr-kill-shifter
+author: System Two Security
+date: 2024/10/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\Users\
+    TargetFilename|contains|all:
+      - \AppData\Local\Temp\
+      - .sys
+  condition: selection
+falsepositives:
+  - Legitimate software that uses .sys files and stores them temporarily in the user's AppData\Local\Temp folder.
+level: high

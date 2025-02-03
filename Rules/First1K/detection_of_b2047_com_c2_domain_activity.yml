@@ -1,0 +1,30 @@
+# review_report_url: https://blog.lumen.com/derailing-the-raptor-train/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively matched as described in the CTI report. Both the rule and the report focus on monitoring for DNS or HTTP queries to the domain b2047.com and its subdomains, which are key indicators of compromise related to the campaign's infrastructure.
+
+title: Detection of b2047.com C2 Domain Activity
+id: 692da925-2605-4d59-8abe-ae891707c406
+status: experimental
+description: Detects DNS or HTTP requests to the b2047.com C2 domain and its associated subdomains, which are indicators of compromise related to the Raptor Train campaign.
+references:
+  - https://blog.lumen.com/derailing-the-raptor-train
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_b2047:
+    query|contains: b2047.com
+  condition: domain_b2047
+falsepositives:
+  - Legitimate access to the domain or its subdomains, although unlikely given the context of the threat report.
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies HTTP GET requests to URLs with patterns like /mother/?id=2&ids=, indicative of Glove Stealer's C2 traffic, using Zeek HTTP logs. It is marked as high severity, with potential false positives from legitimate traffic coincidentally matching the URI pattern.
+title: Detection of Glove Stealer C2 Traffic
+id: 0ba8f09a-808b-4117-99c4-265cfacf9bf6
+status: experimental
+description: Detects network traffic to a C&C server with a specific URL pattern used by Glove Stealer malware.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_traffic:
+    client_header_names|contains: User-Agent
+    method: GET
+    uri|contains|all:
+      - /mother/
+      - ?id=2&ids=
+  condition: c2_traffic
+falsepositives:
+  - Legitimate traffic to a server with a similar URI pattern by coincidence.
+level: high

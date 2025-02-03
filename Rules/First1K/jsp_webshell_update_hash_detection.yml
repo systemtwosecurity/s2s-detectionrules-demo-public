@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately detects update.jsp based on a specific SHA-256 hash associated with malicious JSP web shells, aligning well with the CTI report’s findings; for enhanced detection, additional rules could target other obfuscated files and indicators noted in the report to broaden threat detection coverage.
+
+title: Detection of JSP Web Shell Update.jsp with Specific Hash
+id: 73f8c857-2e43-409f-b8c2-868468c99232
+status: experimental
+description: Detects the access or creation of a JSP web shell named update.jsp with a known malicious hash value.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  category: application
+  product: jvm
+detection:
+  keywords:
+    - eb9f5cbe71f9658d38fb4a7aa101ad40534c4c93ee73ef5f6886d89159b0e2c2
+    - update.jsp
+  condition: all of keywords
+falsepositives:
+  - Legitimate creation or access of a file named update.jsp with the same hash due to a collision, which is highly unlikely.
+level: high

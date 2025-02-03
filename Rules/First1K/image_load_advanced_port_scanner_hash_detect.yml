@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule for detecting the Advanced Port Scanner tool by hash matches with the CTI report. The hash value d0c1662ce239e4d288048c0e3324ec52962f6ddda77da0cb7af9c1d9c2f1e2eb listed in both sources is identical, confirming the rule's relevance to the reported threat indicator.
+title: Detection of Advanced Port Scanner Tool by Hash
+id: 244945fb-8ab9-4f59-ab47-938ffa8a69d2
+status: experimental
+description: Detects the presence of a file associated with the Advanced Port Scanner tool based on a known hash value.
+references:
+  - https://unit42.paloaltonetworks.com/bianlian-ransomware-group-threat-assessment
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.t1595
+  - attack.reconnaissance
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256: d0c1662ce239e4d288048c0e3324ec52962f6ddda77da0cb7af9c1d9c2f1e2eb
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to specific files, but benign files could have a hash collision, although highly unlikely.
+level: high

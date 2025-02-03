@@ -1,0 +1,33 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report highlights an attack where an OAuth application with high-level permissions was exploited. This aligns with the sigma rule, which detects updates to applications with privileged Graph API permissions. Both emphasize the importance of monitoring for privilege escalation and unauthorized permission assignments in M365 environments, focusing on critical roles and API permissions.
+title: O365 Privileged Graph API Permission Assigned
+id: 226b800c-eee0-4c8e-ac89-b27703fc62cc
+status: experimental
+description: Detects updates to applications where privileged Graph API permissions are assigned in Microsoft 365 environments.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.t1199
+  - attack.privilege-escalation
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload|contains|all:
+      - 9e3f62cf-ca93-4989-b6ce-bf83c28f9fe8
+      - 1bfefb4e-e0b5-418b-a88f-73c46d2cc8e9
+      - 06b708a9-e830-4db3-a914-8e69da51d44f
+  condition: selection
+falsepositives:
+  - Legitimate updates to applications by authorized personnel
+level: high

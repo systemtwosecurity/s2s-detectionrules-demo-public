@@ -1,0 +1,29 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of the `readme_liesmich_encryptor_raas.txt` file on Windows systems, which is associated with the ENCRYPTORRAAS ransomware and typically signals a ransomware infection. It monitors `file_event` logs for the creation of this specific file. False positives may occur if legitimate software uses similar filenames for notes or documentation.
+title: Detection of ENCRYPTORRAAS Ransomware Note
+id: 0cbf9829-21e3-4b76-8b5a-a41731dcbe7e
+status: experimental
+description: Detects the creation of ENCRYPTORRAAS ransomware note on disk, which is indicative of a ransomware infection.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: readme_liesmich_encryptor_raas.txt
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename for its notes or documentation.
+level: high

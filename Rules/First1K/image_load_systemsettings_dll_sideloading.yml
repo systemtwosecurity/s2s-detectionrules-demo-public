@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects the loading of the SystemSettings.dll, which may indicate potential DLL side-loading, commonly observed in malicious activities as reported in the Earth Baxia campaign.
+
+title: DLL Side-Loading - Suspicious SystemSettings.dll Load
+id: c8ec8dfa-7254-49ff-9f96-6e0e5634f264
+status: experimental
+description: Detects the loading of SystemSettings.dll, potentially indicating DLL side-loading.  This DLL is noted in a CTI report as being used in malicious activity.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1574.002
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image: SystemSettings.dll
+  condition: selection
+falsepositives:
+  - Legitimate applications might load this DLL.  Further investigation is required.
+level: high

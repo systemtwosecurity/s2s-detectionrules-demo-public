@@ -1,0 +1,40 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DLL search order hijacking attempts by monitoring clip.exe for loading version.dll from non-standard paths, excluding common legitimate paths like system32 and program files. This technique is often used to execute malicious DLLs instead of legitimate ones. Alerts indicate potential hijacking unless verified as legitimate software using version.dll from a custom path.
+title: Search Order Hijack via clip.exe and Version.dll from Non-Standard Path
+id: 3d7a430d-a58a-4406-8a59-7bbe6a481cb4
+status: experimental
+description: Detects a search order hijacking attempt where clip.exe is the initiating process and version.dll is being loaded from a non-standard path.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+  - attack.t1574.001
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image|endswith: clip.exe
+    ImageLoaded|endswith: version.dll
+  filter:
+    ImageLoaded|contains:
+      - \\system32\\
+      - \\platform\\
+      - \\windows defender\\platform\\
+      - \\winsxs\\
+      - \\program files\\
+      - \\syswow64\\
+      - \\trend micro\\
+  condition: selection and not filter
+falsepositives:
+  - Legitimate use of clip.exe with a custom version.dll in a non-standard path
+level: high

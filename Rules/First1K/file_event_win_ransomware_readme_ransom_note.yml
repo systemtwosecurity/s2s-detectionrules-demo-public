@@ -1,0 +1,29 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well-supported by the CTI report. The report confirms that DarkSide ransomware creates ransom note files using the README.<UniqueID>.TXT format, making this rule a reliable method for detecting such behavior. The rule’s detection criteria align with real-world ransomware tactics described in the CTI analysis.
+title: Ransomware Dropping README Ransom Note
+id: 1a83d76b-fa2c-413d-ac32-a8c1945f5064
+status: experimental
+description: Detects the creation of ransom notes with the naming format README.<UniqueID>.TXT which is indicative of ransomware activity
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: README.*.TXT
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similar naming convention for its files
+level: high

@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule identifies network connections to three IP addresses associated with APT41's exploitation of CVE-2020-10189 in Zoho ManageEngine Desktop Central. The detection logic directly maps to the CTI report and uses Windows network connection logs to flag relevant activity. The rule is technically accurate and aligns with the provided threat intelligence.
+
+title: APT41 Infrastructure Connections
+id: 3865c7e2-e0f2-478a-8bda-628256a83618
+status: experimental
+description: Detects network connections to known APT41 infrastructure related to the exploitation of CVE-2020-10189 in Zoho ManageEngine Desktop Central.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 74.82.201.8
+      - 91.208.184.78
+      - 66.42.98.220
+  condition: selection
+falsepositives:
+  - Legitimate connections to these IP addresses if they are used for other purposes.
+level: critical

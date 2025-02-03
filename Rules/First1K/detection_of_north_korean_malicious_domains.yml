@@ -1,0 +1,57 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect network connections to known malicious domains associated with North Korean threat groups based on DNS client logs. The rule's relevance and accuracy are high, as it directly correlates with the domains listed in the CTI report, particularly those related to UpdateAgent malware. The rule's efficacy is strong for identifying potential command and control activities. The rule's IOCs align well with the CTI report, including several domains mentioned in the UpdateAgent section
+title: Detection of Known Malicious Domains Related to North Korean Threat Groups
+id: bae71a37-addd-4517-b04c-5711eda26815
+status: experimental
+description: Detects network connections to known malicious domains associated with North Korean threat groups as reported in CTI.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: dns-client
+detection:
+  selection:
+    QueryName|contains:
+      - azuredeploystore.com
+      - sourceslabs.com
+      - swissborg.blog
+      - jdkgradle.com
+      - glcloudservice.com
+      - azureonlinestorage.com
+      - msstorageazure.com
+      - primerosauxiliosperu.com
+      - officeaddons.com
+      - pbxphonenetwork.com
+      - contortonset.com
+      - akamaitechcloudservices.com
+      - msedgepackageinfo.com
+      - rentedpushy.com
+      - prontoposer.com
+      - airbseeker.com
+      - rebelthumb.net
+      - levelframeblog.com
+      - zacharryblogs.com
+      - officestoragebox.com
+      - visualstudiofactory.com
+      - relysudden.com
+      - pbxsources.com
+      - basketsalute.com
+      - msstorageboxes.com
+      - sbmsa.wiki
+      - globalkeystroke.com
+      - pbxcloudeservices.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to similarly named domains.
+level: high

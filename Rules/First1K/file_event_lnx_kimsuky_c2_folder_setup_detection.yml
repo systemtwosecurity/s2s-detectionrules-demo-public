@@ -1,0 +1,32 @@
+# review_report_url: https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-1.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is well-constructed for detecting the setup of server-side folders indicative of Kimsuky group activity. It accurately maps to the CTI report’s information about Kimsuky’s infrastructure, specifically the use of /Est/up and /Est/down folders. The rule is appropriate for Linux environments and file creation events,
+
+title: Detection of Kimsuky Group C2 Server-Side Folder Setup
+id: 491766c1-4d53-47cf-9a82-6a954188acc4
+status: experimental
+description: Detects the setup of command and control server-side folders with paths like "/Est/up" and "/Est/down" which are indicative of Kimsuky group activity.
+references:
+  - https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-1.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains|all:
+      - /Est/up
+      - /Est/down
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar server-side folder paths
+level: high

@@ -1,0 +1,34 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation (Event ID 11) and deletion (Event ID 12) of the m.dll file by the winword.exe process, indicating potential activity associated with the KGH-Browser Stealer malware. It focuses on monitoring file events specifically linked to this malware's behavior. False positives are considered unlikely due to the uncommon usage of the m.dll filename by legitimate software executed by winword.exe.
+
+title: Detection of KGH-Browser Stealer File Activity
+id: bf38932e-2d2f-44ec-b906-e80e985ae315
+status: experimental
+description: Detects the creation and deletion of m.dll by winword.exe, which is associated with the KGH-Browser Stealer malware.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image: winword.exe
+    TargetFilename|endswith: \m.dll
+    EventID:
+      - 11
+      - 12
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a file named m.dll and is executed by winword.exe (very unlikely)
+level: high

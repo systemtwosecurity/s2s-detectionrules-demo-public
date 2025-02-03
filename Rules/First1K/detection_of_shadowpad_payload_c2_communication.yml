@@ -1,0 +1,29 @@
+# review_report_url:  https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies potential ShadowPad C2 communication by detecting DNS queries to a known malicious domain associated with the malware. It focuses on network connections to a specific domain, aiding in the detection of ShadowPad payload activities linked to APT41 campaigns.
+title: Detection of ShadowPad Payload C2 Communication
+id: 67812494-e4ce-4823-94d3-ada6a53c26a1
+status: experimental
+description: Detects network connections to a known malicious domain used by ShadowPad payload for C2 communication.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.command_and_control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: w2.chatgptsfit.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains with similar names, ensure to verify the context of the alert.
+level: high

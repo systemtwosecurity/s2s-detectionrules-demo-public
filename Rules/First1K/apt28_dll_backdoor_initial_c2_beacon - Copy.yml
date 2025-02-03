@@ -1,0 +1,31 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report. It correctly identifies the primary C2 domain (malaytravelgroup.com) used for initial beaconing, as described in the CTI report. 
+
+title: APT28 DLL Backdoor Initial C2 Beacon
+id: 5f6d5b39-edd5-4eb2-ab0a-036a47528023
+status: experimental
+description: Detects the initial beacon to the primary C2 domain associated with APT28 DLL backdoor activity.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  domain:
+    client_header_names|contains: Host
+    uri|contains: /malaytravelgroup.com
+  condition: domain
+falsepositives:
+  - Legitimate traffic to a domain with a similar name
+level: high

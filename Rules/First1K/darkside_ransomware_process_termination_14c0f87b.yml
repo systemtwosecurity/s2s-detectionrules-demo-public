@@ -1,0 +1,35 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+title: Detection of DarkSide Ransomware Process Termination Activity
+id: 14c0f87b-aeae-4dae-b2c6-d052a869ba65
+status: experimental
+description: Detects the attempt to stop specific processes related to DarkSide ransomware which was used in the Colonial Pipeline attack.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: process_termination
+detection:
+  selection:
+    Image|endswith:
+      - \\vmms.exe
+      - \\svchost.exe
+      - \\vmcompute.exe
+      - \\TeamViewer.exe
+      - \\vmwp.exe
+      - \\explorer.exe
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that intentionally stop these processes.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule titled "Detect GetFoundationModelAvailability API Call" is designed to identify potentially unauthorized or suspicious usage of the GetFoundationModelAvailability API call in AWS CloudTrail logs. This API call, not documented in standard AWS CLI or API references, can be exploited by attackers for reconnaissance to check model availability programmatically. By focusing on specific CloudTrail event fields—such as eventName, eventSource, and eventType—the rule provides precise detection while minimizing noise from unrelated logs. Legitimate use cases, such as administrative activities outside the AWS Web Management Console, are acknowledged as possible false positives, emphasizing the need for proper validation. The rule offers a robust mechanism for detecting potential abuse in environments leveraging AWS Bedrock services
+
+title: Detect GetFoundationModelAvailability API Call
+id: 44d5e2ce-3266-4343-82f0-2de512e71e43
+status: experimental
+description: Detects the use of the GetFoundationModelAvailability API call, which is not included in the aws-cli or API reference guide and may indicate an attacker using the API programmatically.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.reconnaissance
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: GetFoundationModelAvailability
+    eventSource: bedrock.amazonaws.com
+    eventType: AwsApiCall
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that use the GetFoundationModelAvailability API call outside of the AWS Web Management Console.
+level: high

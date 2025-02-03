@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule detects the loading of `dbgeng.dll` (commonly used for debugging) and `atstrust.dll` (rarely used), which may indicate DUSTTRAP malware activity. It monitors DLL load events on Windows systems but may generate false positives due to legitimate use of `dbgeng.dll` by debugging tools. Further investigation is required for validation.
+
+title: Detection of DUSTTRAP Malware Loading dbgeng.dll and atstrust.dll
+id: fa33575d-8b36-476f-8c3b-8e506e4d39fb
+status: experimental
+description: Detects the loading of dbgeng.dll and atstrust.dll into a process, indicative of the DUSTTRAP malware.  This rule is based on the observation of these DLLs being loaded during DUSTTRAP's execution.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image:
+      - atstrust.dll
+      - dbgeng.dll
+  condition: selection
+falsepositives:
+  - Legitimate use of dbgeng.dll (debugging tools) and atstrust.dll (rarely used).  Further investigation is required to determine if the event is truly malicious.
+level: high

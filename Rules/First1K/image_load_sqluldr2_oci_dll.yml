@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the use of the SQLULDR2 utility on Windows systems by identifying the executable `sqluldr2.exe` and its loading of the `OCI.dll` library, commonly associated with Oracle database exfiltration. It is unlikely to generate false positives due to the rare legitimate use of this utility.
+
+title: SQLULDR2 Utility - Windows
+id: bb8c3ec7-8c11-4123-ab02-e2c3484a5528
+status: experimental
+description: Detects the Windows version of the SQLULDR2 utility based on filename and imported DLL.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.exfiltration
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    Image: sqluldr2.exe
+    ImageLoaded: OCI.dll
+  condition: selection
+falsepositives:
+  - Legitimate use of SQLULDR2 utility (unlikely)
+level: medium

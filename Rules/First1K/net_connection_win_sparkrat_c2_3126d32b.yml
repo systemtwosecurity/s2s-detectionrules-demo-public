@@ -1,0 +1,30 @@
+# review_report_url: https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule is designed to detect network communication to a known SparkRAT Command and Control (C2) server (77.83.172.47) on port 8000, which is commonly used by SparkRAT for remote control and data exfiltration activities. It helps in identifying potential malicious connections related to SparkRAT.
+title: SparkRAT Malware Network Communication Detected
+id: 3126d32b-1f3d-41fa-b7de-1da6bd3c02db
+status: experimental
+description: Detects network communication to a known SparkRAT Command and Control server on port 8000.
+references:
+  - https://www.clearskysec.com/wp-content/uploads/2024/11/Zero-day-cve-2024-4351-report.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 77.83.172.47
+    DestinationPort: '8000'
+  condition: selection
+falsepositives:
+  - Legitimate applications or services that communicate with the IP address on port 8000 should be whitelisted after investigation.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies network connections to IP addresses associated with the TAG-112 infrastructure. Legitimate traffic to these IPs may occur if they are repurposed after the reported malicious activity, making contextual validation essential.
+title: Detection of Malicious IP Connections Related to TAG-112 Infrastructure
+id: 3bfbac4a-edd1-4419-82cd-bba08bc20c93
+status: experimental
+description: Detects network connections to specific malicious IP addresses associated with TAG-112 infrastructure.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  client_header_names:
+    - 154.90.62.12
+    - 154.205.138.202
+    - 154.90.63.166
+  condition: client_header_names
+falsepositives:
+  - Legitimate connections to the IP addresses if they have been reused after the malicious activity was reported.
+level: high

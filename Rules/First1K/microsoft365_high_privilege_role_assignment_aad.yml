@@ -1,0 +1,34 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting high privilege role assignments aligns with the CTI report, as both focus on identifying significant changes to role memberships in Azure Active Directory, indicating potential privilege escalation.
+title: High Privilege Role Assignment in Azure Active Directory
+id: 02d919d4-56fa-474f-abb8-004e99c4ee5a
+status: experimental
+description: Detects the assignment of high privilege roles in Azure Active Directory, which could indicate privilege escalation or unauthorized changes in role memberships.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.privilege-escalation
+  - attack.t1556.007
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload|contains|all:
+      - 29232cdf-9323-42fd-ade2-1d097af3e4de
+      - f28a1f50-f6e7-4571-818b-6a12f2af6b6c
+      - Add member to role
+      - 62e90394-69f5-4237-9190-012177145e10
+  condition: selection
+falsepositives:
+  - Legitimate role assignment by authorized personnel
+level: high

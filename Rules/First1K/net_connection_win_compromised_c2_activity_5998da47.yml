@@ -1,0 +1,49 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to known compromised websites, command-and-control (C2) domains/IPs, and the use of malicious certificates associated with the "maskrisks" infrastructure. It may generate false positives if domains or IPs are reused for legitimate purposes or if software uses certificates that match the patterns in the rule.
+title: Detection of Compromised Websites and C2 Activity
+id: 5998da47-1516-4483-9f67-9bdddfba33d7
+status: experimental
+description: Detects network connections to compromised websites and C2 domains/IPs as well as the use of malicious certificates.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+  - attack.t1584.002
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  compromised_websites:
+    DestinationHostname|contains:
+      - tibetpost.net
+      - gyudmedtantricuniversity.org
+  c2_domains:
+    DestinationHostname|contains:
+      - checkupdate.maskrisks.com
+      - maskrisks.com
+      - mail.maskrisks.com
+      - update.maskrisks.com
+  c2_ips:
+    DestinationIp:
+      - 154.90.62.12
+      - 154.205.138.202
+      - 154.90.63.166
+  certificates:
+    Image|endswith:
+      - '*.maskrisks.com'
+      - '*.dnspod.cn'
+    Image|contains: KP MOBILE
+  condition: compromised_websites or c2_domains or c2_ips or certificates
+falsepositives:
+  - Legitimate connections to the domains or IPs listed, which might occur if the indicators have been reused for legitimate purposes.
+  - Legitimate software using certificates that match the patterns listed, which might occur if the certificates are not uniquely identifying malicious software.
+level: high

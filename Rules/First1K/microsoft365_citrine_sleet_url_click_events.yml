@@ -1,0 +1,35 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects successful URL click events related to known malicious domains associated with the Citrine Sleet threat group, focusing on interactions via email links. It leverages event attributes like eventName, eventSource, and specific domain patterns to identify potentially harmful activity while acknowledging the risk of false positives from previously malicious domains that may have been repurposed.
+title: Interaction with Citrine Sleet Malicious Domains via URL Click Events
+id: 5f11ab43-35dd-46f8-9faa-2f2c1c4e8669
+status: experimental
+description: Detects URL click events that involve known malicious domains associated with the threat group Citrine Sleet.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.initial-access
+  - attack.t1204.001
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    eventName: UrlClickEvents
+    eventSource: EmailUrlInfo
+    status: Success
+    Payload|contains:
+      - voyagorclub.space
+      - weinsteinfrog.com
+  condition: selection
+falsepositives:
+  - Legitimate navigation to a domain that was previously malicious but has since been repurposed or cleaned.
+level: high

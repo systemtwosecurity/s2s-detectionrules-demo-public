@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule accurately detects writing to C:\users\public\tmp.log, directly correlating with the malicious activity described in the CTI report.
+Therefore, the Sigma rule covers the detection needs based on the CTI report. However, the CTI report mentions additional activities (e.g., specific HTTP requests triggering the write), which are not covered by the original rule.
+title: VANGUARD PANDA - Writing to tmp.log File
+id: caedd9a4-cea1-4964-bcfe-56bc1b78c866
+status: experimental
+description: Detects writing to a specific log file used by VANGUARD PANDA backdoor
+references:
+  - https://www.crowdstrike.com/blog/falcon-complete-thwarts-vanguard-panda-tradecraft
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename: C:\\users\\public\\tmp.log
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same file path for logging
+level: high

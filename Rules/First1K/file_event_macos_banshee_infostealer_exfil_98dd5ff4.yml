@@ -1,0 +1,40 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects file access or exfiltration attempts on specified file types (such as.keys,.doc,.wallet) targeted from the Desktop or Documents directories on macOS. Given that legitimate applications or legitimate users may be accessing files, such activity must still be investigated for BANSHEE infostealer compromise.
+title: Detection of Potential BANSHEE Infostealer File Exfiltration Activity
+id: 98dd5ff4-948e-461a-bde4-c983ab0cfa58
+status: experimental
+description: Detects file access or exfiltration attempts for files with specific extensions from the Desktop and Documents folders, which may indicate BANSHEE infostealer activity.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - .keys
+      - .doc
+      - .key
+      - .txt
+      - .docx
+      - .wallet
+      - .rtf
+  filter1:
+    TargetFilename|startswith: /Users/%/Desktop/
+  filter2:
+    TargetFilename|startswith: /Users/%/Documents/
+  condition: selection and (filter1 or filter2)
+falsepositives:
+  - Legitimate access to files by authorized applications or users
+level: high

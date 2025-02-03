@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matches the CTI report by detecting the creation or modification of the error log file /tmp/xweb_log.md, which is a behavior specific to PondRAT/POOLRAT malware on Linux. 
+title: Detection of PondRAT/POOLRAT Malware via Error Log File
+id: 47e48d2e-0dd2-4988-8be6-acbbacf1f121
+status: experimental
+description: Detects the creation or modification of a specific error log file used by PondRAT/POOLRAT malware variants on Linux systems.
+references:
+  - https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: /tmp/xweb_log.md
+  condition: selection
+falsepositives:
+  - Legitimate applications that coincidentally use the same file path for error logging.
+level: high

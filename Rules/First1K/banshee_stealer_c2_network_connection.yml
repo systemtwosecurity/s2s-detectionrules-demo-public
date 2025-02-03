@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule detects network connections to the BANSHEE stealer's known C2 IP address (45.142.122.92) using Zeek HTTP logs. It is marked as high severity, with potential false positives if the IP is reassigned for legitimate use.
+title: BANSHEE Stealer C2 Network Connection Detected
+id: 46f0f5e9-8d7d-4e5f-b66b-a3451078ed01
+status: experimental
+description: Detects network connections to the BANSHEE stealer command and control (C2) server.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_ip:
+    client_header_names: 45.142.122.92
+  condition: c2_ip
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the threat report.
+level: high

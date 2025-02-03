@@ -1,0 +1,29 @@
+# review_report_url:  https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule detects the webshell installation on a Windows system based on specific file paths and executable names related to APT41 tactics. It turns attention to file events for imjp14k.dll and service.exe, giving a focus to malicious methods of persistence used by attackers to grab control of the web servers.
+title: Detection of C2 Plugin MD5 Hash
+id: 49f86605-780e-410d-9f9b-a89c996bc9c8
+status: experimental
+description: Detects the presence of a known Command and Control (C2) plugin based on its MD5 hash.
+references:
+  - https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.command_and_control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    md5: 5217b8552321556ea434474377cfcd02
+  condition: selection
+falsepositives:
+  - Unknown or new legitimate software that coincidentally has the same MD5 hash
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://www.truesec.com/hub/blog/dissecting-the-cicada
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are aligned, detecting the use of a specific hexadecimal sequence associated with the ChaCha20 encryption constant, indicating potential Cicada3301 malware presence. The CTI report highlights that this sequence (65 78 70 61 6E 64 20 33 32 2D 62 79 74 65 20 6B) is part of a YARA rule designed to identify Cicada3301's ESXi ransomware. Monitoring for this constant can be crucial in detecting malicious activity linked to this ransomware group.
+title: Detection of ChaCha20 Encryption Constant Usage
+id: 0d373030-7805-467a-9649-b575860bd1ef
+status: experimental
+description: Detects the use of a specific hexadecimal sequence associated with the ChaCha20 encryption constant "expand 32-byte k" which may indicate the presence of Cicada3301 malware.
+references:
+  - https://www.truesec.com/hub/blog/dissecting-the-cicada
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.defense-evasion
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: 65 78 70 61 6E 64 20 33 32 2D 62 79 74 65 20 6B
+  condition: selection
+falsepositives:
+  - Legitimate applications that use the ChaCha20 encryption algorithm
+level: high

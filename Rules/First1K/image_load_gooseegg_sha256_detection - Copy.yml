@@ -1,0 +1,29 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Detection of GooseEgg Malicious Binary via SHA-256 Hash
+id: b44d53e7-8927-465b-a3c8-c28745dadf15
+status: experimental
+description: Detects the presence of a known GooseEgg malicious binary based on its SHA-256 hash.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: c60ead92cd376b689d1b4450f2578b36ea0bf64f3963cfa5546279fa4424c2a5
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: high

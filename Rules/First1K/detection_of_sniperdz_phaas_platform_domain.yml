@@ -1,0 +1,28 @@
+# review_report_url: https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma is well mapped with the CTI report, its detecting any type of network or dns connection to the main domain of the Phaas plateform provider.
+title: Detection of Sniper Dz PhaaS Platform Domain
+id: af9b0009-82cf-4c0e-adb3-840525279983
+status: experimental
+description: Detects network connections or DNS queries related to the Sniper Dz PhaaS platform domain sniperdz.com, which is an indicator of compromise for phishing activities.
+references:
+  - https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.resource-development
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: sniperdz.com
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or reused for legitimate purposes after the time of the report.
+level: high

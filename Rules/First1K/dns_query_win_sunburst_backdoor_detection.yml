@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule checks for DNS queries for a subdomain of avsvmcloud.com which is part of solarwinds campaign and as mentioned in the CTI section
+title: Detection of SUNBURST Backdoor DNS Activity
+id: bcc92fe9-d5c6-4385-b1e8-36e3dd39ea69
+status: experimental
+description: Detects DNS queries for a subdomain of avsvmcloud.com, which is associated with the SUNBURST backdoor used in the SolarWinds supply chain attack.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: avsvmcloud.com
+  condition: selection
+falsepositives:
+  - Legitimate DNS queries to domains that contain 'avsvmcloud.com' but are not related to the backdoor.
+level: high

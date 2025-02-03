@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects C2 activity associated with Earth Baxia by monitoring connections to the known C2 server domain (360photo.oss-cn-hongkong.aliyuncs[.]com), a domain identified in the APT41 campaigns. It is highly relevant for identifying command-and-control communications during the initial access and exploitation phases of the attack.
+
+title: Earth Baxia C2 Activity - 360photo.oss-cn-hongkong.aliyuncs[.]com
+id: d0d907e2-c2bb-4779-a9af-ef0c4e39c28e
+status: experimental
+description: Detects network connections to a known Earth Baxia C2 server.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname: 360photo.oss-cn-hongkong.aliyuncs[.]com
+  condition: selection
+falsepositives:
+  - Legitimate connections to the domain if it is repurposed for benign uses.
+level: critical

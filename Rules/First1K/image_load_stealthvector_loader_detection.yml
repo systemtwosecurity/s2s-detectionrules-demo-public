@@ -1,0 +1,31 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a malicious StealthVector loader file named `roboform-x64.dll` with a specific MD5 hash on Windows systems. The detection targets DLL image loads and flags high-severity alerts for any matches, as this file is linked to APT41 activity.
+
+title: Detection of 2024 StealthVector Loader (roboform-x64.dll)
+id: 4862d283-323d-4057-b2f6-82f43d53b8b0
+status: experimental
+description: Detects the presence of a specific StealthVector loader file (roboform-x64.dll) with a known malicious MD5 hash.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: roboform-x64.dll
+    Hashes|contains: MD5=f0953ed4a679b987a2da955788737602
+  condition: selection
+falsepositives:
+  - Unknown. Any detection should be investigated.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to identify potential data exfiltration activities by monitoring HTTP POST requests targeting a specific URI associated with command and control (C2) communications. The use of csuristem|endswith and csuriquery|contains allows for precise detection of malicious POST requests, although it is essential to consider the context of legitimate applications that may use similar patterns to prevent false positives.
+title: Exfiltration to C2 via HTTP POST Request
+id: 88815366-6d50-42ac-8656-55cc5b2bdf3a
+status: experimental
+description: Detects data exfiltration through a POST request to a specific URI with a parameter indicating command and control communication.
+references:
+  - https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.exfiltration
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    csmethod: POST
+    csuristem|endswith: /wp-content/include.php
+    csuriquery|contains: _sys_=7
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar POST request patterns for benign purposes
+level: high

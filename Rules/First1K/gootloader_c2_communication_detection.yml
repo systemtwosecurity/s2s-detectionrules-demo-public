@@ -1,0 +1,39 @@
+# review_report_url: https://www.threatdown.com/blog/gootloader-05-23-2024/
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sgma rule effectively detects Gootloader-related activity by monitoring DNS queries to the C2 domains mentioned in the CTI report. Organizations can use this rule to quickly identify and respond to malicious communications related to Gootloader infections.
+title: Detection of Gootloader C2 Server Communication
+id: 206d8042-cfea-4210-8b3a-b51f8ed5d0b8
+status: experimental
+description: Detects DNS queries to known Gootloader Command and Control (C2) server domains.
+references:
+  - https://www.threatdown.com/blog/gootloader-05-23-2024
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - virdo.ir
+    - montebello6.se
+    - ebtekarsteel.com
+    - theclose.com
+    - sachverstaendiger-fenster.net
+    - spst.in
+    - ashleyhomeonline.com
+    - clintkustoms.com
+    - pureapks.xyz
+    - shoreditchtownhall.com
+    - budgetvm.com
+  condition: query
+falsepositives:
+  - Legitimate connections to domains that were compromised and used as C2 servers by Gootloader.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https:https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -The sigma rule is perfectly aligned with the provided CTI report, replicating the same detection logic for CVE-2021-26857 exploitation. It monitors for the MSExchange Unified Messaging source and detects System.InvalidCastException errors in the Windows Application logs. To further enhance detection, correlating this event with other Exchange logs could provide additional insights. However, the rule is ready for deployment and accurately captures the attack pattern described in the CTI report.
+title: Detect CVE-2021-26857 Exploitation via MSExchange Unified Messaging Error
+id: d5c10563-944d-4d47-bc92-adf34d5a54f5
+status: experimental
+description: Detects exploitation attempts of CVE-2021-26857 by identifying specific error events in the Windows Application event logs with Source MSExchange Unified Messaging and containing System.InvalidCastException.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  service: application
+detection:
+  selection:
+    Provider_Name: MSExchange Unified Messaging
+    Level: Error
+    EventID: 1035
+    Message|contains: System.InvalidCastException
+  condition: selection
+falsepositives:
+  - Legitimate errors from MSExchange Unified Messaging that happen to contain the string "System.InvalidCastException" but are unrelated to CVE-2021-26857 exploitation.
+level: high

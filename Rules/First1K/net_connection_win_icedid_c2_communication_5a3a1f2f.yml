@@ -1,0 +1,44 @@
+# review_report_url: URL
+# review_date: 2024-09-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule correctly identifies the key indicators (IPs, domains, port 443) provided in the CTI report, making it reliable for detection in a controlled environment.
+title: IcedID C2 Communication Detected
+id: 5a3a1f2f-9692-4b2e-b104-b008402f0aef
+status: experimental
+description: Detects network connections to known IcedID Command and Control (C2) servers over port 443.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    DestinationPort: '443'
+    DestinationIp|contains:
+      - 94.232.46.27
+      - 77.105.140.181
+      - 212.18.104.12
+      - 77.105.142.135
+      - 173.255.204.62
+  selection2:
+    DestinationPort: '443'
+    DestinationHostname|contains:
+      - jerryposter[.]com
+      - skrechelres[.]com
+      - jkbarmossen[.]com
+      - evinakortu[.]com
+      - modalefastnow[.]com
+      - hofsaalos[.]com
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to these IPs or domains if they have been reused after takedown or reassignment.
+level: high

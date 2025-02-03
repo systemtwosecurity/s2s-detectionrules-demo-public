@@ -1,0 +1,29 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects when the crontab -l command is used, which lists existing crontab entries, a common behavior in Linux.Gomir malware's persistence setup. It monitors for the specific command pattern /bin/sh -c crontab -l, indicating potential malware-related activity. Legitimate administrative tasks that involve viewing crontab entries may result in false positives.
+title: Detection of Linux.Gomir Scheduled Task Creation via Crontab
+id: f92f3293-4f8c-4d9c-b3b2-6d3262389c25
+status: experimental
+description: Detects the listing of all existing crontab entries, which is a behavior associated with the Linux.Gomir malware when setting up persistence.
+references:
+  - https://www.splunk.com/en_us/blog/security/breaking-down-linux-gomir-understanding-this-backdoors-ttps.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+  - attack.t1053.003
+logsource:
+  product: linux
+  service: cron
+detection:
+  keywords: /bin/sh -c crontab -l
+  condition: keywords
+falsepositives:
+  - Legitimate administrative activity that involves listing crontab entries.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of the Disable-InboxRule operation within Office 365 Unified Audit Logs, an action that could indicate an adversary manipulating email rules as part of a defense evasion strategy. By disabling inbox rules, adversaries may attempt to hide evidence of malicious forwarding rules or disrupt legitimate email monitoring and flow. The detection focuses on an operation that is critical for tracking changes to inbox rules, as outlined in MITRE ATT&CK T1564.008 (Email Manipulation). 
+
+title: Suspicious Email Forwarding Rule Disabled
+id: 9391d266-7b47-4014-ac12-b56b9976a222
+status: experimental
+description: Detects the disabling of inbox rules in Office 365 Unified Audit Logs which can indicate an adversary manipulating email rules.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.defense-evasion
+  - attack.t1564.008
+logsource:
+  product: m365
+  service: audit
+detection:
+  selection:
+    Operation: Disable-InboxRule
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve disabling inbox rules.
+level: medium

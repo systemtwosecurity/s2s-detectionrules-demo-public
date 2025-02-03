@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - Detects file system activity indicating potential theft of Opera browser data by monitoring access to paths containing "\Opera Software".
+title: Detection of Opera Software Browser Data Theft
+id: 0d1282fe-6f74-4b5d-8fd9-c90236ff9139
+status: experimental
+description: Detects file system activity indicating potential theft of Opera browser data by monitoring access to paths containing "\Opera Software".
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: \Opera Software\
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools accessing the browser data directories
+level: high

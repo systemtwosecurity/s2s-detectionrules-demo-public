@@ -1,0 +1,29 @@
+# review_report_url: https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule for detecting randomly named executable files in C:\Windows directly aligns with the PRC state-sponsored cyber actor activity described in the CTI report. Both the rule and the report focus on the creation of executables following the naming pattern C:\Windows\[a-zA-Z]{8}.exe, which has been observed in previous attacks.
+title: Detection of PRC State-Sponsored Cyber Actor Malicious File Creation
+id: bf37a2ee-e276-4121-b39b-d1730b4e28e4
+status: experimental
+description: Detects the creation of randomly named executable files in the C:\Windows directory, which is indicative of PRC state-sponsored cyber actor activity.
+references:
+  - https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|re: C:\\Windows\\[a-zA-Z]{8}\\.exe
+  condition: selection
+falsepositives:
+  - Legitimate applications that randomly generate executable names in the C:\Windows directory (very unlikely)
+level: high

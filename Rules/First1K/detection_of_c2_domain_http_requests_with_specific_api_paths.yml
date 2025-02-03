@@ -1,0 +1,30 @@
+# review_report_url: https://www.bitdefender.com/en-gb/blog/labs/unmasking-the-sys01-infostealer-threat-bitdefender-labs-tracks-global-malvertising-campaign-targeting-meta-business-pages
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP GET requests to specific API paths associated with SYS01 Infostealer's C2 communication, leveraging Zeek HTTP logs. It is classified as high severity, with potential false positives from legitimate applications using similar API patterns.
+title: Detection of C2 Domain HTTP Requests with Specific API Paths
+id: aa510c9f-58a0-444c-86e4-f7c2683c34e3
+status: experimental
+description: Detects HTTP requests to command and control (C2) domains with specific API paths and parameters that are indicative of SYS01 Infostealer malware communication.
+references:
+  - https://www.bitdefender.com/en-gb/blog/labs/unmasking-the-sys01-infostealer-threat-bitdefender-labs-tracks-global-malvertising-campaign-targeting-meta-business-pages
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: GET
+    uri|contains: /api/rss?a=ping
+  condition: selection
+falsepositives:
+  - Legitimate applications that use a similar API path and query parameter for benign purposes.
+level: high

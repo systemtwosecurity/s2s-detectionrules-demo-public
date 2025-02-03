@@ -1,0 +1,31 @@
+# review_report_url: URL
+# review_date: 2024-09-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This is a perfect match as the rule is designed to detect connections to URLs associated with both Cobalt strike and IcedID payloads which are listed in CTI. In comparison of Sigma rule with CTI report, the report has more detailed and additonal URLs
+title: Detection of Malicious URLs Related to CobaltStrike and IcedID Payloads
+id: 3fbaf180-1389-4f80-a89a-8252cc8fc45e
+status: experimental
+description: Detects network connections to URLs that have been identified as indicators of compromise for CobaltStrike and IcedID payloads.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains|all:
+      - ://temp[.]sh/VSlAV/
+      - ://85.209.11[.]48:80/download/
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP addresses if they have been reused after the report
+level: high

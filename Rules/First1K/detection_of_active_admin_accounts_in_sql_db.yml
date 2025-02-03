@@ -1,0 +1,30 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule provides a valid detection mechanism to identify attempts to audit for high-privileged accounts, which attackers might perform to locate or validate backdoor accounts for persistence. The CTI report confirms this query as a necessary check for victim organizations, implying that any instance of this query could indicate reconnaissance or validation of malicious user accounts by adversaries. Monitoring for this SQL pattern in SQL audit logs, as per the rule, can help detect both unauthorized and legitimate audit activities on administrative accounts, aligning well with techniques used by CL0P ransomware operators in the MOVEit exploitation campaigns.
+
+title: Detection of Audit for Active Administrative Accounts in SQL Database
+id: 2cf7b7fb-f89b-4f08-a59e-855b03a194ea
+status: experimental
+description: Detects the execution of a specific SQL query that audits for active administrative accounts in a SQL database, which could indicate an attempt to identify high-privileged user accounts for malicious purposes.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.discovery
+logsource:
+  category: application
+  product: sql
+detection:
+  selection:
+    keywords: SELECT * FROM [<database name>].[dbo].[users] WHERE Permission=30 AND Status='active' and Deleted='0'
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves auditing user accounts.
+level: high

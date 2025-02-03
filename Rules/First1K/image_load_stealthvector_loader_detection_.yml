@@ -1,0 +1,32 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a malicious StealthVector loader file named `mscms.dll` with a specific MD5 hash on Windows systems. It flags a critical alert for any matches due to the high threat level, although rare cases like legitimate software or hash collisions could trigger false positives.
+
+title: Detection of 2024 StealthVector Loader mscms.dll
+id: a7c990c6-0516-42c4-a22a-a0ba3a229dcf
+status: experimental
+description: Detects the presence of a specific StealthVector loader file with known malicious MD5 hash.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \mscms.dll
+    Hashes|contains: MD5=72070b165d1f11bd4d009a81bf28a3e5
+  condition: selection
+falsepositives:
+  - Legitimate software using the same filename but different hash
+  - Hash collisions (extremely rare)
+level: critical

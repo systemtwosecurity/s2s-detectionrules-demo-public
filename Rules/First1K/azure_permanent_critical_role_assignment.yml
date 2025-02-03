@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors for the permanent assignment of critical roles in Azure, which may indicate a potential persistence or privilege escalation attempt. While rare legitimate use cases exist, permanent role assignments should be reviewed carefully to ensure they align with organizational policy. Regular audits and the enforcement of just-in-time (JIT) access principles can help mitigate risks associated with excessive or unauthorized privileges.
+
+title: Permanent Assignment of Critical Azure Roles
+id: ce8d54d5-08af-403a-8d57-7e6a96572d12
+status: experimental
+description: Detects permanent assignment of critical roles in Azure, indicating a potential security risk.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    OperationNameValue: Microsoft.Authorization/roleAssignments/write
+    properties.message|contains|all:
+      - '"assignmentType": "Permanent"'
+      - '"principalType": "User"'
+  condition: selection
+falsepositives:
+  - Legitimate permanent assignment of critical roles (rare and should be reviewed)
+level: medium

@@ -1,0 +1,29 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP requests containing the URI `/c2sock`, associated with Lumma Info-Stealer C2 communication, using ModSecurity logs. It is marked as high severity, with rare false positives from legitimate applications coincidentally matching the URI pattern.
+title: Detection of Lumma Info-Stealer C2 URI
+id: 1ea0d8a7-dd37-4d00-bbe2-2262b72908c9
+status: experimental
+description: Detects HTTP requests to a known Lumma C2 URI which is indicative of Lumma Info-Stealer malware communication.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    cs-uri|contains: /c2sock
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same URI pattern by coincidence (unlikely but possible)
+level: high

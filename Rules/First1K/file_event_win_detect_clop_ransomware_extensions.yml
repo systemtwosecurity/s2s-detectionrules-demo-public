@@ -1,0 +1,33 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detecting .clop and .cl0p file extensions aligns with the CTI report on Clop ransomware, marking a key indicator of ransomware-encrypted files. Together with other Clop detection mechanisms, this rule contributes to a comprehensive, multi-layered detection strategy across encryption, file, and process activities, enhancing ransomware monitoring with minimal overlap.
+
+title: Detecting Clop Ransomware - Common Ransomware Extensions
+id: 1d01e73b-0012-4356-9135-b5c76dc12224
+status: experimental
+description: Detects file creation events where the file name ends with ".clop" or ".cl0p", which are common extensions used by the Clop ransomware.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+author: System Two Security
+date: 2024/09/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|endswith:
+      - .cl0p
+      - .clop
+  condition: selection
+falsepositives:
+  - Files with .clop or .cl0p extensions created by legitimate applications or administrators.
+level: high

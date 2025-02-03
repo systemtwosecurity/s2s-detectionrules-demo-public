@@ -1,0 +1,35 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma detects the network connection to a known malicious URL (master.volt-texs.online) used for downloading the Glove Stealer payload on windows system 
+title: Detection of Glove Stealer Payload Download
+id: 1343a981-3351-4da1-9c41-20d8a89c4d49
+status: experimental
+description: Detects the network connection to a known malicious URL used for downloading the Glove Stealer payload.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains: master.volt-texs.online
+    DestinationPort: '443'
+    Image|endswith: \powershell.exe
+    CommandLine|contains|all:
+      - -command
+      - iex(
+      - FromBase64String(
+  condition: selection
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or reused for legitimate purposes in the future.
+level: high

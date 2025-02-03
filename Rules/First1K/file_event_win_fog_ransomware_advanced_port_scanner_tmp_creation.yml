@@ -1,0 +1,31 @@
+# review_report_url: https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of a specific temporary file related to Fog Ransomware activity, particularly the "advanced_port_scanner_2.5.3869 (1).tmp" file. The rule focuses on file paths within the C:\\users\\ directory and the \\appdata\\local\\temp\\ subdirectory, making it effective for identifying temporary files used in reconnaissance stages.
+title: Fog Ransomware - Advanced Port Scanner Temp File Creation
+id: 0e072531-8489-417f-86c3-265592f1d7c4
+status: experimental
+description: Detects the creation of a temporary file used by Fog Ransomware as part of its attack on the financial sector.
+references:
+  - https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.reconnaissance
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: advanced_port_scanner_2.5.3869 (1).tmp
+    TargetFilename|startswith: C:\\users\\
+    TargetFilename|contains: \\appdata\\local\\temp\\
+  condition: selection
+falsepositives:
+  - Legitimate use of Advanced Port Scanner with a coincidental version number.
+level: high

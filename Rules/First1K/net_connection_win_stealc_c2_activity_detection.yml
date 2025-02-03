@@ -1,0 +1,70 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies network connections to known Stealc command and control (C2) server IP addresses, potentially indicating infostealer malware activity. It focuses on monitoring traffic to a list of malicious domains and IPs associated with Stealc campaigns. False positives can occur if legitimate services or applications connect to IP addresses that have been reassigned or reused after their association with Stealc C2 infrastructure.
+title: Detection of Stealc C2 Servers Network Activity
+id: 61ddeb20-82b5-4cff-bc93-c6104c2a5c0a
+status: experimental
+description: Detects network connections to known Stealc command and control (C2) server IP addresses.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  c2_ip:
+    DestinationIp:
+      - 194.4.51.160
+      - 91.215.85.188
+      - 194.87.31.146
+      - 65.109.131.183
+      - 94.131.99.185
+      - aa-cj.com
+      - 195.74.86.37
+      - 45.144.29.176
+      - 179.43.162.2
+      - 77.91.124.7
+      - 185.130.46.214
+      - 65.109.3.34
+      - 666palm.com
+      - 95.216.112.83
+      - 37.120.238.190
+      - 37.220.87.65
+      - 45.136.50.69
+      - 185.242.87.149
+      - 94.142.138.48
+      - 777palm.com
+      - 45.136.49.247
+      - 91.228.225.46
+      - 185.143.223.136
+      - 45.87.153.50
+      - 23.88.116.117
+      - 94.142.138.11
+      - 146.70.161.51
+      - 77.246.156.93
+      - 185.5.248.95
+      - 185.247.184.7
+      - moneylandry.com
+      - 162.0.238.10
+      - fff-ttt.com
+      - 179.43.162.94
+      - 167.235.62.105
+      - 179.43.162.89
+      - 95.217.143.99
+      - 45.136.51.61
+      - 85.239.54.29
+      - 84.246.85.80
+      - 5.75.138.201
+  condition: c2_ip
+falsepositives:
+  - Legitimate connections to IP addresses that have been reused after being associated with Stealc C2 servers.
+level: high

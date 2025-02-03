@@ -1,0 +1,31 @@
+# review_report_url: Threat Actors Exploit GeoServer Vulnerability CVE-2024-36401 | FortiGuard Labs (fortinet.com)
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the deletion of a coin miner configuration file (config.json) containing specific credentials. The rule's relevance is high, as it directly correlates with the CTI report's description of a coin miner attack using a config.json file with matching credentials. 
+title: Detection of Coin Miner Configuration via config.json
+id: 1be5d027-80d9-4b63-82cf-913b2b484bc0
+status: experimental
+description: Detects the configuration of a coin miner using a specific pool URL with credentials as described in the config.json file.
+references:
+  - https://www.fortinet.com/blog/threat-research/threat-actors-exploit-geoserver-vulnerability-cve-2024-36401
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.impact
+logsource:
+  product: linux
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|endswith: config.json
+    Hashes|contains: 49VQGVgnN9VccjztEDg7QqPJbLjGCQC4UxJkTRTJUCkZXruR7HFD7keebLdyJ6BF5zXKhFKFANFxZhjJ3BCmRT9pe4NG325b+50000
+  condition: selection
+falsepositives:
+  - Legitimate mining operations
+  - Development or testing environments that use similar configuration files
+level: high

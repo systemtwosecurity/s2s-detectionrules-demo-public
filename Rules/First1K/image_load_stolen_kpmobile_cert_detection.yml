@@ -1,0 +1,30 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution of files signed with the stolen "KP MOBILE" code-signing certificate. It looks for files with a specific SHA1 hash (d4938cb5c031ec7f04d73d4e75f5db5c8a5c04ce) and a signature starting with "KP MOBILE". Such detections may indicate malicious activity using a compromised certificate, requiring investigation for potential defense evasion tactics.
+title: Detection of Stolen KP MOBILE Code-Signing Certificate
+id: fa694242-8548-48e8-b5c7-0bc478366a09
+status: experimental
+description: Detects the execution of files signed with the stolen "KP MOBILE" code-signing certificate with a specific SHA1 hash.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Signature|startswith: KP MOBILE
+    sha1: d4938cb5c031ec7f04d73d4e75f5db5c8a5c04ce
+  condition: selection
+falsepositives:
+  - Legitimate software signed with the certificate before it was stolen
+level: high

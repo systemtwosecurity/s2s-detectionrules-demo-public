@@ -1,0 +1,29 @@
+# review_report_url: https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a known Kimsuky APT command and control (C2) IP address, specifically 185.176.43.82, by monitoring HTTP traffic using Zeek logs. This detection is useful for identifying potential C2 activity, which is a key indicator of compromise in Kimsuky-related attacks. However, legitimate connections to this IP address could occur if the IP has been reassigned, requiring careful review to avoid false positives.
+title: Detect Communication with Kimsuky APT C2 IP
+id: f8b92fba-215f-494f-96fa-c8d179279b0d
+status: experimental
+description: Detects network connections to a known Kimsuky APT command and control (C2) server IP address.
+references:
+  - https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_ip:
+    client_header_names: 185.176.43.82
+  condition: c2_ip
+falsepositives:
+  - Legitimate connections to the IP address if it has been reused after the report
+level: high

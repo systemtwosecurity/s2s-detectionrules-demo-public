@@ -1,0 +1,34 @@
+# review_report_url: https://unit42.paloaltonetworks.com/snipbot-romcom-malware-variant
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule designed to detect network connections associated with the SnipBot malware downloader effectively targets the specific URL temp.sh, which is identified as a key component in the malware's operation. This aligns well with the threat intelligence report, which highlights the downloader's use of this domain to fetch malicious payloads. The logic and conditions of the rule are structured to filter connections based on the destination hostname and port, specifically targeting HTTP and HTTPS traffic. The inclusion of a filter that checks for the image name AdobeFontPackCx6416.exe is a strong point, as it directly ties the detection to the specific downloader executable.
+title: SnipBot Downloader Network Connection Detected
+id: 99d30961-858d-45e7-8e20-7523f36456c3
+status: experimental
+description: Detects network connections to a specific URL used by the SnipBot malware downloader.
+references:
+  - https://unit42.paloaltonetworks.com/snipbot-romcom-malware-variant
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains: temp.sh
+    DestinationPort:
+      - '80'
+      - '443'
+  filter:
+    Image|endswith: \AdobeFontPackCx6416.exe
+  condition: selection and not filter
+falsepositives:
+  - Legitimate connections to temp.sh that are unrelated to the malware campaign
+level: high

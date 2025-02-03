@@ -1,0 +1,31 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule monitors for network communications directed towards a known exfiltration server IP and port, which may indicate data theft attempts. It aids in identifying potential breaches by flagging unauthorized exfiltration traffic.
+title: Exfiltration Server Communication Detected
+id: 1cf4c54b-d148-4039-8887-892602c847e7
+status: experimental
+description: Detects network communication to a known exfiltration server IP and port.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.exfiltration
+  - attack.t1567
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query: 195.123.226.84
+    id.resp_p: 8000
+  condition: selection
+falsepositives:
+  - Legitimate traffic to the IP and port if the server is repurposed for legitimate use.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma monitors for the presence of a specific SHA256 file hash (5adcd5c9b317808801a98934c7517a78d1e7db61dc2ddb95ce9b91ca271b3e5a) associated with the BlueNoroff Hidden Risk malware targeting Mac systems. Utilizing MacOS file delete logs, it identifies attempts to delete or manipulate files linked to this hash, which is a critical indicator of compromise (IOC). The hash's uniqueness minimizes false positives, making any detection highly suspicious and warranting immediate investigation. 
+title: Detection of BlueNoroff Hidden Risk Malicious File Hash
+id: ce85b507-140b-4c3a-ad0f-cc8717c5aec7
+status: experimental
+description: Detects the presence of a specific SHA256 hash associated with the BlueNoroff Hidden Risk malware targeting Macs.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.initial-access
+logsource:
+  category: file_delete
+  product: macos
+detection:
+  hashes:
+    sha256|contains: 5adcd5c9b317808801a98934c7517a78d1e7db61dc2ddb95ce9b91ca271b3e5a
+  condition: hashes
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash has been identified as malicious. Any detection should be investigated.
+level: critical

@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies suspicious usage of the VMAccess extension on Azure virtual machines, which may indicate unauthorized access or malicious activity. While legitimate administrative actions can trigger false positives, unexpected or unauthorized deployment of this extension warrants investigation. Regularly monitoring VM extensions and ensuring adherence to access policies can help mitigate risks associated with its misuse.
+
+title: Suspicious Usage of VMAccess Extension
+id: 3aed1b8d-7bdb-4784-ba95-bdc7f760bde3
+status: experimental
+description: Detects suspicious usage of the VMAccess extension on Azure virtual machines. This activity could indicate unauthorized access or malicious activity.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Microsoft.Compute/virtualMachines/extensions/write
+    ActivityDisplayName: Create or Update Virtual Machine Extension
+  filter:
+    TargetResources.modifiedProperties.newValue|contains: VMAccess
+  condition: selection and filter
+falsepositives:
+  - Legitimate administrative use of the VMAccess extension
+level: medium

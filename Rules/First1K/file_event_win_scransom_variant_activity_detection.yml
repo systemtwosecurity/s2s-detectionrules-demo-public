@@ -1,0 +1,33 @@
+# review_report_url: https://www.welivesecurity.com/en/eset-research/cosmicbeetle-steps-up-probation-period-ransomhub/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation or modification of specific files associated with ScRansom variants, such as New.exe, Rarlab_sib.msi, auto.exe, and Project1.exe. It aims to identify potential ransomware activity; however, legitimate applications with similar filenames may trigger false positives.
+title: Detection of ScRansom Variant File Activity
+id: 0aadf5fc-f29b-44d6-a32f-bfe70f0c9d2e
+status: experimental
+description: Detects the creation or execution of specific filenames associated with ScRansom variants as reported in CTI.
+references:
+  - https://www.welivesecurity.com/en/eset-research/cosmicbeetle-steps-up-probation-period-ransomhub
+author: System Two Security
+date: 2024/09/28
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - New.exe
+      - Rarlab_sib.msi
+      - auto.exe
+      - Project1.exe
+  condition: selection
+falsepositives:
+  - Legitimate applications with the same filenames
+level: high

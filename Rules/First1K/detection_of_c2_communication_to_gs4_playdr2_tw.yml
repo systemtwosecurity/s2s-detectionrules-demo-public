@@ -1,0 +1,29 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries to the domain `gs4.playdr2.tw`, known to be used by APT41 for C2 communication associated with the SOGU backdoor. It leverages `zeek` DNS logs to identify suspicious activity. False positives may occur if the domain is later repurposed for legitimate use.
+title: Detection of C&C Communication to gs4.playdr2.tw Domain
+id: 6ec26127-7a66-4307-a2e4-bda2ee6054f7
+status: experimental
+description: Detects network connections to a known command and control (C&C) domain associated with the SOGU backdoor used by APT41.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    query|contains: gs4.playdr2.tw
+  condition: query
+falsepositives:
+  - Legitimate DNS queries to the domain, if the domain has been reused for legitimate purposes after the indicated time frame.
+level: high

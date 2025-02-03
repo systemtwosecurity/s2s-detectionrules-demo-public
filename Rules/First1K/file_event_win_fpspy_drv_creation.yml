@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule is intended to detect the creation of files by the FPSpy malware, specifically those that follow the naming convention "Drv_<drive letter>" within the directory C:\Users\user\AppData\Local\Microsoft\WPSOffice\. The detection leverages the TargetFilename field, checking for filenames that start with the specified path and the "Drv_" prefix. This pattern is characteristic of the FPSpy malware's file creation activity. However, it is important to acknowledge that legitimate applications may also generate files with similar names in this directory for benign purposes. Therefore, any detections should be investigated further to confirm their malicious intent.
+title: Detection of FPSpy Malware File Creation Activity
+id: 0e42e2b0-69d7-44c0-81f5-8a5d7bbf7f44
+status: experimental
+description: Detects the creation of files with a specific naming pattern "Drv_<drive letter>" used by the FPSpy malware in the C:\Users\user\AppData\Local\Microsoft\WPSOffice\ directory.
+references:
+  - https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\Users\user\AppData\Local\Microsoft\WPSOffice\Drv_
+    TargetFilename|endswith: ''
+  condition: selection
+falsepositives:
+  - Legitimate applications that create similarly named files in the directory for benign purposes.
+level: high

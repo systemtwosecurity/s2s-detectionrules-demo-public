@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries for basketsalute.com, which is associated with the Fullhouse Backdoor's command-and-control infrastructure used by North Korean threat actors. Detection of this domain in network activity may indicate potential backdoor-related communications. As a precaution, false positives could occur if the domain is later repurposed for legitimate use.
+title: Detection of Fullhouse Backdoor Related Domain
+id: 854a03d5-5ce6-453f-90f6-bc822b43c74e
+status: experimental
+description: Detects network activity related to the Fullhouse Backdoor by monitoring for a known malicious domain.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: rentedpushy[.]com
+  condition: selection
+falsepositives:
+  - Legitimate access to the domain, if the domain is hijacked or reused for legitimate purposes after the report.
+level: high

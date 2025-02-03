@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a Cobalt Strike DLL file named "cs240.dll" with a specific SHA-256 hash, which is linked to persistent malicious activity. Any detection should be treated as high priority and investigated immediately due to its potential threat.
+title: Detection of Cobalt Strike DLL cs240.dll
+id: d7ed7d13-2105-40d0-a15c-292981939779
+status: experimental
+description: Detects the presence of a known Cobalt Strike DLL based on file name and hash.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: cs240.dll
+    sha256: 53e2dec3e16a0ff000a8c8c279eeeca8b4437edb8ec8462bfbd9f64ded8072d9
+  condition: selection
+falsepositives:
+  - Unknown. Any match should be investigated.
+level: high

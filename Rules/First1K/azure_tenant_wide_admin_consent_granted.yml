@@ -1,0 +1,33 @@
+# review_report_url: URL
+# review_date: 2024-09-20
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well-aligned with the CTI report.
+title: Tenant-Wide Admin Consent Granted
+id: 79cc96b1-6f88-4c5c-8200-9c83848451e0
+status: experimental
+description: Detects when tenant-wide admin consents are granted, which could indicate that an attacker is trying to gain extensive permissions to the environment without proper authorization.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.t1098.003
+  - attack.persistence
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Consent to application.
+    TargetResources.ModifiedProperties.NewValue|contains|all:
+      - '"ConsentContext.OnBehalfOfAll": "True"'
+      - '"ConsentContext.IsAdminConsent": "True"'
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve granting tenant-wide admin consents.
+level: high

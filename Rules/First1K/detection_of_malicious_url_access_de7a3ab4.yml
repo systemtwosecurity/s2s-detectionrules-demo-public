@@ -1,0 +1,41 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule is designed to detect HTTP requests targeting specific URIs associated with malicious payloads, as identified in the CTI report. By monitoring requests with methods such as GET and POST, it helps identify potential command and control (C2) activities related to malware, enhancing the detection of malicious behavior on the network.
+title: Detection of Malicious URL Access
+id: de7a3ab4-4ea3-4ef3-9553-40ee9f2fc8be
+status: experimental
+description: Detects network connections to URLs hosting malicious scripts and payloads as identified by CTI report.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - /enviador_slot
+      - /apache2
+      - /SystemdXC
+      - /cycnet.sh
+      - /ifindyou.sh
+      - /nginx-rc
+      - /scdsshfk
+      - /gk.php
+    client_header_names|contains: Host
+    method:
+      - GET
+      - POST
+  condition: selection
+falsepositives:
+  - Legitimate access to resources with similar names
+level: high

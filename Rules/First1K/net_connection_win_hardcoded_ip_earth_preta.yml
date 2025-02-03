@@ -1,0 +1,30 @@
+# review_report_url: https://www.trendmicro.com/en_no/research/24/i/earth-preta-new-malware-and-strategies.html
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to the hardcoded IP address 16.162.188.93, which is associated with downloading malicious components during Earth Preta campaigns. It helps identify potential command-and-control or malware download activities. False positives may occur if the IP is later repurposed for legitimate use.
+
+title: Detection of Malicious Network Connections to Hardcoded IP
+id: e6ed56cc-8031-447c-aea5-f9607f1f8964
+status: experimental
+description: Detects network connections to a hardcoded IP address which is known to be used for downloading malicious components as part of the Earth Preta attack campaign.
+references:
+  - https://www.trendmicro.com/en_no/research/24/i/earth-preta-new-malware-and-strategies.html
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 16.162.188.93
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address, if the IP is reused for legitimate purposes after the report
+level: high

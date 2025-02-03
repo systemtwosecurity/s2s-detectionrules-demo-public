@@ -1,0 +1,32 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule "Detection of GetModelInvocationLoggingConfiguration API Call" is designed to identify the use of the GetModelInvocationLoggingConfiguration API in AWS CloudTrail logs. This activity may suggest an attempt to gather information about logging settings for model invocations, which could be used by attackers to assess monitoring mechanisms and plan evasion strategies. While this API call may align with the Discovery phase of the MITRE ATT&CK framework, its detection level is set to low due to the likelihood of legitimate administrative or system-related use. Correlation with other anomalous activities or suspicious context is essential to validate potential threats.
+# review_tags:fixed.manual
+title: Detection of InvokeModel API Call in AWS CloudTrail
+id: 61b15356-d5ba-41eb-b79b-3ab814d484c0
+status: experimental
+description: Detects the invocation of the InvokeModel API call in AWS CloudTrail logs, which may indicate malicious usage of the Bedrock service.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.collection
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: InvokeModel
+    eventSource: bedrock.amazonaws.com
+    eventType: AwsApiCall
+  condition: selection
+falsepositives:
+  - Legitimate use of the InvokeModel API by authorized users or applications
+level: high

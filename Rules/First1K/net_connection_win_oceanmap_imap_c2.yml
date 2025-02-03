@@ -1,0 +1,35 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects suspicious IMAP/S connections that may be indicative of OCEANMAP malware communicating with its C2 infrastructure. The rule focuses on known C2 server IP addresses and associated email accounts used by the malware. By monitoring traffic on ports commonly used for IMAP/S (993 and 143), the rule aims to identify any network activity tied to potential command and control (C2) communication.
+
+title: OCEANMAP Malware - IMAP/S C2 Communication
+id: c11f4cde-61d0-4cc2-ae13-5aa3b46d3e18
+status: experimental
+description: Detects suspicious IMAP/S connections potentially indicative of OCEANMAP malware communicating with its command and control (C2) infrastructure. This rule focuses on the identified C2 servers and email accounts.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - webmail.facadesolutionsuae.com
+      - 74.124.219.71
+    DestinationPort:
+      - 993
+      - 143
+    Protocol: tcp
+  condition: selection
+falsepositives:
+  - Legitimate IMAP/S connections to the specified IP addresses or email accounts.
+  - Network activity from compromised accounts.
+level: high

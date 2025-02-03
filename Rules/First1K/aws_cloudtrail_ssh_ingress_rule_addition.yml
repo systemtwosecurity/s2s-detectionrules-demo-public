@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the use of the AWS AuthorizeSecurityGroupIngress API to add inbound SSH access (port 22) to a security group, which could indicate unauthorized lateral movement attempts. It analyzes CloudTrail logs for API calls with parameters specifying SSH access but may trigger false positives from legitimate administrative actions.
+
+title: AWS AuthorizeSecurityGroupIngress API - SSH Rule Addition
+id: 90dbc98f-a24c-4d43-8c84-9cff3c4d16b8
+status: experimental
+description: Detects the use of the AuthorizeSecurityGroupIngress API to add an inbound SSH rule to security groups, potentially indicating lateral movement. This rule relies on the raw event data and may require adjustments based on your CloudTrail log format.  It searches for the relevant parameters within the requestParameters field.
+references:
+  - https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.lateral-movement
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  selection:
+    eventName: AuthorizeSecurityGroupIngress
+    requestParameters: /IpPermissions.0.IpProtocol\":\"tcp\",.*\"IpPermissions.0.FromPort\":22,.*\"IpPermissions.0.ToPort\":22/
+  condition: selection
+falsepositives:
+  - Legitimate use of the AuthorizeSecurityGroupIngress API to add SSH rules.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects any file events involving the Z:\freelance file path, which may indicate the presence of an extortion actor's toolkit or other malicious tools, as noted in threat intelligence reports. Monitoring for access to this path helps identify potential unauthorized use of specific directories often associated with cybercriminal operations. Since legitimate software rarely uses this path, alerts on this activity should be closely investigated.
+title: Detection of the File Path Z:\freelance
+id: 1ec1afee-d0cc-4fd6-a6f8-34fedbc6de2b
+status: experimental
+description: Detects the presence of a specific file path Z:\freelance which may indicate the presence of an extortion actor's toolkit as identified in a CTI report.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: Z:\\freelance
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similar file path for storing data
+level: high

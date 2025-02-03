@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule monitors for the creation of a file named w.x in the \user\Documents directory, which is associated with the Kimsuky KGH spyware's activity of storing stolen browser data. By detecting this specific file, the rule aims to identify potential data exfiltration attempts by the spyware. It also considers possible false positives from legitimate applications that might use the same filename pattern, enhancing the precision of detection efforts.
+
+title: Kimsuky KGH Spyware - Stolen Browser Data File Creation
+id: e7463150-3c24-4554-8825-1b39c9579197
+status: experimental
+description: Detects the creation of a file used by Kimsuky KGH spyware to store stolen browser data
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \user\Documents\w.x
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same file name pattern in the user's documents folder
+level: high

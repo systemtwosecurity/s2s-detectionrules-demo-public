@@ -1,0 +1,31 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies reflective DLL loading of libmupdf.dll into SumatraPDF.exe, a technique often exploited by malware for stealthy execution. It can trigger false positives in cases where legitimate software uses similar DLL injection methods.
+title: Detect Reflective DLL Loading in SumatraPDF
+id: 604356ac-66e8-4d7e-ad7d-1cc0ae82b7e3
+status: experimental
+description: Detects reflective DLL loading into the memory space of SumatraPDF.exe, which is a technique often used by malware to evade detection.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection1:
+    ImageLoaded|endswith: \libmupdf.dll
+  selection2:
+    Image|endswith: \SumatraPDF.exe
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate software that uses reflective DLL loading techniques for legitimate purposes.
+level: high

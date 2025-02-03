@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution or presence of a Cobalt Strike DLL file named "name.dll" with a specific *SHA-256 hash*, which is commonly used in malicious activity. Any detection should be treated as highly suspicious and thoroughly investigated due to the critical nature of the file.
+title: Detection of Cobalt Strike DLL
+id: d6ba7fdc-3eaf-41d3-a981-ce8b9bc4fe89
+status: experimental
+description: Detects the execution or presence of a specific Cobalt Strike DLL based on file name and hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: name.dll
+    sha256: caa21a8f13a0b77ff5808ad7725ff3af9b74ce5b67426c84538b8fa43820a031
+  condition: selection
+falsepositives:
+  - Unknown. Any match on this SHA-256 hash should be considered highly suspicious and investigated.
+level: critical

@@ -1,0 +1,32 @@
+# review_report_url:https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting Interactsh beaconing activity is aligned with the CTI report. The rule specifies the detection of HTTP requests containing specific identifiers (cn5n8a92vtc00004a0t0 and czyrqdnvpujmmjkfhhvs) that are known to be associated with malicious campaigns targeting government organizations in Europe and the Caucasus. This aligns with the report's mention of these identifiers being leveraged as part of the beaconing mechanism to monitor infection chain progress.Overall, the Sigma detection strategy directly supports the findings and observations made in the CTI report regarding the usage of Interactsh for malicious purposes.
+
+title: Detection of Interactsh Beaconing Activity
+id: e0546d6d-c2e6-4d5a-a052-62e1d18b97c2
+status: experimental
+description: Detects beaconing activity to the Interactsh service using specific identifiers known to be associated with malicious campaigns targeting government organizations in Europe and Caucasus.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    c-uri|contains:
+      - cn5n8a92vtc00004a0t0
+      - czyrqdnvpujmmjkfhhvs
+  condition: selection
+falsepositives:
+  - Legitimate use of Interactsh service by internal security teams for penetration testing purposes.
+level: high

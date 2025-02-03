@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule accurately detects activity linked to the IP address 66.42.98.220, associated with a known C2 server. The detection logic is precise and leverages Cisco AAA logs as the source. Syntax and schema are correct, and the reference URL validates the context of the rule. Detection aligns with Mitre ATT&CK TA0011 (Command and Control).
+
+title: APT41 C2 Server Activity
+id: 178a25c7-64c4-495d-9cda-c3fa7d47422e
+status: experimental
+description: Detects activity related to APT41's C2 server used in their global intrusion campaign.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: cisco
+  service: aaa
+detection:
+  selection:
+    keywords: 66.42.98.220
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP if it has been repurposed.
+level: high

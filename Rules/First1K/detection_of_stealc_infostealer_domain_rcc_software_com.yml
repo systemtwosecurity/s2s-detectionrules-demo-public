@@ -1,0 +1,28 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries for the domain `rcc-software.com`, associated with the distribution of the Stealc infostealer, using Zeek DNS logs. It is marked as high severity, with potential false positives if the domain is hijacked or repurposed for legitimate use after the report.
+title: Detection of Domain rcc-software.com Related to Stealc Infostealer
+id: 13df0cfa-f576-4d0f-8a33-1cc7b2b5f273
+status: experimental
+description: Detects DNS or web proxy logs for the domain rcc-software.com which is associated with the distribution of the Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: rcc-software.com
+  condition: query
+falsepositives:
+  - Legitimate traffic to the domain rcc-software.com if it has been hijacked or repurposed after the time of the report.
+level: high

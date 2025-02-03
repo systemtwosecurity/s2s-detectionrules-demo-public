@@ -1,0 +1,30 @@
+# review_report_url:  https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network activity indicative of NetSupport C2 by monitoring DNS queries for the domain "greekpool.com," a known C2 domain in malicious campaigns. Alerts from this rule may signify unauthorized access or remote control activity, potentially signaling a NetSupport RAT infection. However, if the domain has been repurposed since the campaign, legitimate access could trigger false positives. This rule is set to high priority due to the potential for C2 activity.
+title: Detection of NetSupport C2 Activity
+id: 6fdd8cec-1788-48d9-814d-01ed70b462d6
+status: experimental
+description: Detects DNS queries or web proxy requests for known NetSupport C2 domain.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+author: System Two Security
+date: 2024/10/30
+tags:
+  - attack.command-and-control
+  - attack.t1583.002
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_query:
+    query|contains: greekpool.com
+  condition: domain_query
+falsepositives:
+  - Legitimate access to the domain, if it has been reused after the malicious campaign.
+level: high

@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule aims to identify suspicious network connections to IP addresses associated with the TRR240601 campaign, also known as Supposed Grasshopper. It focuses on detecting C2 (Command-and-Control) communication by monitoring connections to the IPs: 103.233.24.19, 85.217.144.228, 45.12.253.74, and 147.251.234.83, which have been identified as linked to this campaign.
+
+title: Suspicious Network Connections to TRR240601 Related IPs
+id: 5961573a-6079-4fd6-990d-27dd932aa69d
+status: experimental
+description: Detects network connections to IP addresses associated with TRR240601 (Supposed Grasshopper).
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 103.233.24.19
+      - 85.217.144.228
+      - 45.12.253.74
+      - 147.251.234.83
+  condition: selection
+falsepositives:
+  - Legitimate connections to these IPs (if any)
+level: medium

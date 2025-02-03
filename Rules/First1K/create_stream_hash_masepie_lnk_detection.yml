@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule is designed to detect the presence of a malicious LNK file associated with MASEPIE malware by monitoring its SHA256 hash. This method is highly reliable due to the uniqueness of the hash, making false positives unlikely. The rule is critical in identifying malware associated with targeted attacks, and any detection should be treated with high priority.
+
+title: Detection of Malicious LNK File (MASEPIE Malware)
+id: 19767eca-0cc2-4fc0-9b7c-4bd7c052043a
+status: experimental
+description: Detects the presence of a malicious LNK file associated with MASEPIE malware based on its SHA256 hash.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+  - attack.t1027.012
+logsource:
+  product: windows
+  category: create_stream_hash
+detection:
+  selection:
+    Hash: 19d0c55ac466e4188c4370e204808ca0bc02bba480ec641da8190cb8aee92bdc
+  condition: selection
+falsepositives:
+  - Legitimate use of files with the same hash (unlikely)
+level: high

@@ -1,0 +1,36 @@
+# review_report_url: https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting Cisco devices communicating with known C2 proxy servers has been validated against the CTI report. The IPs (45.32.88.250, 149.28.119.73) and ports (443, 8080, 8443) in the rule match the data from the CTI report. The rule’s detection logic accurately reflects the outbound connections described in the report. 
+title: Detection of Cisco Devices Communicating with Known C2 Proxy Servers
+id: 6f845b79-fcaa-4982-a3b9-0dd9487ebce4
+status: experimental
+description: Detects outbound connections from Cisco devices to known command and control (C2) proxy servers over ports typically used for Cisco web services.
+references:
+  - https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+  - attack.t1090.002
+logsource:
+  product: cisco
+  service: syslog
+detection:
+  selection:
+    dst_ip:
+      - 45.32.88.250
+      - 149.28.119.73
+    dst_port:
+      - '8080'
+      - '8443'
+      - '443'
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity to the specified IP addresses on the listed ports.
+level: high

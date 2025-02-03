@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/profiling-detecting-malicious-dns-traffic/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule adds relevant IOCs as per the CTI section. 
+title: Detection of Typosquatting Domain Activity via DNS Traffic Analysis
+id: b40fc83f-b3d8-440c-b9f3-e07e6cc56e26
+status: experimental
+description: Detects DNS queries to typosquatting domains that exhibit alternating active and dormant phases, which may indicate malicious activity such as domain squatting.
+references:
+  - https://unit42.paloaltonetworks.com/profiling-detecting-malicious-dns-traffic
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+  - attack.t1583.001
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: comcadt.net
+  condition: selection
+falsepositives:
+  - Legitimate domains with similar patterns due to misconfiguration or unusual but benign usage patterns.
+level: high

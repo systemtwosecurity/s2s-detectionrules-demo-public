@@ -1,0 +1,28 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule targets a specific malicious Excel workbook using its SHA256 hash, directly correlating with the CTI report on a MacroPack-related threat campaign. The rule's hash-based detection logic is highly accurate and efficient for identifying this exact malicious file, minimizing false positive
+title: Detection of Malicious Excel Workbook
+id: 5309dda0-a410-4985-9f45-7d0f23b1bc1e
+status: experimental
+description: Detects the execution or creation of a malicious Excel workbook with a known bad hash.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  sha256: e1ee389b2af2d3a0eff4aa14f2ac3de6cdd4a73de80b5d450a44ec69cd332dbf
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash has been reported as malicious. Any detection should be investigated.
+level: high

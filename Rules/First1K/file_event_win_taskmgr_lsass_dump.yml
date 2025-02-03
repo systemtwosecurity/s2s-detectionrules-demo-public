@@ -1,0 +1,36 @@
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/how-ransomhub-ransomware-uses-edrkillshifter-to-disable-edr-and-.html
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule captures LSASS Process Memory Dump creation via taskmgr.exe. This technique allows the ransomware to extract sensitive credentials, opening the door to deeper and more damaging breaches. By gaining access to these critical credentials, Ransomhub can amplify its highly intrusive attacks and complicate recovery efforts. It is explained in the Figure 16. This rule should be useful
+title: LSASS Process Memory Dump Creation Via Taskmgr.EXE
+id: 69ca12af-119d-44ed-b50f-a47af0ebc364
+status: test
+description: Detects the creation of an "lsass.dmp" file by the taskmgr process. This indicates a manual dumping of the LSASS.exe process memory using Windows Task Manager.
+author: Swachchhanda Shrawan Poudel
+date: 2023-10-19
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/987e3ca988ae3cff4b9f6e388c139c05bf44bbb8/atomics/T1003.001/T1003.001.md#L1
+tags:
+    - attack.credential-access
+    - attack.t1003.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - ':\Windows\system32\taskmgr.exe'
+            - ':\Windows\SysWOW64\taskmgr.exe'
+        TargetFilename|contains|all:
+            - '\AppData\Local\Temp\'
+            - '\lsass'
+            - '.DMP'
+    condition: selection
+falsepositives:
+    - Rare case of troubleshooting by an administrator or support that has to be investigated regardless
+level: high

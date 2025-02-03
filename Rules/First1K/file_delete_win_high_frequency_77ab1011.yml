@@ -1,0 +1,51 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detecting a high frequency of file deletion aligns closely with the CTI report on Clop ransomware, focusing on bulk deletions of targeted file types consistent with Clop’s operational behaviors. This rule complements other Clop detection mechanisms in the report, creating a comprehensive detection framework across file and process activities, with appropriate false-positive management to ensure effective alerting.
+
+title: High Frequency of File Deletion
+id: 77ab1011-9222-4b24-b773-0a3ad6bc93b3
+status: experimental
+description: Detects a high number of file deletion events, which could indicate ransomware activity or a malicious insider trying to cover their tracks.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+author: System Two Security
+date: 2024/09/25
+tags:
+  - attack.impact
+  - attack.t1486
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection:
+    EventID: 23
+    TargetFilename|endswith:
+      - .xls
+      - .chm
+      - .rar
+      - .ps1
+      - .7z
+      - .vbs
+      - .jpg
+      - .js
+      - .gif
+      - .cmd
+      - .zip
+      - .doc
+      - .ppt
+      - .ini
+      - .bmp
+      - .jpeg
+      - .log
+      - .png
+      - .db
+  condition: selection | count(TargetFilename) by Computer > 100
+falsepositives:
+  - Legitimate bulk file deletion by system administrators or automated scripts
+level: high

@@ -1,0 +1,34 @@
+# review_report_url: https://blog.reveng.ai/latrodectus-distribution-via-brc4/
+# review_date: 2024-11-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the execution of a malicious DLL (aclui.dll) associated with the Brute Ratel C4 Badger implant. The detection is triggered when the system loads the DLL with a specific hash and when it is executed via rundll32.exe with the argument aclui.dll,edit. This behavior is characteristic of the extraction and execution process of the Brute Ratel C4 implant, which is often used by threat actors after being delivered by an MSI package and a CAB file. False positives may occur from legitimate use of Brute Ratel by red teams or system administrators
+title: Detection of Brute Ratel C4 Badger Implant via MSI and CAB File Extraction
+id: c8b4100a-471c-4726-8041-7fd1c0df141a
+status: experimental
+description: Detects the execution of a malicious DLL file associated with Brute Ratel C4 badger implant that is extracted from a CAB file by an MSI package.
+references:
+  - https://blog.reveng.ai/latrodectus-distribution-via-brc4
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection1:
+    ImageLoaded|endswith: \aclui.dll
+    Hashes|contains: c5dc5fd676ab5b877bc86f88485c29d9f74933f8e98a33bddc29f0f3acc5a5b9
+  selection2:
+    CommandLine|contains|all:
+      - aclui.dll,edit
+      - rundll32.exe
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate use of Brute Ratel C4 by red teams or system administrators
+level: high

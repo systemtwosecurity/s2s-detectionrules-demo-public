@@ -1,0 +1,42 @@
+# review_report_url:https://www.security.com/threat-intelligence/microsoft-exchange-server-protection
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This sigma rule aligns closely with tactics observed in multiple reports related to HAFNIUM’s exploitation of Microsoft Exchange Servers. The rule detects ASP-based web shells, including ASPXSPY and China Chopper, which were crucial for remote access and persistence. The mapped CTI reports confirm that web shells were central to the attack, with the attackers leveraging tools like PowerCat and Nishang for lateral movement and data exfiltration. Additionally, the reports emphasize the importance of monitoring IIS and Exchange logs for indicators of these malicious activities, confirming the utility of the Sigma rule in proactive threat detection.
+title: Detection of Web Shells on Microsoft Exchange Servers
+id: 487de24a-8c49-42ce-994d-53d86dcf9c86
+status: experimental
+description: Detects the deployment of web shells on Microsoft Exchange servers, which could indicate a compromise. Specifically targets known web shells such as China Chopper variants and ASPXSPY.
+references:
+  - https://www.security.com/threat-intelligence/microsoft-exchange-server-protection
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method|contains:
+      - GET
+      - POST
+    cs-uri-stem|contains:
+      - aspxspy
+      - chopper
+    cs-uri-query|contains|all:
+      - cmd=
+      - exec
+    cs-uri-stem|endswith:
+      - .asp
+      - .aspx
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that uses query parameters in URLs to execute commands on the server.
+  - Developers testing or deploying web applications on the server.
+level: high

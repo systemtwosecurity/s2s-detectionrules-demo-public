@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -This Sigma rule detects network connections involving an unconventional management console URL (temp.vxsh.net) associated with threat actor activity. Flagging connections to this domain can help identify suspicious command-and-control communications potentially used for malicious toolkit management.
+title: Unconventional Management Console URL Detected
+id: e1cd7322-a6df-4552-97ad-6aecdaa6453f
+status: experimental
+description: Detects network connections to or from the unconventional management console URL used by threat actors as part of their toolkit.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains: temp.vxsh.net
+    DestinationIp|contains: temp.vxsh.net
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains with similar names
+level: high

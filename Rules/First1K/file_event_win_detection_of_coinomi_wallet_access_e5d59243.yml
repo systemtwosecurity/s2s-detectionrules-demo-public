@@ -1,0 +1,33 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects access that might be unauthorized of the Coinomi wallet via file activity in the directory \\Coinomi\\Coinomi\\wallets\\. An alert is raised if files or files with extensions such as.config or.wallet are accessed or created. False positives may occur from legitimate user backup or system operations.
+title: Detection of Coinomi Wallet File Access
+id: e5d59243-10d3-4946-a53b-8a15be54a4f6
+status: experimental
+description: Detects file access or creation events targeting the specific paths and file names for the Coinomi wallet.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: \Coinomi\Coinomi\wallets\
+  filter:
+    TargetFilename|endswith:
+      - '*.config'
+      - .wallet
+  condition: selection and filter
+falsepositives:
+  - Legitimate access or backup of the Coinomi wallet files by the user or system processes.
+level: high

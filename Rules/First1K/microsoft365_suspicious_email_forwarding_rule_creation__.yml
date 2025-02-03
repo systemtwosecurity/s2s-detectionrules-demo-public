@@ -1,0 +1,38 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects suspicious usage of the Set-Mailbox and New-InboxRule PowerShell cmdlets with parameters such as -DeliverToMailboxAndForward $true and -ForwardingSmtpAddress, which are often abused by adversaries to configure email forwarding for exfiltration or persistence. These actions align with MITRE ATT&CK T1114.003 (Email Forwarding Rule) and are indicative of malicious activity, particularly in Microsoft 365 environments where email forwarding rules can silently redirect sensitive emails to adversary-controlled inboxes.The rule focuses on successful executions (status: Succeeded) of these cmdlets with specific arguments, ensuring high-confidence detection of potential abuse.
+
+title: Suspicious Email Forwarding Rule Creation via PowerShell
+id: 5d67ab8d-7371-4af0-8ed3-794c24ad959b
+status: experimental
+description: Detects the use of Set-Mailbox PowerShell command with parameters to configure email forwarding, which could indicate a compromised account.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.persistence
+  - attack.t1114.003
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    eventName:
+      - Set-Mailbox
+      - New-InboxRule
+    eventSource: PowerShell
+    status: Succeeded
+    Payload|contains|all:
+      - -DeliverToMailboxAndForward $true
+      - -ForwardingSmtpAddress
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve configuring email forwarding.
+level: high

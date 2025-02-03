@@ -1,0 +1,31 @@
+# review_report_url: https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule closely aligns with the CTI report's indicators, specifically targeting the domain staradvertiser.store and the URI /piece/r.php, which are known to be part of the ReconShark C2 infrastructure. The rule effectively monitors for HTTP traffic patterns that match these indicators, providing a high-confidence detection mechanism for identifying malicious communications with the ReconShark C2 server. 
+title: Detect ReconShark C2 Server Endpoint Activity
+id: ade41509-41bb-48d6-acae-1c52a06a05b3
+status: experimental
+description: Detects network connections to a known ReconShark command and control (C2) server endpoint used in phishing campaigns.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_traffic:
+    uri|contains: /piece/r.php
+  c2_domain:
+    client_header_names|contains: 'Host: staradvertiser.store'
+  condition: c2_traffic and c2_domain
+falsepositives:
+  - Legitimate access to a resource with a similar name, which is unlikely.
+level: high

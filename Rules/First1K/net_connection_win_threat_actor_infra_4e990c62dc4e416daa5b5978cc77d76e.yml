@@ -1,0 +1,36 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect network connections to IPs and domains associated with known threat actor infrastructure. The rule flags connections to specific IP addresses and domains (such as those ending with .beamofthemoon.com), indicating potential command-and-control (C2) communications. This detection can help identify early-stage threat actor activity, though care should be taken to verify connections against potential benign uses of repurposed infrastructure.
+title: Detection of Threat Actor Infrastructure Communication
+id: 4e990c62-dc4e-416d-aa5b-5978cc77d76e
+status: experimental
+description: Detects network connections to IP addresses or domains associated with threat actor infrastructure.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.command-and-control
+  - attack.t1584.008
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection1:
+    DestinationIp:
+      - 94.75.225.81
+      - 180.131.145.85
+      - 82.192.88.95
+      - 89.251.22.32
+  selection2:
+    DestinationHostname|endswith: .beamofthemoon.com
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to IP addresses or domains that have been repurposed after the report
+level: high

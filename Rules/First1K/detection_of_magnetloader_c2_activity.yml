@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule correctly checks for the zeek logs of the C2 server for the MagnetLoader.
+title: Detection of MagnetLoader C2 Server Activity
+id: c8de6dfb-212b-4c7a-be9d-34018ec291c0
+status: experimental
+description: Detects network connections to a known MagnetLoader command and control (C2) server with a specific URI path.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis
+author: System Two Security
+date: 2024/09/18
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /en-au/livetile/front/
+    client_header_names|contains: Host
+  condition: selection
+falsepositives:
+  - Legitimate connections to Azure Edge with similar URI patterns (unlikely but possible)
+level: high

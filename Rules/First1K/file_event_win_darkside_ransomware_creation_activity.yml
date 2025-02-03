@@ -1,0 +1,31 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/darkside-ransomware-splunk-threat-update-and-detections.html
+# review_date: 2024-11-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is accurately mapped to the findings in the CTI report. The CTI report confirms that the files LOG.8527053e.TXT and README.8527053e.TXT are created as part of the DarkSide ransomware payload, validating the rule’s detection criteria. Monitoring for the creation of these files is an effective method for detecting potential ransomware attacks.
+title: DarkSide Ransomware File Creation Activity
+id: 3cd081a7-b2eb-4506-870e-8e0a5b1b594c
+status: experimental
+description: Detects the creation of specific files related to DarkSide ransomware payload execution
+references:
+  - https://www.splunk.com/en_us/blog/security/darkside-ransomware-splunk-threat-update-and-detections.html
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \LOG.8527053e.TXT
+      - \README.8527053e.TXT
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar naming conventions for log or readme files
+level: high

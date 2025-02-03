@@ -1,0 +1,32 @@
+# review_report_url: https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is well-matched with the CTI report, as it accurately targets the RDP connection activity between the intermediate server and the MoonPeak C2 server over port 3389. The CTI report confirms that these specific IP addresses and communication channels were used in the MoonPeak malware campaign, making the rule effective in detecting potential command-and-control activities related to this infrastructure.
+title: Suspicious RDP Connection from Intermediate Server to MoonPeak C2
+id: aecf66fc-cd86-498a-98a6-8e969b922b8e
+status: experimental
+description: Detects RDP connections from a known intermediate server IP to a MoonPeak C2 server IP which may indicate command and control activity.
+references:
+  - https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    EventID: 3
+    DestinationIp: 95.164.86.148
+    DestinationPort: 3389
+    SourceIp: 27.255.88.118
+  condition: selection
+falsepositives:
+  - Legitimate RDP connection from the intermediate server to external servers
+level: high

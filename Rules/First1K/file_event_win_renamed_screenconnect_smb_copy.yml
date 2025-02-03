@@ -1,0 +1,33 @@
+# review_report_url: URL
+# review_date: 2024-09-09
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches the behaviour mentioned in the CTI report. The event ID 5145 will detect the use of SMB in lateral movement. The rule aligns with TTP of MITRE ATT&CK.
+title: Detection of Renamed ScreenConnect Installer Copy via SMB
+id: c1a0f583-ffdc-44c1-9f13-f25300a87d24
+status: experimental
+description: Detects the lateral movement phase where a renamed ScreenConnect installer is copied to domain controllers, backup servers, and file servers using SMB with specific file names indicative of malicious activity.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.lateral-movement
+logsource:
+  product: windows
+  category: file_event
+  definition: Event ID 5145 is generated when an attempt is made to access a shared object, like a file or folder, over the network which matches the behavior described in the CTI report.
+detection:
+  selection:
+    EventID: 5145
+    TargetFilename|endswith:
+      - goat.exe
+      - jer.exe
+  condition: selection
+falsepositives:
+  - Legitimate installation of software with similar naming conventions or legitimate use of administrative tools for maintenance purposes.
+level: high

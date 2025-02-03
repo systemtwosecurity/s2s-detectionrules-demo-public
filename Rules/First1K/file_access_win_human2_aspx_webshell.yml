@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the creation or access of the suspicious human2.aspx file, commonly associated with a compromised web server or exploitation of vulnerabilities like MOVEit Transfer CVE-2023-34362. False positives might arise from legitimate applications that create files with similar names, so reviewing the context of the event is important for determining malicious activity.
+
+title: Suspicious File Creation - human2.aspx Webshell
+id: c39572b8-d5b8-4c51-939b-ae2115a8c83d
+status: experimental
+description: Detects the creation or access of the suspicious file 'human2.aspx', potentially indicating a compromised web server.
+references:
+  - https://www.huntress.com/blog/moveit-transfer-critical-vulnerability-rapid-response
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_access
+detection:
+  selection:
+    TargetFilename: human2.aspx
+  condition: selection
+falsepositives:
+  - Legitimate applications may create files with similar names. Review the context of the event to determine if it is malicious.
+level: high

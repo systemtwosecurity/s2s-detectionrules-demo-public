@@ -1,0 +1,29 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report by identifying IP 103.216.221.19 as shared infrastructure for SoreFang and WellMess malware. It monitors Linux network connections, and any flagged connections should be investigated. 
+title: Detection of SoreFang Malware and WellMess Sample Sharing Infrastructure
+id: 7d3ad9d6-1383-4a08-b938-57604c0c51bf
+status: experimental
+description: Detects network connections to an IP address associated with SoreFang malware and WellMess sample.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 103.216.221.19
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address, if the IP has been reused after the report.
+level: high

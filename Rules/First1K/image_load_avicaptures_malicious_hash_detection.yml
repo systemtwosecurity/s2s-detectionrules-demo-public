@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule precisely detects AVICaptures.dll with a confirmed Truebot hash from the CTI report, aligning well with the advisory’s findings; to enhance detection, consider developing complementary rules for additional Truebot-related files listed in the CTI report, which would improve overall malware detection capabilities.
+
+title: Detection of AVICaptures.dll with Known Malicious Hash
+id: 0cd7e953-5e72-45ad-8a90-7a529091db04
+status: experimental
+description: Detects the presence of a file named AVICaptures.dll with a specific hash value that is known to be associated with Truebot malware.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: AVICaptures.dll
+    Hashes|contains: a8569c78af187d603eecdc5faec860458919349eef51091893b705f466340ecd
+  condition: selection
+falsepositives:
+  - False positive can be almost ruled out due to the use of a specific hash value.
+level: high

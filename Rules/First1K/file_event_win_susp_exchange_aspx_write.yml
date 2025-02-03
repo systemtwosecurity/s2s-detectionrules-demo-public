@@ -1,0 +1,35 @@
+# review_report_url:https://www.security.com/threat-intelligence/microsoft-exchange-server-protection
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule ligns with Volexity, Symantec, and Microsoft reports. All three sources highlight the use of ASP/ASPX web shells by HAFNIUM for persistence, matching the rule's detection of suspicious ASPX writes via MSExchangeMailboxReplication.
+title: Suspicious MSExchangeMailboxReplication ASPX Write
+id: 7280c9f3-a5af-45d0-916a-bc01cb4151c9
+status: test
+description: Detects suspicious activity in which the MSExchangeMailboxReplication process writes .asp and .apsx files to disk, which could be a sign of ProxyShell exploitation
+references:
+    - https://redcanary.com/blog/blackbyte-ransomware/
+author: Florian Roth (Nextron Systems)
+date: 2022/02/25
+tags:
+    - attack.initial_access
+    - attack.t1190
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        Image|endswith: '\MSExchangeMailboxReplication.exe'
+        TargetFilename|endswith:
+            - '.aspx'
+            - '.asp'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high

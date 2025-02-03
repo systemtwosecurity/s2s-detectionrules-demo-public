@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://learn.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-userstates
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies instances where Multi-Factor Authentication (MFA) has been disabled, which could signal an attempt to bypass authentication mechanisms and establish persistence. While legitimate administrative actions can trigger false positives, unexpected changes should be investigated promptly. Regular monitoring and auditing of MFA configurations are crucial to maintaining strong access controls and mitigating risks.
+
+title: Disabled MFA to Bypass Authentication Mechanisms
+id: 7ea78478-a4f9-42a6-9dcd-f861816122bf
+status: test
+description: Detection for when multi factor authentication has been disabled, which might indicate a malicious activity to bypass authentication mechanisms.
+references:
+  - https://learn.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-userstates
+author: '@ionsor'
+date: 2022/02/08
+tags:
+  - attack.persistence
+  - attack.t1556
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    eventSource: AzureActiveDirectory
+    eventName: Disable Strong Authentication.
+    status: success
+  condition: selection
+falsepositives:
+  - Authorized modification by administrators
+level: medium

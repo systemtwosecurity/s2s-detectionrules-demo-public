@@ -1,0 +1,28 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the presence of a specific Version.dll file tied to the Diamond Sleet campaign by monitoring for a unique SHA-256 hash value. Hash-based detection minimizes false positives as it directly identifies the malicious file. Any alerts should be investigated, given that a hash match typically indicates the file is associated with this campaign.
+title: Detection of Diamond Sleet Version.dll by SHA-256 Hash
+id: d98cfb64-b5d5-4786-8909-2ed54be166cd
+status: experimental
+description: Detects the presence of a specific Version.dll file associated with the Diamond Sleet campaign by its SHA-256 hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: f251144f7ad0be0045034a1fc33fb896e8c32874e0b05869ff5783e14c062486
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and false positives are rare. However, any benign file with a hash collision would be a false positive.
+level: high

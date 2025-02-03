@@ -1,0 +1,29 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns well with the details provided in the CTI report. The report confirms that the DarkSide ransomware creates a .BMP file named bfabc626.BMP in C:\ProgramData, supporting the rule’s detection logic. This file creation is part of the ransomware's execution process, further validating the high alert level.
+title: Suspicious BMP File Creation in ProgramData Directory
+id: cd2903fe-8c80-4d71-aa83-8f79ed872acb
+status: experimental
+description: Detects the creation of a suspicious .BMP file in the ProgramData directory which could indicate an attack similar to the DarkSide ransomware that targeted Colonial Pipeline.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \ProgramData\bfabc626.BMP
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similarly named BMP files in the ProgramData directory
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description as it detecting DUSTTRAP-related network activity through the specific IP address 95.164.16.231. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. You can check alternative sigma from rule ID: f92d90fa-f12c-4245-876e-08694296219b
+title: Detection of DUSTTRAP Related IP Address
+id: 5fff7b5f-581f-498c-abc1-074eb46c7623
+status: experimental
+description: Detects network connections to an IP address related to the DUSTTRAP family as reported by CTI.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query: 95.164.16.231
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the report date.
+level: high

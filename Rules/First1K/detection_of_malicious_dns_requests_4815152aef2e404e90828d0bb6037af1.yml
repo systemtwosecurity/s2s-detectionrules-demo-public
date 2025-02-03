@@ -1,0 +1,36 @@
+# review_report_url: https://unit42.paloaltonetworks.com/profiling-detecting-malicious-dns-traffic/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule adds relevant IOCs as per the CTI section. 
+title: Detection of Malicious DNS Requests
+id: 4815152a-ef2e-404e-9082-8d0bb6037af1
+status: experimental
+description: Detects DNS requests to a list of known malicious domains associated with C2, domain squatting, and scams.
+references:
+  - https://unit42.paloaltonetworks.com/profiling-detecting-malicious-dns-traffic
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.t1071.004
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - cqk1rt8hubcc73f3775g.networkcyclechain.com/01
+    - run.sh
+    - carollewis.network
+    - biillpi.com
+    - robotatten.com
+    - comcadt.net
+    - pococo.cc
+  condition: query
+falsepositives:
+  - Legitimate access to a domain that has been compromised and is on the list of IOCs
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects HTTP POST requests to the URI /c2sock on port 80 at IP 82.117.255.127, without a preceding GET request, a pattern associated with Lumma Info-Stealer's command and control (C2) activity. It focuses on unusual traffic behavior indicative of data exfiltration or malware communication.
+title: Detection of Lumma Info-Stealer C2 Activity
+id: 6d378262-28d9-495d-a8a2-f5c36afe1e19
+status: experimental
+description: Detects HTTP POST requests without a preceding GET request to the URI "/c2sock" which could indicate command and control (C2) activity related to Lumma Info-Stealer.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: 80
+    Protocol: tcp
+    DestinationIp: 82.117.255.127
+  filter:
+    Initiated: true
+  condition: selection and filter
+falsepositives:
+  - Legitimate applications that perform POST requests without a preceding GET request to legitimate servers
+level: high

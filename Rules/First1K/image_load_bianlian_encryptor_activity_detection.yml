@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/bianlian-ransomware-group-threat-assessment
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - Properly aligned
+title: Detection of BianLian Encryptor Activity
+id: 8b22b418-f1e5-4396-96de-b514d679a3ac
+status: experimental
+description: Detects file encryption activity initiated by an unsigned process named bianlian_encryptor.exe, which is indicative of BianLian ransomware.
+references:
+  - https://unit42.paloaltonetworks.com/bianlian-ransomware-group-threat-assessment
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \bianlian_encryptor.exe
+    Signed: false
+  condition: selection
+falsepositives:
+  - Legitimate encryption software that is not code-signed
+level: high

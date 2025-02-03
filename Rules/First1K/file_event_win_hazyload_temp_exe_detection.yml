@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the creation or modification of temp.exe in the Windows Temp directory, which is a known indicator of HazyLoad binary activity related to the Diamond Sleet campaign. As temp.exe is an uncommon filename for legitimate executables, its presence in this directory may indicate suspicious or malicious activity. However, occasional legitimate software may generate temporary executables with similar names, so careful context analysis is advised.
+title: Detection of HazyLoad Binary in Temp Directory
+id: 56810771-f1bf-45f4-bffa-f96bca48f9df
+status: experimental
+description: Detects the creation or modification of a known HazyLoad binary file in the Windows Temp directory.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \temp.exe
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a temp.exe file in the Windows Temp directory.
+level: high

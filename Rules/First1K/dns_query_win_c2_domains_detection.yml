@@ -1,0 +1,45 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule directly addresses the threat described in the CTI report, which identifies a set of Azure App Service domains used by the Peach Sandstorm threat actor for C2 purposes. The domain list in the rule exactly matches the one provided in the CTI report, demonstrating a strong alignment with the threat intelligence.The rule's effectiveness lies in its ability to detect the initial stages of C2 communication, specifically the DNS resolution phase. This approach can potentially identify compromised systems before they establish full network connections to the C2 servers. The strength of this detection method is its ability to catch attempts to connect to C2 infrastructure, even if the actual connection is not successful or is blocked by other security measures.
+title: Device Network Events for C2 Domains
+id: cc0a70ff-b499-4232-8d88-b97363d49fe8
+status: experimental
+description: Detects network connections to a known list of malicious domains used for command and control (C2) from the DeviceNetworkEvents table.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+  - attack.t1102.001
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  QueryName:
+    - satellitespecialists.azurewebsites.net
+    - getsupportsservices.azurewebsites.net
+    - satellitegardens.azurewebsites.net
+    - nodetestservers.azurewebsites.net
+    - getservicessuports.azurewebsites.net
+    - softwareservicesupports.azurewebsites.net
+    - supportsoftwarecenter.azurewebsites.net
+    - satellite2.azurewebsites.net
+    - subreviews.azurewebsites.net
+    - centersoftwaresupports.azurewebsites.net
+    - satservicesdev.azurewebsites.net
+    - getsdervicessupoortss.azurewebsites.net
+    - getservicessupports.azurewebsites.net
+    - softwareservicesupport.azurewebsites.net
+    - servicessupports.azurewebsites.net
+    - websupportprotection.azurewebsites.net
+  condition: QueryName
+falsepositives:
+  - Legitimate connections to the listed domains if they have been repurposed for benign use.
+level: high

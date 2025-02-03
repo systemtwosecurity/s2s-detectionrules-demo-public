@@ -1,0 +1,31 @@
+# review_report_url: https://argonsys.com/microsoft-cloud/library/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies systems potentially vulnerable to CVE-2021-44228, CVE-2023-27350, and CVE-2023-42793 by checking Azure Audit Logs for entries related to DeviceTvmSoftwareVulnerabilities. It’s intended to detect known weaknesses that Onyx Sleet actors may target during reconnaissance. False positives may occur if the vulnerabilities are patched but still listed in asset inventories.
+title: Onyx Sleet Vulnerability Assessment
+id: 5f28f50d-08ed-4729-becc-117c2cab2470
+status: experimental
+description: Detects the existence of vulnerabilities CVE-2021-44228, CVE-2023-27350, and CVE-2023-42793 on devices.
+references:
+  - https://argonsys.com/microsoft-cloud/library/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.reconnaissance
+  - attack.t1595.002
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    ActivityDisplayName|contains: DeviceTvmSoftwareVulnerabilities
+  condition: selection
+falsepositives:
+  - Vulnerabilities already patched but still listed in the vulnerability management system
+  - Incorrectly reported vulnerabilities
+level: high

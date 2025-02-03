@@ -1,0 +1,32 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule directly matches the CTI report, as it can detect the custom User-Agent string used for the Beacon's C2 communication. To make it even more comprehensive, we are providing a fine-tuned rule, enhanced with additional conditions to detect traffic to the hardcoded C2 domains mentioned in the CTI report.
+title: Detection of Cobalt Strike Beacon via Custom UserAgent String
+id: cc6190e9-d2b0-45fa-b29e-7dead96d289e
+status: experimental
+description: Detects network traffic logs where a custom UserAgent string indicative of Cobalt Strike Beacon C2 communication is used.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names|contains: User-Agent
+    method:
+      - GET
+      - POST
+  condition: selection
+falsepositives:
+  - Legitimate applications with a hardcoded UserAgent string that matches the malicious one
+level: high

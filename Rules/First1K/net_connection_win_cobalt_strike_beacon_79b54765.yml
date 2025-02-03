@@ -1,0 +1,34 @@
+# review_report_url:https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule alerts to high-severity network traffic which is involved with Cobalt Strike Beacon C2 activity as connections to an IP or port are monitored alongside a process related to the one Cobalt Strike Beacon. It can produce false positives as coincidence may be realized by the legitimate use of the user agent, or by the reassignment of an IP.
+
+title: Detection of Cobalt Strike Beacon via Network Traffic
+id: 79b54765-2e5f-4d17-a66a-57ee0f8eaf9c
+status: experimental
+description: Detects network connections to a known Cobalt Strike C2 server with a specific user agent string.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.command_and_control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 45.85.76.18
+    DestinationPort: '443'
+    Protocol: tcp
+    Image|endswith: \csrss.exe
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same user agent string by coincidence
+  - Legitimate traffic to the IP if it has been reassigned after the report
+level: high

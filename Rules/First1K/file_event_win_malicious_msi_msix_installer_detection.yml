@@ -1,0 +1,31 @@
+# review_report_url: https://redcanary.com/threat-detection-report/trends/info-stealers
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma  Detects the creation or execution of MSI and MSIX installer files with names that are commonly used by adversaries to masquerade as legitimate software.
+title: Detection of Malicious MSI and MSIX Installer Files
+id: 0d49b3a1-43dd-4874-9a0e-64a1dca382a8
+status: experimental
+description: Detects the creation or execution of MSI and MSIX installer files with names that are commonly used by adversaries to masquerade as legitimate software.
+references:
+  - https://redcanary.com/threat-detection-report/trends/info-stealers
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \DirectXAdvancedSupport.msi
+      - \windirstat-x86.msix
+  condition: selection
+falsepositives:
+  - Legitimate software installation with coincidental naming patterns.
+level: high

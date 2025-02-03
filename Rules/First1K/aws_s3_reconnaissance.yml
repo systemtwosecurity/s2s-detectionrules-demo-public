@@ -1,0 +1,38 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects AWS S3 API calls related to reconnaissance activities, such as listing S3 buckets or retrieving bucket metadata, which may indicate an attempt by threat actors like Muddled Libra to gather information about cloud resources. False positives may occur due to legitimate administrative tasks or routine management of S3 buckets.
+
+title: AWS S3 Bucket Reconnaissance Activity
+id: 65fac3d8-7afe-43fb-8308-e6d0f621ede8
+status: experimental
+description: Detects AWS S3 API calls indicative of reconnaissance activity, such as listing buckets and retrieving bucket metadata.  This activity is associated with the Muddled Libra threat actor group.
+references:
+  - https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.reconnaissance
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  selection:
+    eventSource: s3.amazonaws.com
+    eventName:
+      - GetBucketLocation
+      - ListBuckets
+      - GetBucketVersioning
+      - GetBucketTagging
+      - GetBucketPolicy
+      - GetBucketWebsite
+      - GetBucketPolicyStatus
+      - GetBucketRequestPayment
+      - GetBucketAcl
+  condition: selection
+falsepositives:
+  - Legitimate administrative tasks involving S3 buckets.
+level: high

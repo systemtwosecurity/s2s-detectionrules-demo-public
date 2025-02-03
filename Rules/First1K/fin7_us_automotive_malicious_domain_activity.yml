@@ -1,0 +1,36 @@
+# review_report_url: https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report provides comprehensive insight into FIN7's tactics and associated IoCs, emphasizing the importance of proactive detection and monitoring to mitigate risks from such advanced persistent threat groups. The Sigma rules developed in response to these threats are vital tools for enhancing detection capabilities against malicious activity linked to FIN7.
+title: 'FIN7 Targeting U.S. Automotive Industry: Malicious Domain Activity'
+id: 8ab182a8-8ea4-416e-b8a1-f126d649a59a
+status: experimental
+description: Detects network connections to known malicious domains associated with the threat group FIN7 targeting the U.S. automotive industry.
+references:
+  - https://blogs.blackberry.com/en/2024/04/fin7-targets-the-united-states-automotive-industry
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - ipscannershop[.]com
+    - advanced-ip-sccanner[.]com
+    - myscannappo[.]com
+    - myipscanner[.]com
+    - myscannappo[.]info
+    - theipscanner[.]com
+    - myscannappo[.]online
+    - ipscanneronline[.]com
+  condition: query
+falsepositives:
+  - Legitimate connections to similarly named domains that are not listed in the IoCs.
+level: high

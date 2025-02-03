@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors changes to trusted locations in Conditional Access Policies, which may indicate an adversary attempting to bypass security controls or expand access capabilities. While legitimate administrative updates can trigger false positives, unexpected or unauthorized modifications warrant further investigation. Regularly auditing policy changes and enforcing access governance helps mitigate potential misuse.
+
+title: Modification to Conditional Access Policies Trusted Locations
+id: 7f2cffe3-44b3-439f-b183-f0c9770872b0
+status: experimental
+description: Detects modifications to trusted locations within Conditional Access Policies, which can be an indicator of an adversary expanding access capabilities.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+  - attack.t1556.009
+logsource:
+  product: azure
+  service: activitylogs
+detection:
+  selection:
+    ModifiedProperties{}.NewValue|contains: NamedLocation
+    OperationNameValue|contains: Update
+    ResourceProviderValue: Microsoft.Authorization
+  condition: selection
+falsepositives:
+  - Legitimate administrative modifications to Conditional Access Policies.
+level: medium

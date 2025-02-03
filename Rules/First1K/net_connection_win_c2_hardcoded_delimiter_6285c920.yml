@@ -1,0 +1,36 @@
+# review_report_url: https://www.cybereason.com/blog/i-am-goot-loader
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detects GootLoader's Stage 3 behavior. The malware gathers host information (e.g., OS version, environment variables) and sends it to the C2 server over HTTPS. The C2 response, containing a delimited string using "399DCF7651", is split and executed via PowerShell. The rule monitors TCP port 443 traffic with command patterns like READtOEnd, IEX, and -split, aligning with the tactics outlined in the Cybereason CTI report.
+title: C2 Server Communication with Hardcoded Delimiter
+id: 6285c920-3b29-4d10-9ee6-c6aa02864528
+status: experimental
+description: Detects C2 server communication where the response contains a hardcoded delimiter, indicating potential malicious activity.
+references:
+  - https://www.cybereason.com/blog/i-am-goot-loader
+author: System Two Security
+date: 2024/09/09
+tags:
+  - attack.t1102.002
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '443'
+    Protocol: tcp
+    CommandLine|contains|all:
+      - READtOEnd
+      - 399DCF7651
+      - -split
+      - IEX
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar network communication patterns or command-line arguments.
+level: high

@@ -1,0 +1,36 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule effectively detects the creation of browser-related files in %APPDATA%\Microsoft\Windows\Recent\ directories, aligning with Glove Stealer's documented behavior for data exfiltration. It accurately targets patterns indicative of the malware's activity as described in the CTI.
+title: Detection of Glove Stealer Data Exfiltration Activity
+id: 77620d81-a9a7-4ec8-a68d-db85e78f1211
+status: experimental
+description: Detects the creation of files with browser names and possible postfixes used by Glove Stealer malware in the %APPDATA%\Microsoft\Windows\Recent\MD5_HASH\Cookies\ directory.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: '%APPDATA%\\Microsoft\\Windows\\Recent\\'
+    TargetFilename|contains:
+      - \\Cookies\\Edge_
+      - \\Cookies\\Firefox_
+      - \\Cookies\\InternetExplorer_
+      - \\Cookies\\Opera_
+      - \\Cookies\\Chrome_
+      - \\Cookies\\Safari_
+  condition: selection
+falsepositives:
+  - Legitimate browser profile synchronization tools or backup software that may create similar file patterns in the user's profile directory.
+level: high

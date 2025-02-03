@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule  detects network connections to freeipapi.com, which may indicate the presence of the BANSHEE infostealer on a macOS system.
+title: Detection of Network Requests to freeipapi.com
+id: d7c54664-9a81-412b-8f7c-480bab92fa51
+status: experimental
+description: Detects network connections to freeipapi.com, which may indicate the presence of the BANSHEE infostealer on a macOS system.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  selection:
+    DestinationHostname|contains: freeipapi.com
+  condition: selection
+falsepositives:
+  - Legitimate software or scripts that query freeipapi.com for non-malicious purposes.
+level: high

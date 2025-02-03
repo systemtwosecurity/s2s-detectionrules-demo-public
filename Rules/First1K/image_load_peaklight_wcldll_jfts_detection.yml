@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is well mapped with the CTI report, particularly in detecting the loading of WCLDll.dll by Jfts.exe as part of the PEAKLIGHT malware infection chain. The CTI report provides confirmation of the execution chain and file names that align with the Sigma rule’s detection logic.
+title: 'PEAKLIGHT: Detection of WCLDll.dll Loaded by Jfts.exe'
+id: a59393cc-d5b5-46fb-970d-990baf1b7eae
+status: experimental
+description: Detects the loading of WCLDll.dll by Jfts.exe, which is indicative of the PEAKLIGHT malware infection chain.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/peaklight-decoding-stealthy-memory-only-malware
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image|endswith: \Jfts.exe
+    ImageLoaded|endswith: \WCLDll.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use the same filenames.
+level: high

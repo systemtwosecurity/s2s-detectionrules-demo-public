@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect network connections to a specific IP address (23.254.226.90) associated with the SUGARLOADER malware, as reported in the CTI. The rule's relevance and accuracy are high, as it directly corresponds to the IOC mentioned in the threat assessment for SUGARLOADER. The efficacy of this rule is potentially strong, as it focuses on a specific, high-confidence indicator. The rule accurately reflects the IOC from the CTI report, minimizing false positives.
+title: Detection of Known Malicious IP Related to SUGARLOADER
+id: 8627acdf-68cc-4629-ae8c-aea5397da4d7
+status: experimental
+description: Detects network connections to a known malicious IP address associated with the SUGARLOADER malware as reported by CTI.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 23.254.226.90
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address if it has been reassigned after the report date.
+level: high

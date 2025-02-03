@@ -1,0 +1,32 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of files with specific naming patterns associated with APT41, such as USERS_6-*.dat and SYSUSER_6-*.dat, which may indicate the presence of DEADEYE malware. It helps identify suspicious file creation activity linked to defense evasion tactics.
+title: APT41 Malicious File Creation Activity
+id: fda82076-923d-4512-9317-592628dee32e
+status: experimental
+description: Detects the creation of files with naming conventions used by APT41 (e.g., USERS_6-*.dat, SYSUSER_6-*.dat, SYSLOG_6-*.dat) which may indicate the presence of DEADEYE malware.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \SYSLOG_6-*.dat
+      - \USERS_6-*.dat
+      - \SYSUSER_6-*.dat
+  condition: selection
+falsepositives:
+  - Legitimate applications or scripts that happen to use similar naming conventions for file creation.
+level: high

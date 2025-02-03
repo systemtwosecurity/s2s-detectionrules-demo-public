@@ -1,0 +1,35 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detects OAuth app mailbox access via EWS with specific ClientAppId. The CTI report confirms that the ClientAppId 47629505-c2b6-4a80-adb1-9b3a3d233b7b is used in this type of access. The rule and CTI report are aligned in detecting malicious OAuth application activities related to mailbox access.
+title: O365 OAuth App Mailbox Access via EWS
+id: 1d0da1e5-9827-4fcf-b98e-27a81406b750
+status: experimental
+description: Detects OAuth application mailbox access via Exchange Web Services (EWS) by monitoring the MailItemsAccessed operation in the Unified Audit Log for a specific ClientAppId and ClientInfoString pattern.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.collection
+  - attack.t1114.002
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    eventName: MailItemsAccessed
+    eventSource: Exchange
+    status: Succeeded
+    Payload|contains|all:
+      - Client=WebServices;ExchangeWebServices
+      - 'ClientAppId: 47629505-c2b6-4a80-adb1-9b3a3d233b7b'
+  condition: selection
+falsepositives:
+  - Legitimate use of OAuth applications with the specified ClientAppId accessing mailboxes via EWS
+level: high

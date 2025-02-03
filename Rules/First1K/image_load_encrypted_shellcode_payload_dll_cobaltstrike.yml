@@ -1,0 +1,30 @@
+# review_report_url:  https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects loading of the DLL file AppRouteing.dll with a known hash that decrypts into CobaltStrike shellcode, suggesting possible remote access and command-and-control activity. High in criticality, so advise immediate investigation.
+title: Detection of Encrypted Shellcode and Payload DLL for CobaltStrike
+id: 0aacb151-fb79-484d-8bca-3d3162e8dbc5
+status: experimental
+description: Detects the presence of a specific DLL file that decrypts to CobaltStrike based on its hash value.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: AppRouteing.dll
+    Hashes|contains: md5=4141c4b827ff67c180096ff5f2cc1474
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with a known malicious file. Any detection should be investigated.
+level: critical

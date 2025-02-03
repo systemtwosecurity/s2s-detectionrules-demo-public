@@ -1,0 +1,36 @@
+# review_report_url: https://blog.reveng.ai/latrodectus-distribution-via-brc4/
+# review_date: 2024-111-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: Test to evaluate
+# review_rule_classification_reason: Too specific
+# review_rule_ttp_match: yes
+# review_notes:
+#  - "This Sigma rule is designed to detect DNS queries associated with known Latrodectus C2 domains, indicating potential communication with attacker-controlled servers. By monitoring for DNS requests containing specific domain names (e.g., kalopvard.com, filomeranta.com), it aims to identify early signs of compromise if a host is attempting to reach Latrodectus infrastructure. As some domains may change ownership over time, the rule includes a false positive condition to account for legitimate queries to repurposed domains.But in the rule the description is asking to detect the IP related to letrodectus, please take use of fine tune sigma where the description has been changed from IP to Domain.
+# review_tags:fixed.manual 
+title: Latrodectus Affiliate C2 Traffic Detection
+id: 3703e33a-8955-4d9e-8a29-ea47eec9bb6c
+status: experimental
+description: Detects network connections to known Latrodectus C2 Domain which may indicate a compromised host communicating with an attacker-controlled server.
+references:
+  - https://blog.reveng.ai/latrodectus-distribution-via-brc4
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  c2_traffic:
+    query|contains:
+      - kalopvard.com
+      - filomeranta.com
+      - lettecoft.com
+      - kurvabbr.pw
+      - ultroawest.com
+      - barsen.monster
+  condition: c2_traffic
+falsepositives:
+  - Legitimate DNS queries to domains that have been repurposed since the CTI report was generated.
+level: high

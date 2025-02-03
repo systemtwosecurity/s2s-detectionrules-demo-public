@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies unusual or excessive data exports initiated by legitimate backup solutions such as Veeam, AFI Backup, and CommVault, potentially indicating data exfiltration. While large legitimate backups can trigger false positives, unexpected activity or deviations from normal patterns should be investigated. Regular monitoring and analysis of backup operations are essential to mitigate the risk of unauthorized data transfers.
+
+title: Suspicious Data Export via Legitimate Backup Solutions
+id: 0438400c-e956-4d54-820e-f0636b689ff2
+status: experimental
+description: Detects unusual or excessive data exports initiated by Veeam, AFI Backup, and CommVault, potentially indicating data exfiltration.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.exfiltration
+  - attack.t1537
+logsource:
+  product: windows
+  category: file_access
+detection:
+  selection:
+    Image|contains:
+      - AFI Backup*
+      - Veeam*
+      - CommVault*
+  condition: selection
+falsepositives:
+  - Legitimate backups exceeding typical sizes.
+  - Scheduled backups to external locations.
+level: high

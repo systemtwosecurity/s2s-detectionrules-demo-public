@@ -1,0 +1,35 @@
+# review_report_url: https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the forceful deletion of the `C:\wmi.dll` file, which could be an attempt to erase evidence of malicious activity, often associated with defense evasion tactics. It looks for command-line activity invoking `cmd.exe` with the `del` command, the `/F` flag (force deletion), and the file path `C:\wmi.dll`. False positives could occur in legitimate administrative activities where this file is deleted.
+title: Deletion of WMI DLL File
+id: 116bb66c-54c8-4e2d-8f90-3216095eb5fd
+status: experimental
+description: Detects the forceful deletion of the C:\wmi.dll file, which could be an attempt to remove traces of malicious activity.
+references:
+  - https://www.mandiant.com/sites/default/files/2022-02/rt-apt41-dual-operation.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection:
+    CommandLine|contains|all:
+      - C:\\wmi.dll
+      - /c del
+      - /F
+      - cmd.exe
+      - '> nul'
+    Image: C:\\Windows\\System32\\cmd.exe
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves deleting the specific file.
+level: high

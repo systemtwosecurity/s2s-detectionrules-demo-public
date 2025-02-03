@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule monitors the creation of mail forwarding rules in Exchange, a potential indicator of compromise or malicious activity aimed at data exfiltration. While legitimate use cases exist, especially in business contexts, such changes should be rare and closely monitored. Unauthorized rule creations, particularly those forwarding emails externally, demand immediate investigation. Regular audits of mailbox rules and user access can help mitigate risks associated with unauthorized forwarding.
+
+title: Office Mail Forwarding Rule Creation
+id: 171a7cf1-77d0-42f2-929a-4f7096d36863
+status: experimental
+description: Detects the creation of new mail forwarding rules in Exchange, indicating potential compromise or malicious activity.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.exfiltration
+  - attack.t1114.003
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    eventName: New-MailboxForwardingAddress
+    eventSource: Exchange
+    status: Success
+  condition: selection
+falsepositives:
+  - Legitimate mail forwarding rule creation.
+level: high

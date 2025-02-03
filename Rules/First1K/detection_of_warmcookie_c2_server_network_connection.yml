@@ -1,0 +1,28 @@
+# review_report_url: https://www.elastic.co/security-labs/dipping-into-danger
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection aligns with the CTI report on the WARMCOOKIE backdoor, matching 80.66.88.146 as a C2 server.
+title: Detection of WARMCOOKIE C2 Server Network Connection
+id: 95fc9552-9d3d-4110-b0d9-c0d94ae88566
+status: experimental
+description: Detects network connections to a known WARMCOOKIE Command and Control (C2) server IP address.
+references:
+  - https://www.elastic.co/security-labs/dipping-into-danger
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: 80.66.88.146
+  condition: query
+falsepositives:
+  - Legitimate traffic to the IP address if it has been reassigned or repurposed after the threat report.
+level: high

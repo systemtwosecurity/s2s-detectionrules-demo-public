@@ -1,0 +1,30 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects multiple occurrences of the UserLoginFailed operation in Office 365 Unified Audit Logs, which can indicate attempts at brute force or password spraying attacks. These activities align with MITRE ATT&CK T1110 (Brute Force), a common adversary tactic used to gain unauthorized access to user accounts by testing multiple password combinations.The rule focuses on failed logon attempts, providing visibility into potential credential abuse. 
+title: Suspicious Office 365 Failed Logon Attempts
+id: 5a18bde9-113b-4d5c-88fd-7e0758c21508
+status: experimental
+description: Detects multiple failed logon attempts in Office 365 which could indicate a brute force or password spraying attack.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.initial-access
+  - attack.t1110
+logsource:
+  product: m365
+  service: audit
+detection:
+  Operation: UserLoginFailed
+  condition: Operation
+falsepositives:
+  - Legitimate credential input errors by the user
+  - Temporary network or system issues causing authentication failures
+level: medium

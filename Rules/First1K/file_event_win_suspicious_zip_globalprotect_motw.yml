@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aligns with the CTI report by detecting the creation or opening of ZIP files with "GlobalProtect" in the name, where the action is handled by explorer.exe. This behavior corresponds to the method used to distribute WikiLoader, as described in the report. The rule focuses on suspicious downloads masquerading as legitimate GlobalProtect software, helping to identify potential malicious activity.
+title: Suspicious ZIP File with GlobalProtect Naming and Mark of the Web
+id: 82cf4913-1424-47a1-9029-9e4c16bad2be
+status: experimental
+description: Detects the creation or opening of ZIP files with "GlobalProtect" in the name that have Mark of the Web data, indicating they were downloaded from the internet.
+references:
+  - https://unit42.paloaltonetworks.com/global-protect-vpn-spoof-distributes-wikiloader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: GlobalProtect
+    Image|endswith: \explorer.exe
+    User: '*'
+  condition: selection
+falsepositives:
+  - Legitimate downloads of GlobalProtect software updates or installations that are not related to the malicious activity described.
+level: high

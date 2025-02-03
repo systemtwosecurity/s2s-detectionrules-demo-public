@@ -1,0 +1,30 @@
+# review_report_url: https://labs.withsecure.com/publications/fin7-target-veeam-servers
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule accurately detects a critical component of FIN7’s attack strategy, specifically C2 communication with 95.217.49.143:4343. The CTI report confirms the relevance of this detection logic, and adding context from process behavior will enhance detection reliability. 
+title: FIN7 C2 Connection to Specific IP and Port
+id: 7bc69d0f-d35e-4cda-a453-f9d4200f2825
+status: experimental
+description: Detects network connection attempts to a known FIN7 command and control (C2) server IP and port
+references:
+  - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 95.217.49.143
+    DestinationPort: '4343'
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP and port if used by other applications within the environment
+level: high

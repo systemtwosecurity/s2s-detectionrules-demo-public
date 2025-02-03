@@ -1,0 +1,33 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is to identify the malicious use of LD_PRELOAD environment variable to inject the libsophos.so library into the sshd process in Linux, which can indicate lateral movement or privilege escalation by attackers. It checks for the presence of signs such as LD_PRELOAD with libsophos.so in the context of the sshd binary in auditd logs. False positives can occur if LD_PRELOAD is used for valid purposes such as debugging or performance tuning, although this usage is relatively rare and should be monitored.
+title: Detect LD_PRELOAD SSHD Injection via libsophos.so Library
+id: f20be2a3-d582-4c4b-b455-ea7492bf078a
+status: experimental
+description: Detects the use of the LD_PRELOAD environment variable to inject the "libsophos.so" library into the system's SSHD process, which is indicative of lateral movement or privilege escalation.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.t1574.006
+  - attack.lateral-movement
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0|contains|all:
+      - LD_PRELOAD=
+      - libsophos.so
+    exe: /usr/sbin/sshd
+  condition: selection
+falsepositives:
+  - Legitimate use of LD_PRELOAD for debugging or performance tuning, though this should be rare and closely monitored.
+level: high

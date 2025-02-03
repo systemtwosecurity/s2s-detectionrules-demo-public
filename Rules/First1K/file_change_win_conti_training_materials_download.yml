@@ -1,0 +1,41 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url:  https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies the download of files associated with Conti ransomware training materials, which may indicate attempts to learn or replicate their techniques. Specific filenames, such as ContiTraining.torrent or Powershell for Pentesters+.rar, are key indicators. While legitimate use of similar filenames for benign purposes can generate false positives, unexpected or unauthorized downloads should be investigated immediately. Adding context-based criteria, such as the download source or user behavior, can help refine detection accuracy.
+
+title: Conti Ransomware Training Materials Download Attempt
+id: ca8b7fd0-8689-493e-9f99-c09e7dd81589
+status: experimental
+description: Detects the download of files associated with Conti ransomware training materials, as identified in a CTI report. This rule focuses on the creation of specific files downloaded via a torrent.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.resource-development
+logsource:
+  product: windows
+  category: file_change
+detection:
+  selection:
+    TargetFilename:
+      - Метасплоит RU.zip
+      - Метасплоит US.rar
+      - WMI Attacks and Defense +.rar
+      - Кряк 2019.rar
+      - Abusing SQL Server Trusts in a Windows Domain+.rar
+      - GCB.zip
+      - Powershell for Pentesters+.rar
+      - ContiTraining.torrent
+      - Windows Red Team Lab+.rar
+      - Network Pentesting.rar
+      - Attacking and Defending Active Directory+.rar
+      - Cobalt Strike.rar
+      - GeekBrayns Реверс-инжиниринг.rar
+  condition: selection
+falsepositives:
+  - Legitimate use of similar filenames. This rule may generate false positives if the filenames are used in a non-malicious context. Consider adding additional context-based detection criteria to reduce false positives.
+level: high

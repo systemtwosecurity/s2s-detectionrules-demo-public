@@ -1,0 +1,31 @@
+# review_report_url: https://sentinelone.com/labs/kimsuky-ongoing-campaign-using-tailored-reconnaissance-toolkit/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is precisely aligned with the CTI report’s description. The rule provides an effective mechanism to detect potential data exfiltration attempts by the RandomQuery malware, part of the Kimsuky campaign.
+title: Kimsuky Campaign RandomQuery Malware - HTTP POST Exfiltration
+id: 52994291-0941-4118-9b0c-a7841437425a
+status: experimental
+description: Detects HTTP POST requests that are likely to be used by the RandomQuery malware variant distributed by Kimsuky for data exfiltration. The rule looks for specific boundary strings in the HTTP POST body that are unique to this malware.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-ongoing-campaign-using-tailored-reconnaissance-toolkit
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    CommandLine|contains:
+      - 'Content-Type: multipart/form-data; boundary='
+      - '----C2xkanZvaXU4OTA'
+  condition: selection
+falsepositives:
+  - Legitimate applications that use multipart/form-data POST requests with a boundary string that coincidentally contains the sequence used by RandomQuery.
+level: high

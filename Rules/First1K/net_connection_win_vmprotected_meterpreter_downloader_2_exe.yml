@@ -1,0 +1,38 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule will detect downloading of a VMProtected Meterpreter downloader 2.exe via an HTTP request. The download process is executed using certutil.exe, which are usually found to appear as a post-exploitation activity after the exploitation of CVE-2020-10189. False positives will appear if certutil.exe is used for downloading files from trusted sources.
+title: Downloading 2.exe VMProtected Meterpreter Downloader via HTTP Request
+id: e17a4769-21ee-4b42-bf4f-e460c8ad7a13
+status: experimental
+description: Detects the download of a VMProtected Meterpreter downloader named 2.exe via an HTTP request, which is indicative of post-exploitation activity following the exploitation of CVE-2020-10189.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort:
+      - '80'
+      - '443'
+    Image|endswith: \certutil.exe
+    CommandLine|contains|all:
+      - http://91.208.184[.]78/2.exe
+      - certutil
+      - -split
+      - -urlcache
+      - -f
+  condition: selection
+falsepositives:
+  - Legitimate use of certutil to download files from trusted sources
+level: high

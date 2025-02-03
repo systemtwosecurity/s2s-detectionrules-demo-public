@@ -1,0 +1,31 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies a known campaign URL (/dpixel) used by the REvil, a strong indicator of compromise. It filters out requests that contain User-Agent headers that look for unauthorized activity. The rate of false positives would be low but probable in case legitimate traffic accesses the same resource. Severity is high.
+title: Detection of REvil Campaign via Network Indicator
+id: cff6e36b-a23a-4f7c-952e-6888d3e20a61
+status: experimental
+description: Detects network connections to a known REvil campaign URL which is a strong indicator of compromise.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /dpixel
+  filter:
+    client_header_names|contains: User-Agent
+  condition: selection and not filter
+falsepositives:
+  - Legitimate connections to the IP that hosts the /dpixel resource, which is unlikely.
+level: high

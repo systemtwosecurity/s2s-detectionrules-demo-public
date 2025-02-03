@@ -1,0 +1,39 @@
+# review_report_url: https://unit42.paloaltonetworks.com/analysis-pentest-tool-splinter/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matched well with the CTI report based on network indicators, file paths, and command-and-control activities.
+title: Detection of Splinter C2 Server Communication
+id: b55913f4-fbfb-4f3c-9927-f2650523cda6
+status: experimental
+description: Detects network connections to specific URL paths used by the Splinter post-exploitation tool for task synchronization, status processing, and file download/upload.
+references:
+  - https://unit42.paloaltonetworks.com/analysis-pentest-tool-splinter
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+  - attack.t1105
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '28069'
+    DestinationHostname|endswith: '.151'
+    Image|endswith:
+      - \splinter_core\target\release\deps\implant_exe.exe
+      - \splinter_core\target\release\deps\implant_dll.dll
+  filter:
+    CommandLine|contains|all:
+      - C:\gitlab-runner\builds\_fUzhMf8i\0\h3upperbounds\red-team\implant\splinter_core\target\release\deps\implant_exe.pdb
+      - C:\gitlab-runner\builds\_fUzhMf8i\0\h3upperbounds\red-team\implant\splinter_core\target\release\deps\implant_dll.pdb
+  condition: selection and not filter
+falsepositives:
+  - Legitimate applications using the same network infrastructure
+  - Legitimate applications with similar file paths
+level: high

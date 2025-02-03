@@ -1,0 +1,31 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies the presence of the `storesyncsvc.dll` file and detects the specific MD5 hash associated with the Cobalt Strike BEACON implant. A false negative might occur if the malware changes its file hash to evade detection, or if the file is mistakenly used by legitimate software, though this is considered highly unlikely.
+
+title: Detection of Cobalt Strike BEACON Implant "storesyncsvc.dll"
+id: 418977ec-e2af-4bc7-82c2-3611c661f4d9
+status: experimental
+description: Detects the use of a specific MD5 hash associated with the Cobalt Strike BEACON implant "storesyncsvc.dll" which indicates a possible compromise.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \storesyncsvc.dll
+    Hashes|contains: MD5=5909983db4d9023e4098e56361c96a6f
+  condition: selection
+falsepositives:
+  - Legitimate use of a file with the same MD5 hash, although highly unlikely
+level: critical

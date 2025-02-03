@@ -1,0 +1,29 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation, modification, or execution of a file named "Web Certificate.msi," which is associated with Cobalt Strike payload delivery. The rule monitors for the specific file event, signaling potential initial access attempts by attackers. The detection level is high, but false positives may arise from legitimate software updates or installations using similarly named MSI files.
+title: Detection of Web Certificate.msi Loader for Cobalt Strike
+id: f0d836a8-80e6-4f5e-80fc-60e27026db92
+status: experimental
+description: Detects the creation, modification, or execution of a loader file named "Web Certificate.msi" which is associated with Cobalt Strike payload delivery.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: Web Certificate.msi
+  condition: selection
+falsepositives:
+  - Legitimate software installation or update process that uses a similarly named MSI file.
+level: high

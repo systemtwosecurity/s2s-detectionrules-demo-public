@@ -1,0 +1,28 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma detects network connections to a specific IP address used by Atomic Stealer for command and control (C2) communications
+title: Detection of Atomic Stealer C2 Communication
+id: ec406692-6d4d-4825-8915-8a3069437c28
+status: experimental
+description: Detects network connections to a specific IP address used by Atomic Stealer for command and control (C2) communications.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  DestinationIp: 193.233.132.138
+  condition: DestinationIp
+falsepositives:
+  - Legitimate traffic to the IP address if it has been reused after the threat report
+level: high

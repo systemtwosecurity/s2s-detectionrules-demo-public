@@ -1,0 +1,37 @@
+# review_report_url: https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - There is a strong match between the Sigma rule and the activity described in the CTI report. Both focus on detecting KV-botnet C2 beaconing through HTTP POST requests with specific byte patterns, which are indicative of malicious communication with a command-and-control server.
+title: KV-botnet C2 Beaconing Detection
+id: 3ab90ab6-09f2-412f-beca-449edb60542c
+status: experimental
+description: Detects beaconing patterns to a C2 node using a custom protocol with specific byte patterns indicative of KV-botnet activity.
+references:
+  - https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    client_header_names|contains: User-Agent
+  selection2:
+    method: POST
+  selection3:
+    uri|contains: /gate.php
+  selection4:
+    request_body_len: '42'
+  selection5:
+    status_code: '200'
+  condition: selection1 and selection2 and selection3 and selection4 and selection5
+falsepositives:
+  - Legitimate applications using similar beaconing patterns
+level: high

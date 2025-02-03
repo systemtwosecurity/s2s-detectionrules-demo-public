@@ -1,0 +1,33 @@
+# review_report_url:  https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is aligned with the CTI report, effectively detecting process creation events (ProcessCreated) on devices as logged in DeviceProcessEvents. The rule captures the core detection logic outlined in the CTI and is ready for testing. 
+title: Detection of User Accounts Initiating Processes on Alerted Devices
+id: 5ee56530-f2d8-45d9-95f2-460b8d88d1b6
+status: experimental
+description: Detects user accounts initiating processes on devices that have triggered alerts within the last hour by looking for process events in the DeviceProcessEvents table.
+references:
+  - https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+author: System Two Security
+date: 2024/11/11
+tags:
+  - attack.persistence
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload: DeviceProcessEvents
+    eventName: ProcessCreated
+    eventSource: Security
+    status: Success
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that match the detection criteria
+  - Automated software deployment tools initiating processes on devices
+level: high

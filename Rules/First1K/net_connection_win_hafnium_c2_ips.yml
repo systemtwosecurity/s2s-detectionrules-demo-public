@@ -1,0 +1,41 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule effectively detects outbound connections to HAFNIUM-associated C2 IP addresses, making it valuable for identifying potential compromise.
+
+title: HAFNIUM Targeting Microsoft Exchange Servers - C2 IPs
+id: 7dd5c552-858c-4ef2-a5b3-bc143c8c3d2f
+status: experimental
+description: Detects outbound connections to known HAFNIUM C2 IP addresses targeting Microsoft Exchange Servers
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 185.250.151.72
+      - 104.250.191.110
+      - 157.230.221.198
+      - 104.140.114.110
+      - 5.254.43.18
+      - 108.61.246.56
+      - 80.92.205.81
+      - 203.160.69.66
+      - 167.99.168.251
+      - 211.56.98.146
+      - 103.77.192.219
+      - 192.81.208.169
+      - 149.28.14.163
+  condition: selection
+falsepositives:
+  - Legitimate connections to these IPs if they are being used for other purposes
+level: high

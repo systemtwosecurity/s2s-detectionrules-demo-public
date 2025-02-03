@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects unusual SMB traffic originating from sshd.exe, which is not typical on Windows systems and could indicate lateral movement or data exfiltration. Legitimate use of sshd.exe for managing Windows via SSH is rare and should be carefully validated.
+title: SMB Traffic from Non-Standard Process - sshd.exe
+id: 50b47086-bc98-4dcc-9731-9341119b3de6
+status: experimental
+description: Detects SMB traffic initiated by sshd.exe, which is not standard behavior and may indicate lateral movement or other malicious activity.
+references:
+  - https://unit42.paloaltonetworks.com/stately-taurus-abuses-vscode-southeast-asian-espionage
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    Image|endswith: \\sshd.exe
+    DestinationPort: '445'
+  condition: selection
+falsepositives:
+  - Legitimate use of sshd.exe to manage Windows systems via SSH, although this is uncommon and should be validated.
+level: high

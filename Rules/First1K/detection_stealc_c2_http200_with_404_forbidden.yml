@@ -1,0 +1,32 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies potential Stealc C2 servers by detecting HTTP 200 OK responses containing "404 Forbidden" in the HTML body, often served by Apache/2.4.41 (Ubuntu). It focuses on behavior characteristic of Stealc C2 communications
+title: Detection of Stealc C2 Server via HTTP 200 with 404 Forbidden Page
+id: c74d2873-01be-4102-a849-2d7bac19b43e
+status: experimental
+description: Detects the presence of a Stealc C2 server by identifying HTTP responses with a status code of 200 OK and an HTML body containing a "404 Forbidden" message, indicative of a Stealc C2 server.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  service: syslog
+detection:
+  selection:
+    keywords|contains|all:
+      - HTTP/1.1 200 OK
+      - Apache/2.4.41 (Ubuntu)
+      - 404 Forbidden
+  condition: selection
+falsepositives:
+  - Legitimate web servers that return a 200 OK status code with a custom 404 error page.
+level: high

@@ -1,0 +1,37 @@
+# review_report_url: https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is fully aligned with the CTI report, effectively capturing all key detection criteria. It accurately reflects the conditions outlined in the CTI, including ChatCreated actions, validation of foreign tenant activity, and exclusion of guest users. 
+title: Detection of Suspicious External Teams Messages
+id: c46f3b25-655d-4e56-ae40-f544438939ef
+status: experimental
+description: Detects suspicious external Teams messages where the sender's Account Object ID is empty, indicating the sender is a third party.
+references:
+  - https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+author: System Two Security
+date: 2024/11/11
+tags:
+  - attack.initial-access
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload:
+      - 'RawEventData.ParticipantInfo.HasOtherGuestUsers: false'
+      - 'ActionType: ChatCreated'
+      - 'ApplicationId: 28375'
+      - 'AccountObjectId: $empty'
+      - 'AccountId|contains: "@"'
+      - 'RawEventData.ParticipantInfo.HasGuestUsers: false'
+      - 'RawEventData.ParticipantInfo.HasForeignTenantUsers: true'
+      - 'RawEventData.CommunicationType: OneOnOne'
+  condition: selection
+falsepositives:
+  - Legitimate communication from external parties that are not properly recognized by the system
+level: high

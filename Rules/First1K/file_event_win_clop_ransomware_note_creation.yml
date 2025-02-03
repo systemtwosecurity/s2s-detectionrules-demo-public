@@ -1,0 +1,30 @@
+# review_report_url: https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detecting the creation of ClopReadMe.txt aligns precisely with the CTI report on Clop ransomware, highlighting a distinct indicator associated with Clop’s attack impact. This rule, alongside others focused on Clop behaviors, ensures comprehensive coverage of the ransomware’s lifecycle, enhancing detection readiness without redundancy.
+
+title: Detection of Clop Ransomware Note Creation
+id: 9742541d-46d9-4a81-8637-169a654122a2
+status: experimental
+description: Detects the creation of the ransom note file associated with Clop ransomware.
+references:
+  - https://www.splunk.com/en_us/blog/security/detecting-clop-ransomware.html
+author: System Two Security
+date: 2024/09/25
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: ClopReadMe.txt
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a file with the same name for non-malicious purposes
+level: high

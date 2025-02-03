@@ -1,0 +1,30 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies anomalous network connections where a new user agent (teslabrowser.exe) is used to communicate directly with an IP address (82.117.255.x) that lacks an associated hostname, potentially indicative of malware activity such as Lumma info-stealer. 
+title: Detection of New User Agents to an IP Address Without a Hostname
+id: 770cac1a-5a1b-474b-98ca-326e054cd809
+status: experimental
+description: Detects anomalous connection behavior where a new user agent is used to make a request to an IP address without a hostname, which could indicate malware activity such as Lumma info-stealer.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp|startswith: 82.117.255.
+    Image|endswith: \teslabrowser.exe
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a non-standard user agent and connects directly to IP addresses without a hostname.
+level: high

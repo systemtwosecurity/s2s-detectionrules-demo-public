@@ -1,0 +1,31 @@
+# review_report_url: https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is aligned with the findings from the CTI report (ID: 4118bc47a6ae831da8afa767cd683c485f9a9defcf371693c063288ae8902a92) which highlights the detection of linked.dll files loaded from the C:\Users\Administrator\Downloads\ directory. This correlation supports the identification of potential malicious activity associated with the FIN7 campaign.
+title: FIN7 Linked DLL File Load Detection
+id: 5fd1292b-38f9-41e2-94ac-b399e1132a30
+status: experimental
+description: Detects the loading of VBControl files from a specific path which is a behavior associated with the FIN7 campaign.
+references:
+  - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1574.001
+  - attack.execution
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \linked.dll
+    Image|startswith: C:\Users\Administrator\Downloads\
+  condition: selection
+falsepositives:
+  - Legitimate applications that may use a similarly named file in the Downloads directory.
+level: high

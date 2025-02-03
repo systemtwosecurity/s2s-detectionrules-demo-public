@@ -1,0 +1,34 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries and URL requests to known malicious domains and URLs, identified via GlobalProtect logs, which could indicate command-and-control or malicious activity. False positives may occur if legitimate access to blocked domains or URLs happens, such as for security research.
+
+title: Suspicious DNS Queries and URL Requests to Known Malicious Domains/URLs
+id: 8eb93917-41e3-4f22-810b-ba869fe4bf04
+status: experimental
+description: Detects DNS queries and URL requests to domains and URLs associated with malicious activity, leveraging GlobalProtect logs.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: paloalto
+  service: globalprotect
+detection:
+  selection:
+    keywords: block
+    TargetFilename|contains:
+      - http://maliciousurl1.com/malicious_path
+      - maliciousdomain2.net
+      - https://maliciousurl2.net/malicious_file.exe
+      - maliciousdomain3.org
+      - maliciousdomain1.com
+  condition: selection
+falsepositives:
+  - Legitimate access to blocked domains/URLs (e.g., security research)
+level: high

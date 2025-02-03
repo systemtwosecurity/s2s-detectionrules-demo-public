@@ -1,0 +1,33 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule targets DNS TXT record queries containing specific Brevo codes linked to phishing domains used in the BlueNoroff Hidden Risk campaign. It leverages Zeek DNS logs to identify potential malicious activity associated with resource development tactics, particularly phishing email delivery. The inclusion of specific Brevo codes (e.g., f6793508938f91679130873bad7fc178) as indicators of compromise enhances precision, minimizing generic detections. 
+
+title: Detection of DNS TXT Records Linked to Phishing Domains with Specific Brevo Codes
+id: abae37b6-8e1e-48b7-9677-2bfb60381f4e
+status: experimental
+description: Detects DNS TXT record queries for domains used for phishing email delivery associated with specific Brevo codes as part of the BlueNoroff Hidden Risk campaign.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.resource-development
+logsource:
+  product: zeek
+  service: dns
+detection:
+  queries:
+    Z|contains|all:
+      - brevo-code:f6793508938f91679130873bad7fc178
+      - brevo-code:13f52d4cda1cdb3c25ec62080a89d0da
+      - brevo-code:d05a7bbe8f7f831f053d563d8407bf93
+  condition: queries
+falsepositives:
+  - Legitimate DNS TXT record queries that coincidentally contain the Brevo codes, although highly unlikely due to the specificity of the codes.
+level: high

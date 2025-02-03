@@ -1,0 +1,29 @@
+# review_report_url: https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule is designed to detect HTTP traffic accessing the exact same endpoint (/piece/ca.php) mentioned in the CTI report as part of the ReconShark payload hosting infrastructure. This match ensures that the Sigma rule will effectively identify any network traffic attempting to access this malicious payload.
+title: Detection of ReconShark Payload Hosting Endpoint
+id: 976aa42e-1196-4016-942b-70939f509db3
+status: experimental
+description: Detects the ReconShark payload hosting endpoint which is a strong indicator of a Kimsuky phishing campaign.
+references:
+  - https://www.sentinelone.com/labs/kimsuky-new-social-engineering-campaign-aims-to-steal-credentials-and-gather-strategic-intelligence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /piece/ca.php
+  condition: selection
+falsepositives:
+  - Legitimate access to a similarly named resource that is not related to the ReconShark campaign.
+level: high

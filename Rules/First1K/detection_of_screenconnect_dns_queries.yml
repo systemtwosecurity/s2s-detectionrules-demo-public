@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-11
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule matches with DNS based indicators provided in the CTI report for ScreenConnect.
+title: Detection of ScreenConnect/ConnectWise Remote Desktop Service DNS Queries
+id: e4ca458c-c687-4375-985f-19bdc3ee6f8a
+status: experimental
+description: Detects DNS queries to known malicious ScreenConnect/ConnectWise Remote Desktop Service domains which may indicate command and control activity.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|endswith: -relay.screenconnect.com
+  condition: selection
+falsepositives:
+  - Legitimate ScreenConnect/ConnectWise Remote Desktop Service usage within the network
+level: high

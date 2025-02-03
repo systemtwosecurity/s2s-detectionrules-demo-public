@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects HTTP requests attempting to download the file `conn.exe` from the IP address `152.89.244.185`, associated with DUSTPAN malware delivery as reported in an APT41 campaign. It focuses on identifying the specific URL to flag potential malicious initial access activity.
+
+title: DUSTPAN Delivery Attempt
+id: e807556d-cea0-4a1e-a7c9-d9366d101570
+status: experimental
+description: Detects the URL used to deliver DUSTPAN malware as described in an APT41 report.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri: http://152.89.244.185/conn.exe
+  condition: selection
+falsepositives:
+  - Legitimate downloads of a file named conn.exe from the specified IP address.
+level: critical

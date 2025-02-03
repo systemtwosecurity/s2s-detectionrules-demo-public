@@ -1,0 +1,35 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report, accurately detecting the listed DGA domains used by APT28 for C2 communication. No discrepancies identified.
+
+title: APT28 DGA Domain Activity
+id: 453e72d1-ad26-4c8b-95dc-eaff23c9fdec
+status: experimental
+description: Detects network activity to known APT28 DGA domains which may indicate command and control communication.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+  - attack.t1568.002
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - reasonwithusefulpolicy.com
+    - systembeforeniceparent.com
+    - streetunderrelevantpeople.com
+    - schooltillhungryprocess.com
+    - experiencewithweakkid.com
+  condition: query
+falsepositives:
+  - Legitimate DNS queries to domains that have been compromised or repurposed by the threat actor.
+level: high

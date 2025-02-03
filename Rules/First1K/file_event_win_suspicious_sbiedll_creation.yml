@@ -1,0 +1,29 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to identify dropper malware code using a reverse shell with APT41’s commonly used file system paths and filenames. It raises alarms at anomalous file activities concerning executable and DLL files such as log.dll, calc.exe, service.exe, which are known to be commonly used in various persistence mechanisms.
+title: Suspicious File Creation - sbiedll.dat
+id: 61925498-918d-41b2-8696-e42fac4d1258
+status: experimental
+description: Detects the creation or modification of a suspicious file named sbiedll.dat which is associated with malware.
+references:
+  - https://www.zscaler.com/blogs/security-research/dodgebox-deep-dive-updated-arsenal-apt41-part-1
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: sbiedll.dat
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename by coincidence.
+level: high

@@ -1,0 +1,59 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Malicious DLLs Loaded Into Memory
+id: 3f1769e8-f4f4-4af1-8d2a-1ff46f198fb1
+status: experimental
+description: Detects the loading of known malicious DLLs into memory based on SHA1 and SHA256 hashes.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha1_hashes:
+    sha1|contains:
+      - e257236206e99f5a5c62035c9c59c57206728b28
+      - 1acf3108bf1e376c8848fbb25dc87424f2c2a39c
+      - 16505d0b929d80ad1680f993c02954cfd3772207
+      - e2152737bed988c0939c900037890d1244d9a30e
+      - d8938528d68aabe1e31df485eb3f75c8a925b5d9
+      - c8b7f28230ea8fbf441c64fdd3feeba88607069e
+      - 2546b0e82aecfe987c318c7ad1d00f9fa11cd305
+      - d130bd75645c2433f88ac03e73395fba172ef676
+      - 395da6d4f3c890295f7584132ea73d759bd9d094
+      - 6fdd82b7ca1c1f0ec67c05b36d14c9517065353b
+      - bcb5a4dcbc60d26a5f619518f2cfc1b4bb4e4387
+      - 2f1a5a7411d015d01aaee4535835400191645023
+      - 2841391dfbffa02341333dd34f5298071730366a
+  sha256_hashes:
+    sha256|contains:
+      - 92bd1c3d2a11fc4aba2735d9547bd0261560fb20f36a0e7ca2f2d451f1b62690
+      - 20e35055113dac104d2bb02d4e7e33413fae0e5a426e0eea0dfd2c1dce692fd9
+      - a58d02465e26bdd3a839fd90e4b317eece431d28cab203bbdde569e11247d9e2
+      - c09040d35630d75dfef0f804f320f8b3d16a481071076918e9b236a321c1ea77
+      - a3efbc07068606ba1c19a7ef21f4de15d15b41ef680832d7bcba485143668f2d
+      - 019085a76ba7126fff22770d71bd901c325fc68ac55aa743327984e89f4b0134
+      - ce77d116a074dab7a22a0fd4f2c1ab475f16eec42e1ded3c0b0aa8211fe858d6
+      - cc082d21b9e880ceb6c96db1c48a0375aaf06a5f444cb0144b70e01dc69048e6
+      - eb6fab5a2964c5817fb239a7a5079cabca0a00464fb3e07155f28b0a57a2c0ed
+      - 0f5d7e6dfdd62c83eb096ba193b5ae394001bac036745495674156ead6557589
+      - 2b3445e42d64c85a5475bdbc88a50ba8c013febb53ea97119a11604b7595e53d
+      - e0b9eda35f01c1540134aba9195e7e6393286dde3e001fce36fb661cc346b91d
+      - dab758bf98d9b36fa057a66cd0284737abf89857b73ca89280267ee7caf62f3b
+      - ac1b2b89e60707a20e9eb1ca480bc3410ead40643b386d624c5d21b47c02917c
+  condition: sha1_hashes or sha256_hashes
+falsepositives:
+  - Legitimate software that happens to share a hash with a known malicious file (hash collision)
+  - Incorrectly reported hashes in threat intelligence feeds
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP connections to the known malicious IP address 23.254.226.90, associated with SUGARLOADER malware. The rule targets Zeek HTTP logs, specifically looking for requests containing the "Host" header in client_header_names and the malicious IP in the uri field. This helps identify potential command-and-control (C2) connections from compromised systems attempting to reach SUGARLOADER infrastructure.
+title: Detect Communication with Known Malicious IP (SUGARLOADER)
+id: 8b87d381-69e3-4cdd-ae51-bac479149dfa
+status: experimental
+description: Detects network connections to a known malicious IP address associated with SUGARLOADER malware.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names|contains: Host
+    uri|contains: 23.254.226.90
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP if it has been reused after the report
+level: high

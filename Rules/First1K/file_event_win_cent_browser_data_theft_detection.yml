@@ -1,0 +1,30 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects unauthorized access to Cent Browser user data, which may be an attempt to steal information. Any activity in the "User Data" directory should be watched for possible data theft. False positives can be expected from legitimate administrative access or backup tools.
+title: Detection of Cent Browser Data Theft
+id: aeada864-78bd-49b7-913b-1c4219373604
+status: experimental
+description: Detects file system activity indicating access to Cent Browser user data, which may suggest an information theft attempt.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+  - attack.t1217
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: \CentBrowser\User Data
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools accessing the browser user data for maintenance or backup purposes.
+level: high

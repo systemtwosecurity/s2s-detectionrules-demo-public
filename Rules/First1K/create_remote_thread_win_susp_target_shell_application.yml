@@ -1,0 +1,36 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies instances of remote thread creation in common command shell applications, which is a technique frequently exploited by malware for code injection. Monitoring these events can aid in the detection of potential malicious activities targeting legitimate processes.
+title: Remote Thread Created In Shell Application
+id: a9d4d3fa-8fc0-41bc-80b1-30b9fda79d6f
+status: experimental
+description: |
+    Detects remote thread creation in command shell applications, such as "Cmd.EXE" and "PowerShell.EXE".
+    It is a common technique used by malware, such as IcedID, to inject malicious code and execute it within legitimate processes.
+references:
+    - https://research.splunk.com/endpoint/10399c1e-f51e-11eb-b920-acde48001122/
+    - https://www.binarydefense.com/resources/blog/icedid-gziploader-analysis/
+author: Splunk Research Team
+date: 2024-07-29
+tags:
+    - attack.defense-evasion
+    - attack.t1055
+logsource:
+    product: windows
+    category: create_remote_thread
+detection:
+    selection:
+        TargetImage|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+            - '\pwsh.exe'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium

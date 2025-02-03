@@ -1,0 +1,30 @@
+# review_report_url: https://thedfirreport.com/2021/08/29/cobalt-strike-a-defenders-guide/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The portion of CTI taken is example from the Sodinokibi report where SourceImage was found as rundll32.exe and TargetImage was found as svchost.exe. Within this context of the CTI, the Sigma is correct
+title: Detection of Cobalt Strike Process Injection via CreateRemoteThread
+id: 052a9320-6c8d-4b55-89cc-22b9d48e150b
+status: experimental
+description: Detects the use of CreateRemoteThread for process injection, which is a common behavior in Cobalt Strike and other malicious activities.
+references:
+  - https://thedfirreport.com/2021/08/29/cobalt-strike-a-defenders-guide
+author: System Two Security
+date: 2024/08/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: create_remote_thread
+detection:
+  selection:
+    SourceImage|endswith: \rundll32.exe
+    TargetImage|endswith: \svchost.exe
+  condition: selection
+falsepositives:
+  - Legitimate use of CreateRemoteThread by trusted applications
+level: high

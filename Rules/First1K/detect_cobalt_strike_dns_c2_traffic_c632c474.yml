@@ -1,0 +1,32 @@
+# review_report_url:https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting Cobalt Strike DNS C2 traffic successfully matches the patterns described in the CTI report, including the long subdomain and specific DNS query structure. This rule can be used to effectively identify Cobalt Strike beaconing activity over DNS, as described in the report.
+title: Detect Cobalt Strike DNS C2 Traffic
+id: c632c474-be50-42f0-ad14-73993dfd4de3
+status: experimental
+description: Detects DNS queries that are indicative of Cobalt Strike C2 traffic, which often uses long subdomains and specific patterns for communication.
+references:
+  - https://thedfirreport.com/2022/01/24/cobalt-strike-a-defenders-guide-part-2
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    query|contains|all:
+      - .3bdbe8aa0a2354699a07808890824680a46ebf7d6ce31eed03368cd14.
+      - post.
+      - .516750f4d54d87d8ef7327f20ae24f
+  condition: query
+falsepositives:
+  - Legitimate applications that use long subdomains for DNS queries, though this is uncommon and should be investigated.
+level: high

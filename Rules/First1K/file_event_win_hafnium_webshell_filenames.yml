@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The Sigma rule detects web shell filenames associated with HAFNIUM activity, aligning with MITRE ATT&CK technique T1505.003 (Web Shells). It effectively identifies known filenames like SPORTSBALL and China Chopper, ensuring accurate detection of related persistence mechanisms.
+
+title: Suspicious Web Shell Filenames (HAFNIUM)
+id: 4c2fd036-6c5d-4a75-bcb6-67f9a3aa7648
+status: experimental
+description: Detects web shell filenames associated with HAFNIUM activity.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename:
+      - SPORTSBALL*
+      - SIMPLESEESHARP*
+      - ASPXSPY*
+      - '*China Chopper*'
+  condition: selection
+falsepositives:
+  - Legitimate files with similar names.
+level: high

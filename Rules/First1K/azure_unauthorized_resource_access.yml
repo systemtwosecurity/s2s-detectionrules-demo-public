@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies unauthorized access attempts to Azure resources as flagged by Azure Defender for Cloud, which could indicate initial access attempts or reconnaissance by threat actors. While legitimate administrative actions or security testing can trigger false positives, unexpected activity should be promptly investigated. Continuous monitoring and reviewing of access alerts are essential for mitigating unauthorized access risks.
+
+title: Unauthorized Azure Resource Access
+id: d5d242cb-0c72-40ed-8adf-e6086e312d8f
+status: experimental
+description: Detects unauthorized resource access attempts logged by Azure Defender for Cloud.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.t1526
+  - attack.initial-access
+logsource:
+  product: azure
+  service: riskdetection
+detection:
+  selection:
+    riskEventType: Microsoft.Security/assessments/alerts
+  condition: selection
+falsepositives:
+  - Legitimate administrative actions that trigger alerts.
+  - Security testing activities.
+level: medium

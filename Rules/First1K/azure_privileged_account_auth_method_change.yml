@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies changes to authentication methods for privileged accounts, which could indicate an attempt to weaken authentication controls or escalate privileges. While legitimate administrative actions can trigger false positives, such changes should be reviewed for authorization and necessity. Regular monitoring and auditing of authentication method updates help mitigate risks associated with unauthorized modifications.
+
+title: Authentication Methods Changed for Privileged Account
+id: ad630c25-bc00-4833-90c6-d444cb3c8465
+status: experimental
+description: Detects changes to authentication methods for privileged accounts
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.privilege-escalation
+  - attack.t1556.006
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Update user
+    TargetResources.ModifiedProperties.DisplayName|contains: StrongAuthenticationMethods
+  condition: selection
+falsepositives:
+  - Legitimate administrative changes to user authentication methods
+level: medium

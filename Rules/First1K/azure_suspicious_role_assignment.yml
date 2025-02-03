@@ -1,0 +1,31 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies suspicious Azure role assignments, which could indicate potential privilege escalation or unauthorized access attempts. While legitimate administrative or automated role assignments can trigger false positives, unexpected or unusual activity should be investigated. Regularly auditing role assignments and implementing approval workflows can help mitigate risks associated with unauthorized privilege escalation.
+
+title: Suspicious Azure Role Assignment
+id: ab336212-a0bc-4ce3-b82a-38009bec9c5b
+status: experimental
+description: Detects suspicious Azure role assignments based on specific criteria.  Further investigation is needed to determine true positive.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.t1098.003
+  - attack.privilege-escalation
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Microsoft.Authorization/roleAssignments/write
+    Status: Succeeded
+  condition: selection
+falsepositives:
+  - Legitimate administrative role assignments
+  - Automated role assignments by approved systems
+level: medium

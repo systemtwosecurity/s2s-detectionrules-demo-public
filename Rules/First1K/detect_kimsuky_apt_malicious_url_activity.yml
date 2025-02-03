@@ -1,0 +1,29 @@
+# review_report_url: https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a known malicious URL associated with Kimsuky APT, specifically targeting the URI "/flower01/flower01.ps1," which can indicate potential command and control (C2) activity. This URL is linked to Kimsuky malware operations, and the rule helps identify suspicious traffic patterns. False positives could occur if the domain hosting the URL is repurposed for legitimate use, so caution is needed during investigation.
+title: Detect Kimsuky APT Malicious URL Activity
+id: 0f26989b-c37b-4529-a4b6-51a4c23b36d6
+status: experimental
+description: Detects network connections to a known Kimsuky APT malicious URL which can be indicative of command and control activity.
+references:
+  - https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /flower01/flower01.ps1
+  condition: selection
+falsepositives:
+  - Legitimate access to the URL if the domain is reused for non-malicious purposes.
+level: high

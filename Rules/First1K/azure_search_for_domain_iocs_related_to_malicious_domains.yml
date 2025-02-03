@@ -1,0 +1,36 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network events and sign-in logs related to known malicious domains such as voyagorclub.space and weinsteinfrog.com. It helps identify potential malicious activities involving these domains, typically linked to command-and-control infrastructure or phishing attacks.
+title: Search for Domain IOCs Related to Malicious Domains
+id: 424789c9-7a4f-46dd-8552-77c766bcb4f2
+status: experimental
+description: Detects network events, DNS queries, and other indicators related to known malicious domains.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+  - attack.t1584.002
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection1:
+    ResourceDisplayName|contains:
+      - voyagorclub.space
+      - weinsteinfrog.com
+  selection2:
+    Location|contains:
+      - voyagorclub.space
+      - weinsteinfrog.com
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to domains that are not updated in the threat intelligence feed and are falsely flagged as malicious.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -There is a strong match between the Sigma rule and the CTI report. Both describe the same file with the same functionality "remote code execution" and both provide valuable detection guidance for identifying this threat.
+title: Detection of Malicious SolarWinds Orion DLL File
+id: 036a7cd0-512f-4774-9538-a1b5a367d288
+status: experimental
+description: Detects the presence of a DLL file named App_Web_logoimagehandler.ashx.b6031896.dll designed to allow remote code execution through SolarWinds web application server.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: App_Web_logoimagehandler.ashx.b6031896.dll
+  condition: selection
+falsepositives:
+  - Legitimate updates or modifications to the SolarWinds Orion product that include a DLL file with the same name (highly unlikely).
+level: critical

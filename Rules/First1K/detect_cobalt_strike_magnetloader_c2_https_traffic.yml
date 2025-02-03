@@ -1,0 +1,35 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule "Detect Cobalt Strike - MagnetLoader C2 HTTPS Traffic" was mapped against the provided CTI report. The URI pattern `/en-
+title: Detect Cobalt Strike - MagnetLoader C2 HTTPS Traffic
+id: 4d9ed51f-6bb4-4f4a-b46b-8ff9712b9886
+status: experimental
+description: Detects network connections to a known Cobalt Strike C2 server using HTTPS protocol with specific URI patterns.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    c2_traffic:
+      method: POST
+      uri|contains: /en-CA/livetile/preinstall
+      client_header_names|contains:
+        - Host
+        - Origin
+        - Referer
+  condition: selection
+falsepositives:
+  - Legitimate traffic to Azure edge nodes if the domain is used for benign purposes
+level: high

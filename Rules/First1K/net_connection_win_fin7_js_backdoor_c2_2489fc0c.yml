@@ -1,0 +1,29 @@
+# review_report_url: https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the Morphisec CTI report, which details the JavaScript backdoor's communication with the C2 server hxxps://bing-cdn.com. This detection will help identify and mitigate risks associated with FIN7 activities.
+title: FIN7 JavaScript Backdoor C2 Communication Detected
+id: 2489fc0c-9c67-44a2-8ca1-2443e127bb38
+status: experimental
+description: Detects network connections to a known FIN7 command and control server via hardcoded URL in JavaScript backdoor.
+references:
+  - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains: bing-cdn.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains that contain the string 'bing-cdn.com'
+level: high

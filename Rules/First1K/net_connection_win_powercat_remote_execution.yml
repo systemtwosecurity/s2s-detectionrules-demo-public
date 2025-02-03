@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the execution of Powercat by monitoring processes where the image name ends with \powercat.exe and ensuring the process is actively initiated. It specifically identifies instances of Powercat running on the system.
+
+title: Remote Command Execution via Powercat
+id: ae4d7ab7-6282-4e09-8663-ce1e8b35f0e2
+status: experimental
+description: Detects remote command execution using Powercat
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    Image|endswith: \powercat.exe
+    Initiated: true
+  condition: selection
+falsepositives:
+  - Legitimate use of Powercat for network administration
+level: high

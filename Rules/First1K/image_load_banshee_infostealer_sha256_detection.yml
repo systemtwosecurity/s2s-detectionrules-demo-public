@@ -1,0 +1,30 @@
+# review_report_url: https://www.elastic.co/security-labs/beyond-the-wail
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule accurately detects the BANSHEE Infostealer by monitoring for the specific SHA-256 hash, which is confirmed as a key observable in the CTI report
+
+title: Detection of BANSHEE Infostealer SHA-256 Hash
+id: 359f901a-5989-4bea-83f6-356285cd4206
+status: experimental
+description: Detects the presence of the BANSHEE infostealer by identifying a specific SHA-256 hash value in logs.
+references:
+  - https://www.elastic.co/security-labs/beyond-the-wail
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: image_load
+detection:
+  hashes:
+    sha256|contains: 11aa6eeca2547fcf807129787bec0d576de1a29b56945c5a8fb16ed8bf68f782
+  condition: hashes
+falsepositives:
+  - Unknown. Hashes are unique to specific files, and this hash is associated with the BANSHEE infostealer. Any detection should be investigated.
+level: high

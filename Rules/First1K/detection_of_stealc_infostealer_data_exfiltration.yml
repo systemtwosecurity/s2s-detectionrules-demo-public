@@ -1,0 +1,38 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects POST requests used for data exfiltration by Stealc Infostealer, characterized by specific form-data names and patterns , using Zeek HTTP logs. It is flagged as high severity, with potential false positives from legitimate applications that use similar POST patterns for data uploads.
+title: Detection of Stealc Infostealer Data Exfiltration
+id: 18a0dfa8-3f33-4cb4-97c1-2da63cb3119c
+status: experimental
+description: Detects POST requests that exfiltrate data with specific form-data names ("token", "file_name", "file") and patterns such as "system_info.txt" and "Mozilla Firefox_*.default-release.txt".
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    method: POST
+    uri|contains: /752e382b4dcf5e3f.php
+    client_header_names|contains|all:
+      - 'Content-Disposition: form-data; name="token"'
+      - 'Content-Disposition: form-data; name="file"'
+      - 'Content-Disposition: form-data; name="file_name"'
+  selection2:
+    request_body_len|contains:
+      - Mozilla Firefox_*.default-release.txt
+      - system_info.txt
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate applications that use similar POST request patterns for data upload.
+level: high

@@ -1,0 +1,63 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule aims to detect command and control (C2) activity by identifying connections to known malicious domains in Windows IIS web server logs. It focuses on specific Azure App Service domains associated with the Peach Sandstorm threat actor. The rule checks for these domains in both the 'cs-host' and 'cs-referer' fields of the W3CIISLog. The CTI report describes a set of Azure App Service apps created by Peach Sandstorm for C2 purposes.
+title: Detect C2 Domain Activity in W3CIISLog
+id: 6be17b27-80f7-4e88-9126-799cf01cd0f9
+status: experimental
+description: Detects command and control (C2) activity based on known malicious domains in web server logs (W3CIISLog).
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+  - attack.t1584.004
+logsource:
+  product: windows
+  service: iis
+detection:
+  cs_host_or_referer:
+    cs-host|contains:
+      - satellitespecialists.azurewebsites.net
+      - getsupportsservices.azurewebsites.net
+      - satellitegardens.azurewebsites.net
+      - nodetestservers.azurewebsites.net
+      - getservicessuports.azurewebsites.net
+      - softwareservicesupports.azurewebsites.net
+      - supportsoftwarecenter.azurewebsites.net
+      - satellite2.azurewebsites.net
+      - subreviews.azurewebsites.net
+      - centersoftwaresupports.azurewebsites.net
+      - satservicesdev.azurewebsites.net
+      - getsdervicessupoortss.azurewebsites.net
+      - getservicessupports.azurewebsites.net
+      - softwareservicesupport.azurewebsites.net
+      - servicessupports.azurewebsites.net
+      - websupportprotection.azurewebsites.net
+    cs-referer|contains:
+      - satellitespecialists.azurewebsites.net
+      - getsupportsservices.azurewebsites.net
+      - satellitegardens.azurewebsites.net
+      - nodetestservers.azurewebsites.net
+      - getservicessuports.azurewebsites.net
+      - softwareservicesupports.azurewebsites.net
+      - supportsoftwarecenter.azurewebsites.net
+      - satellite2.azurewebsites.net
+      - subreviews.azurewebsites.net
+      - centersoftwaresupports.azurewebsites.net
+      - satservicesdev.azurewebsites.net
+      - getsdervicessupoortss.azurewebsites.net
+      - getservicessupports.azurewebsites.net
+      - softwareservicesupport.azurewebsites.net
+      - servicessupports.azurewebsites.net
+      - websupportprotection.azurewebsites.net
+  condition: cs_host_or_referer
+falsepositives:
+  - Legitimate connections to the listed domains if they have been reused for non-malicious purposes.
+level: high

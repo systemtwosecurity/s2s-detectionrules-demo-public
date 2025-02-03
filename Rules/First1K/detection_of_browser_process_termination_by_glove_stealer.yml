@@ -1,0 +1,37 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule identifies the termination of browser processes, a potential indicator of Glove Stealer malware's defense evasion tactics. It focuses on process names like `chrome`, `msedge`, and `yandex` within Windows logs and is marked as high severity, with false positives possible from legitimate software updates or scripts.
+title: Detection of Browser Process Termination Activity by Glove Stealer Malware
+id: ae16a8f6-8c39-4e79-ae7e-46b8f60ee5c9
+status: experimental
+description: Detects the termination of browser processes, which is a behavior indicative of the Glove Stealer malware.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: process_termination
+detection:
+  selection:
+    Image|contains:
+      - yandex
+      - opera
+      - brave
+      - chromium
+      - chrome
+      - CryptoTab
+      - browser
+      - msedge
+  condition: selection
+falsepositives:
+  - Legitimate software or scripts that intentionally terminate browser processes for updates or installation purposes.
+level: high

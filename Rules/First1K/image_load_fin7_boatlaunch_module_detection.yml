@@ -1,0 +1,31 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/evolution-of-fin8
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule correctly maps to the provided CTI report. Both DLLs used by BOATLAUNCH are present in the rule and confirmed in the report, ensuring reliable detection of the FIN7 BOATLAUNCH module. This alignment makes the rule effective for detecting AMSI bypass techniques used by FIN7. 
+title: FIN7 BOATLAUNCH Module Detected
+id: 65cde8f3-82ab-4af1-b927-fe612ed2a1ef
+status: experimental
+description: Detects the presence of BOATLAUNCH module DLLs used by FIN7 to patch PowerShell processes and bypass AMSI.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/evolution-of-fin7
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith:
+      - \amsi64_kill.dll
+      - \amsi32_kill.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use the same DLL names (very unlikely)
+level: high

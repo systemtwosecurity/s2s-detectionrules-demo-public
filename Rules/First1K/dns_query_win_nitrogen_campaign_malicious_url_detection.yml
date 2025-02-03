@@ -1,0 +1,33 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DNS queries for known malicious URLs associated with the Nitrogen campaign, which delivers ZIP files via malvertising. It helps identify potential initial access attempts by tracking navigation to harmful domains.
+title: Nitrogen Campaign Malicious URL Navigation Detection
+id: be771d72-47a7-479c-bfa2-41988397d6c6
+status: experimental
+description: Detects navigation to malicious URLs as part of the Nitrogen campaign delivering ZIP files via malvertising.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains:
+      - advannced-ip-scanner.net/download/AFG3Tab3h.php?gclid=
+      - advannced-ip-scanner.net/?gclid=
+      - mueslfusion.com/mastering-the-use-of-network-scanners/?gclid=
+      - googleadservices.com/pagead/aclk?sa=L&ai=
+  condition: selection
+falsepositives:
+  - Legitimate navigation to similar URLs not related to the Nitrogen campaign
+level: high

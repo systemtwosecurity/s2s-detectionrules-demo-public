@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the creation of suspicious files (*.search-ms) that are commonly associated with malicious activity targeting government organizations through compromised routers. The files listed are linked to known C2 operations, particularly in the Caucasus region. Given their association with high-priority attacks, any detection should be thoroughly investigated.
+
+title: OCEANMAP Persistence - Shortcut in Startup Folder
+id: 8f927111-c482-4091-a8ce-4a8d9a02e887
+status: experimental
+description: Detects the creation of an internet shortcut file in the Startup folder, indicative of OCEANMAP persistence.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+  - attack.t1547.009
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|endswith: \Users\\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\EdgeContext.url
+    CreationUtcTime: '*'
+  condition: selection
+falsepositives:
+  - Legitimate applications creating shortcuts in the Startup folder
+level: medium

@@ -1,0 +1,30 @@
+# review_report_url: https://blog.lumen.com/derailing-the-raptor-train/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matched with the CTI report. Both the rule and the report focus on this file as a key part of the Canary Campaign’s payload delivery infrastructure, where the wget.tar file is used in the infection chain to deliver the NOSEDIVE implant.
+
+title: Detection of NOSEDIVE wget.tar Malicious File
+id: f3d1afbe-8b00-4483-bf06-51502ec25a79
+status: experimental
+description: Detects the creation or network connection attempts related to the NOSEDIVE wget.tar file which is associated with the Raptor Train campaign.
+references:
+  - https://blog.lumen.com/derailing-the-raptor-train
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: wget.tar
+  condition: selection
+falsepositives:
+  - Legitimate software or scripts that use a file named wget.tar
+level: high

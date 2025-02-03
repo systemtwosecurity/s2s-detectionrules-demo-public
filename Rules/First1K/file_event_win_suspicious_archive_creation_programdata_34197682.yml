@@ -1,0 +1,34 @@
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule correctly identified the creation of zip files from the programdata folder as mentioned in the CTI report
+title: Detection of Suspicious Archive Files in C:\ProgramData\
+id: 34197682-f267-4460-993d-a5e820ea0d12
+status: experimental
+description: Detects the creation or modification of suspicious .zip, .rar, and .7z files in C:\ProgramData\ which may indicate possible data exfiltration.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/03/02/hafnium-targeting-exchange-servers
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.exfiltration
+  - attack.t1560.001
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\ProgramData\
+    TargetFilename|endswith:
+      - .7z
+      - .rar
+      - .zip
+  condition: selection
+falsepositives:
+  - Legitimate archive operations by system or administrative personnel
+level: medium

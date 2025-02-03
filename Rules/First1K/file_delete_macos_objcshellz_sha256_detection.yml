@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule targets the identification of the ObjCShellz malware on macOS systems by monitoring for a specific SHA256 hash associated with the threat. By tracking file deletions, it aims to capture instances where the malicious file may be removed, indicating potential infection or cleanup efforts by an attacker. The high alert level signifies the importance of this detection, while the note on false positives underscores the need for further investigation to confirm malicious activity, as legitimate files could coincidentally share the same hash.
+title: Detection of ObjCShellz SHA256 Hash
+id: 84b264f5-4dc5-4697-b5b6-00d803616ccf
+status: experimental
+description: Detects the presence of a known malicious SHA256 hash associated with North Korean threat group ObjCShellz.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.execution
+logsource:
+  category: file_delete
+  product: macos
+detection:
+  selection:
+    sha256: f1713afaf5958bdf3e975ebbab8245a98a84e03f8ce52175ef1568de208116e0
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to specific files, and this hash has been reported as malicious. Any detection should be investigated.
+level: high

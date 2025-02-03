@@ -1,0 +1,29 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of a file named file.bin in the /tmp directory on macOS, which may indicate Atomic macOS Stealer activity. Investigate immediately because legitimate use of such a file in this location is rare.
+title: Detection of Malicious file.bin Creation in /tmp Directory
+id: 2c8e3711-ef0d-4bda-90ae-5dbedc412205
+status: experimental
+description: Detects the creation of a file named file.bin in the /tmp directory, which may indicate the presence of the Atomic macOS Stealer malware.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.persistence
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|endswith: /tmp/file.bin
+  condition: selection
+falsepositives:
+  - Legitimate applications that use a file named file.bin in the /tmp directory
+level: high

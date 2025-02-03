@@ -1,0 +1,32 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the UpdateInboxRules operation within Office 365 Unified Audit Logs, an action commonly used to modify inbox rules through the Outlook Desktop client via the Exchange Web Services (EWS) API. Such activity is indicative of potential adversary behavior aimed at manipulating email rules for persistence or data exfiltration, aligning with MITRE ATT&CK T1137.005 (Office Application Startup).
+
+title: Detection of "UpdateInboxRules" Operation in Unified Audit Logs
+id: 3b584439-345e-424e-8a52-3aa91ac05748
+status: experimental
+description: Detects the use of the "UpdateInboxRules" operation which is indicative of an adversary updating inbox rules via the Outlook Desktop client.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.persistence
+  - attack.t1137.005
+logsource:
+  service: audit
+  product: m365
+detection:
+  selection:
+    Operation: 
+      - UpdateInboxRules
+  condition: selection
+falsepositives:
+  - Legitimate administrative activities that involve updating inbox rules.
+level: medium

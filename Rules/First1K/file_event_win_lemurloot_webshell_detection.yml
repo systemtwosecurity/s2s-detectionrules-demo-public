@@ -1,0 +1,38 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting LEMURLOOT ASP.NET webshells is well-aligned with the CTI report indicators, covering unique file strings and file size constraints as outlined in the advisory’s YARA rule; this alignment supports effective detection of the LEMURLOOT scripts and ensures the rule captures critical markers indicative of CL0P ransomware activity.
+
+title: Detection of LEMURLOOT ASP.NET Webshell
+id: 98d3c3e6-b999-4488-940e-44c99147dfa2
+status: experimental
+description: Detects the presence of specific strings indicative of the LEMURLOOT ASP.NET webshell scripts based on file content inspection.
+references:
+  - https://www.cisa.gov/sites/default/files/2023-07/aa23-158a-stopransomware-cl0p-ransomware-gang-exploits-moveit-vulnerability_8.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .aspx
+    MagicHeader|contains|all:
+      - <%@ Page
+      - X-siLock-Step
+      - Health Check Service
+      - X-siLock-Comment
+      - attachment;filename={0}
+    MagicHeader|contains: pass, "[a-z0-9]{8}-[a-z0-9]{4}
+  condition: selection
+falsepositives:
+  - Legitimate ASP.NET web applications with similar benign code or comments
+level: high

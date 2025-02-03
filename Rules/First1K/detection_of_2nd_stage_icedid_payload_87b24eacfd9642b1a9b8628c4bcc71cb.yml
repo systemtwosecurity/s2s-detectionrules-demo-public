@@ -1,0 +1,41 @@
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches with the CTI report detecting the exact same domains, IPs and indicators. It also aligns with MTRE TTP particulary around command and control and ingress tool transfer.
+title: Detection of 2nd Stage IcedID Payload
+id: 87b24eac-fd96-42b1-a9b8-628c4bcc71cb
+status: experimental
+description: Detects network connections related to the 2nd stage IcedID payload based on known malicious IPs and domains.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection1:
+    query|contains:
+      - evinakortu.com
+      - skrechelres.com
+      - jkbarmossen.com
+      - hofsaalos.com
+      - jerryposter.com
+  selection2:
+    answers|contains:
+      - 94.232.46.27
+      - 77.105.140.181
+      - 92.118.112.113
+      - 77.105.142.135
+      - 173.255.204.62
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to domains or IPs that were previously malicious but have since been repurposed.
+level: high

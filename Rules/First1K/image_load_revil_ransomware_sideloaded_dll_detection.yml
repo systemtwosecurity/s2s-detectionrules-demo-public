@@ -1,0 +1,41 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule looks for execution of a malicious DLL, mpsvc.dll, side-loaded by legitimate Microsoft executables such as MsMpEng.exe or through suspicious command-line arguments indicative of a REvil ransomware attack via Kaseya VSA. It also looks for the use of a pattern of a Base64 decoding command line. False positives can be achieved with legitimate side-loading for compatibility or the deployment of software, or by using legitimate PowerShell scripts to configure. The severity for this rule is high.
+title: Detection of REvil Ransomware via Side-Loaded DLL
+id: 7c839d25-0120-4826-95cc-9815511935b1
+status: experimental
+description: Detects the execution of a malicious DLL side-loaded by a legitimate Microsoft executable, which is indicative of the REvil ransomware attack leveraging Kaseya VSA.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection1:
+    ImageLoaded|endswith: \mpsvc.dll
+    Image: C:\\Windows\\MsMpEng.exe
+  selection2:
+    CommandLine|contains|all:
+      - -decode
+      - C:\\kworking\\agent.crt
+      - Base64
+  selection3:
+    Image: C:\\Windows\\Agent.exe
+    CommandLine|contains:
+      - C:\\Windows\\mpsvc.dll
+      - C:\\Windows\\MsMpEng.exe
+  condition: selection1 or selection2 or selection3
+falsepositives:
+  - Legitimate use of side-loading for application compatibility or software deployment purposes.
+  - Legitimate execution of PowerShell scripts that include Base64 decoding for configuration or deployment.
+level: high

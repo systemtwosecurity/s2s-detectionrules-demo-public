@@ -1,0 +1,29 @@
+# review_report_url: https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detection of MoonPeak Malware C2 Communication
+id: 8c140d78-5b75-4f0e-ab18-9e54e3e984d4
+status: experimental
+description: Detects network connections to a hardcoded C2 IP address associated with the MoonPeak malware.
+references:
+  - https://blog.talosintelligence.com/moonpeak-malware-infrastructure-north-korea
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 159.100.29.122
+  condition: selection
+falsepositives:
+  - Legitimate applications that coincidentally communicate with the IP address in question. It is recommended to investigate the context of the connection to rule out false positives.
+level: high

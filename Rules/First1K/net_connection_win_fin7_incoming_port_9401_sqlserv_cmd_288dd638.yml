@@ -1,0 +1,38 @@
+# review_report_url:https://labs.withsecure.com/publications/fin7-target-veeam-servers
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - "This sigma rule aligns perfectly with the FIN7 tradecraft described in the CTI report. The command-line patterns and use of port 9401 for incoming connections match exactly, confirming the relevance of this detection logic.
+title: FIN7 Tradecraft - Incoming External Connection to Port 9401 with Specific Parent Process and Command
+id: 288dd638-ea6e-4a3e-a755-54cc7bfbe6db
+status: experimental
+description: Detects incoming external network connections to port 9401 initiated by sqlserv.exe with a specific command pattern indicative of FIN7 activity.
+references:
+  - https://labs.withsecure.com/publications/fin7-target-veeam-servers
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: '9401'
+    ParentImage: C:\Windows\system32\sqlserv.exe
+    CommandLine|contains|all:
+      - DownloadString
+      - WebClient
+      - Invoke-Expression
+      - powershell.exe
+      - cmd.exe
+      - /c
+      - bypass
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that uses similar command-line patterns and network connections on port 9401.
+level: high

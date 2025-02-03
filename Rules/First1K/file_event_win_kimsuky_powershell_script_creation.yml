@@ -1,0 +1,29 @@
+# review_report_url: https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of a specific file (flower01.hwp) within the flower01 directory, which is associated with Kimsuky APT's PowerShell-based data collection activities. By focusing on file events, it aims to identify potential persistence mechanisms used by the threat actor. However, the rule may generate false positives if legitimate software operates with similar file and directory names.
+title: Kimsuky APT Powershell Script File Creation Activity
+id: 8c1978b7-0ea6-4960-8259-6154016045ef
+status: experimental
+description: Detects the creation of a specific directory and log file used by Kimsuky APT in a PowerShell script for data collection.
+references:
+  - https://somedieyoungzz.github.io/posts/kimsucky-apt-analysis
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \flower01\flower01.hwp
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same directory and file name pattern for its operation.
+level: high

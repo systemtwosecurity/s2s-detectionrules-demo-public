@@ -1,0 +1,38 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection aims to identify suspicious network connections from SumatraPDF.exe to potentially compromised SharePoint domains, which may indicate C2 communication after MISTPEN backdoor execution. The rule is highly relevant to the CTI report, accurately targeting the specific process and domains associated with the UNC2970 threat. The detection key's structure is logically sound, using a combination of selection and filter conditions to narrow down suspicious connections. It correctly identifies the SumatraPDF.exe process and relevant Microsoft domains
+title: Suspicious Network Connection from SumatraPDF to Compromised SharePoint Domain
+id: 9e77f5c0-fb6d-4919-9476-5f81de9560b5
+status: experimental
+description: Detects network connections from the SumatraPDF.exe process to potentially compromised SharePoint domains, which may indicate communication with a C2 server after MISTPEN backdoor execution.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    Image|endswith: \SumatraPDF.exe
+    DestinationHostname|contains:
+      - graph.microsoft.com
+      - login.microsoftonline.com
+  filter:
+    DestinationHostname|contains:
+      - login.microsoftonline.com/common/oauth2/v2.0/token
+      - graph.microsoft.com/v1.0/me/drive/items/
+      - graph.microsoft.com/v1.0/me/drive/root:/path/upload/hello/
+      - graph.microsoft.com/v1.0/me/drive/root:/path/upload/world/
+  condition: selection and not filter
+falsepositives:
+  - Legitimate use of SumatraPDF with Microsoft Graph API for non-malicious purposes.
+level: high

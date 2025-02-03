@@ -1,0 +1,35 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule appears to directly align with the malware activity described in the CTI report, particularly the malicious handling of web requests targeting logoimagehandler.ashx with parameters (codes, clazz, method, args) used to execute arbitrary C# code.
+title: Detection of Malicious SolarWinds Orion Web Request Handling
+id: 9cfde38d-cfd4-45d8-a2f2-a3426caf7330
+status: experimental
+description: Detects a modified ProcessRequest method in a DLL file that accepts parameters "codes", "clazz", "method", and "args" from a web request to execute arbitrary C# code.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2020/12/18/analyzing-solorigate-the-compromised-dll-file-that-started-a-sophisticated-cyberattack-and-how-microsoft-defender-helps-protect
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: GET
+    cs-uri-stem|endswith: logoimagehandler.ashx
+    cs-uri-query|contains|all:
+      - method=
+      - args=
+      - clazz=
+      - codes=
+  condition: selection
+falsepositives:
+  - Legitimate use of dynamic code execution features in web applications, which should be very rare and closely monitored.
+level: critical

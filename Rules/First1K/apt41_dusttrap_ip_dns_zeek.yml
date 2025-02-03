@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries resolving to IPs and domains linked to APT41's DUSTTRAP malware infrastructure, such as `95.164.16.231`, `ns1.akacur.tk`, and `www.eloples.com`. It incorporates thresholds for frequency and contextual analysis to identify suspicious beaconing patterns, enhancing detection accuracy while minimizing false positives.
+
+title: APT41 DUSTTRAP Infrastructure - IP Address
+id: d93cf838-f816-490c-8210-622515bae496
+status: experimental
+description: Detects network connections to an IP address associated with APT41 DUSTTRAP malware
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    answers: 95.164.16.231
+  condition: selection
+falsepositives:
+  - Legitimate connections to this IP address (if any)
+level: medium

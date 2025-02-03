@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects APT41's exploitation of CVE-2019-19781 in Citrix ADC systems by targeting a specific URI path (/vpns/portal/scripts/newbm.pl) and POST method associated with the exploit. This aligns with known APT41 tactics as outlined in the CTI report.
+
+title: APT41 Citrix ADC Exploitation - CVE-2019-19781
+id: b821fa05-678a-485a-811e-298d5d79b2f0
+status: experimental
+description: Detects malicious HTTP requests associated with APT41's exploitation of CVE-2019-19781 in Citrix Application Delivery Controllers.  This rule focuses on a specific HTTP request path observed in the attack.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri: /vpns/portal/scripts/newbm.pl
+    method: POST
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same path.  Requires further investigation and context analysis.
+level: high

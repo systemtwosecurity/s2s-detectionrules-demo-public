@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This user agent is not generally used in normal traffic, and also this is a hardcoded agent used in many recent attacks where CS is involved. So it should be useful
+title: Detection of Cobalt Strike Default User-Agent String
+id: 0aedaa56-161b-468a-9b77-5780fc1acf44
+status: experimental
+description: Detects the use of a default user-agent string that is widely associated with Cobalt Strike activity.
+references:
+  - https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign
+author: System Two Security
+date: 2024/08/30
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-user-agent|contains: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/587.38 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
+  condition: selection
+falsepositives:
+  - Legitimate applications with hardcoded user-agent strings that match the Cobalt Strike default user-agent
+level: high

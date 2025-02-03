@@ -1,0 +1,32 @@
+# review_report_url:https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is aligned with the CTI report. It correctly detects the hard-coded User-Agent string (Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0) associated with APT28 malware, as specified in the report. 
+
+title: Detection of APT28 Hard-coded User-Agent String
+id: b5a2f397-d6f6-4bb0-8ec5-0c9e13281bd6
+status: experimental
+description: Detects the use of a specific hard-coded User-Agent string associated with APT28 malware.
+references:
+  - https://blogs.blackberry.com/en/2019/08/inside-the-apt28-dll-backdoor-blitz
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  client_header_names: User-Agent
+  method:
+    - GET
+    - POST
+  condition: client_header_names and method
+falsepositives:
+  - Legitimate software with the same User-Agent string for compatibility reasons
+level: high

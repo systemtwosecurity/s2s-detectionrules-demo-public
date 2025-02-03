@@ -1,0 +1,32 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects HTTP traffic to the known Glove Stealer C2 server at master.volt-texs.online with URIs containing /postovoy/, a signature of its command-and-control communication. It is effective in identifying malicious Glove Stealer activity
+title: 'Glove Stealer: Detection of C2 Server Communication'
+id: f9ee3eca-4e22-4159-8617-8f89918a3cd5
+status: experimental
+description: Detects network communication to a known Glove Stealer command and control (C2) server used to retrieve a malicious payload.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    c2_communication:
+      uri|contains: /postovoy/
+    c2_domain:
+      client_header_names|contains: master.volt-texs.online
+  condition: selection
+falsepositives:
+  - Legitimate traffic to a domain that coincidentally contains the C2 server string (highly unlikely).
+level: high

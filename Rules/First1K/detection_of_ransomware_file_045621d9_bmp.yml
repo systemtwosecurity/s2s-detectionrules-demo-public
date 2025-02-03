@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns perfectly with the information provided in the CTI report. The rule’s hash-based detection logic is validated by the CTI report’s detailed description of the file and its association with DarkSide ransomware. This correlation ensures the rule’s effectiveness in detecting potential ransomware activity when the file is present on a system.
+title: Detection of Ransomware File 045621d9.BMP
+id: 8b19b1a3-6c41-4c04-bb41-8d4d1caba542
+status: experimental
+description: Detects the presence of a specific ransomware file based on its hash values as reported in CTI.
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.impact
+  - attack.t1486
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    md5: 2e5dee7e7d8aa32b5a638cd619eb67b3
+    sha1: 1cbb4aa1dd284d62f4eb1833b6fe1290c122ccf7
+  condition: selection
+falsepositives:
+  - Unknown. Hash values are unique to files, and matches should be investigated.
+level: high

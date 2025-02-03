@@ -1,0 +1,30 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects HTTP responses with a specific `Last-Modified` timestamp (`Thu, 23 May 2024 12:14:05 GMT`), which may indicate a compromised Tibetan website, using ModSecurity logs. It is marked as high severity, with potential false positives for legitimate website updates matching the exact timestamp.
+title: Compromised Tibetan Websites with Specific Last-Modified Header
+id: 791a078a-44a6-4f90-b0b1-139b740306a0
+status: experimental
+description: Detects a specific last-modified timestamp in HTTP response headers which may indicate a compromised Tibetan website.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.initial-access
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    response_headers:
+      last-modified: Thu, 23 May 2024 12:14:05 GMT
+  condition: selection
+falsepositives:
+  - Legitimate updates to the website that coincidentally match the exact timestamp
+level: high

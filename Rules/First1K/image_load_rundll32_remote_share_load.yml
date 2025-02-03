@@ -1,0 +1,32 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects execution of a remote DLL load through "rundll32.exe" on Windows systems. It captures the case where rundll32.exe loads a DLL from a remote path (\ ), which might be symptomatic of malicious activity. The rule has a medium-level severity with an unknown threat of false positives.
+title: Remote DLL Load Via Rundll32.EXE
+id: f40017b3-cb2e-4335-ab5d-3babf679c1de
+status: experimental
+description: Detects a remote DLL load event via "rundll32.exe".
+references:
+    - https://github.com/gabe-k/themebleed
+    - Internal Research
+author: Nasreddine Bencherchali (Nextron Systems)
+date: 2023/09/18
+tags:
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\rundll32.exe'
+        ImageLoaded|startswith: '\\\\'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium

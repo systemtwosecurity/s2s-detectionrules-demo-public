@@ -1,0 +1,40 @@
+# review_report_url: https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma is well mapped with the CTI report, it detects if there is any network connections or DNS queries to domains generated using the Sniper Dz Phaas is there or not.
+title: Detection of Sniper Dz Phishing Domains
+id: 6156c9c4-1767-4547-91f4-96deec342e6c
+status: experimental
+description: Detects network connections or DNS queries to domains generated using the Sniper Dz Phishing-as-a-Service platform.
+references:
+  - https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.resource-development
+  - attack.t1583.001
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  domain_phishing:
+    QueryName|contains:
+      - instagram-cutequeen57.netlify.app
+      - v0tingsystem.github.io
+      - pubg-tournament-official.github.io/free-fire-reedeem-code
+      - 6627c220b5daa507c6cca1c5--votedme.netlify.app
+      - free-fire-reward-garena-bd-nepazl.epizy.com
+      - freefirefff.github.io
+      - ff-rewards-redeem-codes-org.github.io
+      - automaticgiveaway.000webhostapp.com
+      - climbing-green-botany.glitch.me
+      - facebookbusiness0078.blogspot.be
+  condition: domain_phishing
+falsepositives:
+  - Legitimate access to the domains listed if they have been repurposed for legitimate use.
+level: high

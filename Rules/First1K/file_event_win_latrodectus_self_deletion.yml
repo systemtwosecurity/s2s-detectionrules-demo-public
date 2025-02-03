@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -The Sigma rule will detect the use of the string :wtfbbq in filenames used by the LATRODECTUS malware to self-delete, so false positives will be provided if legitimate applications make use of the same string in benign ways and any detection would thus need proper investigation to confirm it is indeed related to malicious activities.
+title: Detection of LATRODECTUS Malware Self-Deletion Technique
+id: 17986716-d9a7-4935-8764-6ffd1c04ef28
+status: experimental
+description: Detects the presence of a specific string used by LATRODECTUS malware for self-deletion.
+references:
+  - https://www.elastic.co/security-labs/spring-cleaning-with-latrodectus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: :wtfbbq
+  condition: selection
+falsepositives:
+  - Legitimate applications using the same string in filenames for benign purposes
+level: high

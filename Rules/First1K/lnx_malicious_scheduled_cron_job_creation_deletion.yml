@@ -1,0 +1,40 @@
+# review_report_url: https://www.crowdstrike.com/blog/crowdstrike-discovers-first-ever-dero-cryptojacking-campaign-targeting-kubernetes/
+# review_date: 2024-04-10
+# review_author: Archan Choudhury
+# review_rule_useful: true
+# review_rule_classification: Test to evaluate
+# review_rule_classification_reason:
+# review_notes: There may be a limited usecase where a cronjob pulls file via curl, but it needs to be tested.
+title: Malicious Scheduled Cron Job Creation and Deletion
+id: 7f68946c-7291-4150-a187-95279e59214d
+# Replaced "generated" with "experimental"
+status: experimental
+description: Detects the creation of a malicious cron job that downloads and executes a script from a remote server every minute and the deletion of the weekly cron job.
+references:
+    - https://www.crowdstrike.com/blog/crowdstrike-discovers-first-ever-dero-cryptojacking-campaign-targeting-kubernetes
+author: System Two Security
+date: 2024/04/01
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1053.003
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection:
+        Image|endswith:
+            - /bin/chattr
+            - /bin/echo
+            - /bin/rm
+        CommandLine|contains|all:
+            - chattr -ia
+            - /host/etc/cron.d
+            - echo
+            - '* * * * * root (curl -k https://'
+            - '| bash); rm /etc/cron.d/weekly'
+            - '> /host/etc/cron.d/weekly'
+    condition: selection
+falsepositives:
+    - Legitimate administrative activity that involves modifying cron jobs.
+level: high

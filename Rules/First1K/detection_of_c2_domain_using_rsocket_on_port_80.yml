@@ -1,0 +1,31 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a specific PhantomCore C2 domain using the RSocket protocol on port 80, as identified in the provided CTI report. The rule's relevance and accuracy are high, directly addressing a known threat indicator. Its efficacy is strong for this particular C2 domain but limited in scope to a single indicator. The IOC (api.wilbderreis.ru) matches the CTI exactly, enhancing the rule's effectiveness
+title: Detection of C2 Domain Using RSocket Protocol on Port 80
+id: 2dfb51b0-ea7b-419e-af69-e1d701876a14
+status: experimental
+description: Detects network connections to a known command and control (C2) domain using the rsocket protocol on port 80.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_domain:
+    uri|contains: api.wilbderreis.ru
+  c2_port:
+    uri|contains: :80
+  condition: c2_domain and c2_port
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or used for legitimate purposes.
+level: high

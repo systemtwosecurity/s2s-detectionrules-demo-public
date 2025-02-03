@@ -1,0 +1,28 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the use of the chmod 777 command on the flashrom utility, which could indicate an attempt to modify firmware or deploy a bootkit. It searches for the keywords "chmod 777 flashrom" in audit logs and flags such actions for further investigation.
+title: Detection of Chmod 777 on Flashrom Utility
+id: 808b3088-7a22-41fd-ad58-5403983ac8d9
+status: experimental
+description: Detects the use of chmod 777 command to change permissions on the flashrom utility, which may indicate an attempt to modify firmware or deploy a bootkit.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords: chmod 777 flashrom
+  condition: keywords
+falsepositives:
+  - Legitimate use of chmod 777 by system administrators for non-malicious purposes. Manual review of the context is recommended.
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - the sigma rule correctly identifies the provided hashes from CTI report data, covering the described threat and Cobalt Strike beacon samples.
+title: Detection of Cobalt Strike Beacon Samples
+id: 48a7c4ed-2916-41c7-8000-76b4766ff55c
+status: experimental
+description: Detects the execution or presence of files with SHA256 hashes known to be associated with Cobalt Strike beacon samples.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-metadata-encoding-decoding
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256:
+    - fc95e7f4c8ec810646c16c8b6075b0b9e2cc686153cdad46e82d6cca099b19e7
+    - 11b8beaa53353f5f52607e994849c3086733dfa01cc57fea2dae42eb7a6ee972
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to the malware samples. Any match should be investigated.
+level: high

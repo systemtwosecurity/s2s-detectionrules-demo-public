@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques/
+# review_date: 2024/04/15
+# review_author: Sergio Nevarez
+# review_rule_useful: TBD
+# review_rule_classification: Test to evaluate
+# review_rule_classification_reason:
+# review_notes:
+title: Unauthorized Azure Serial Console Connection Attempt
+id: 0b312976-3b5e-4554-b447-8acecf069eaa
+status: experimental
+description: Detects the use of the Azure CLI to initiate a serial console connection to a VM, which may indicate an unauthorized access attempt or lateral movement.
+references:
+    - https://unit42.paloaltonetworks.com/cloud-lateral-movement-techniques
+author: System Two Security
+date: 2024/04/15
+tags:
+    - attack.lateral_movement
+    - detection.threat_hunting
+logsource:
+    product: azure
+    service: activitylogs
+detection:
+    selection:
+        Category: Administrative
+        OperationName: MICROSOFT.COMPUTE/VIRTUALMACHINES/SERIALCONSOLE/CONNECT/ACTION
+    condition: selection
+falsepositives:
+    - Legitimate administrative activities that involve connecting to a VM's serial console for troubleshooting or maintenance purposes.
+level: high

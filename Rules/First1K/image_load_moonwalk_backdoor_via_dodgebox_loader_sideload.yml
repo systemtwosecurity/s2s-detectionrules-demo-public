@@ -1,0 +1,33 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the sideloading activity of taskhost.exe, loading sbiedll.dll. This could be indicated by the installation of the MoonWalk backdoor through the DodgeBox loader. The alert has a high severity and can indicate malware installation and persistence attempts.
+
+
+title: Detection of MoonWalk Backdoor via DodgeBox Loader Sideload
+id: fdcea82a-b0de-4c78-a7c7-ad764f1bb840
+status: experimental
+description: Detects the execution of a legitimate executable (taskhost.exe) that sideloads the DodgeBox loader (sbiedll.dll), which is indicative of the MoonWalk backdoor being deployed.
+references:
+  - https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.t1574.002
+  - attack.defense_evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    Image: taskhost.exe
+    ImageLoaded|endswith: \sbiedll.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar loading behavior
+level: high

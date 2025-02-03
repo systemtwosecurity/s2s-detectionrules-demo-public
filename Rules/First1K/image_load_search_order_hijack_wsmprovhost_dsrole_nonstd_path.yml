@@ -1,0 +1,34 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies potential DLL search-order hijacking by detecting instances where wsmprovhost.exe loads DSROLE.dll from outside the standard system32 or syswow64 directories. Such behavior may indicate an attempt to execute unauthorized code in a manner that bypasses traditional security checks.
+title: Search Order Hijack via Wsmprovhost.exe and DSROLE.dll from Non-Standard Path
+id: 94aee099-096a-4d8c-8eb4-61b607468266
+status: experimental
+description: Detects a search order hijacking attempt where the wsmprovhost.exe process is initiating the loading of DSROLE.dll from a non-standard path, which could indicate an attempt to execute malicious code.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: DSROLE.dll
+    Image|endswith: wsmprovhost.exe
+  filter:
+    ImageLoaded|contains:
+      - \\system32\\
+      - \\syswow64\\
+  condition: selection and not filter
+falsepositives:
+  - Legitimate software that uses similar behavior for non-malicious purposes
+level: high

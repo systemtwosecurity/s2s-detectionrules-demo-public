@@ -1,0 +1,33 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the copying of the legitimate BdeUISrv.exe from the system32 directory to a suspicious location within AppData, which is part of the UNC2970 infection chain. . It effectively focuses on the file event where BdeUISrv.exe is copied to a specific AppData location, aligning well with the threat behavior.The detection key's structure is logically sound, using a combination of TargetFilename|startswith and CommandLine|contains|all to identify the suspicious file copy operation. The IOCs used in the rule (AppData path and BdeUISrv.exe) are consistent with the CTI report
+title: UNC2970 Backdoor Deployment - BdeUISrv.exe Copy to AppData
+id: bee24499-b04a-438f-8dd3-7d6909f344e4
+status: experimental
+description: Detects the copying of the legitimate BdeUISrv.exe from system32 to a suspicious location within AppData, which is indicative of the UNC2970 infection chain.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc2970-backdoor-trojanized-pdf-reader
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: '%appdata%\\Microsoft\\BDE UI Launcher\\'
+    CommandLine|contains|all:
+      - BdeUISrv.exe
+      - system32
+      - copy
+  condition: selection
+falsepositives:
+  - Legitimate software installation or update processes that may perform similar actions.
+level: high

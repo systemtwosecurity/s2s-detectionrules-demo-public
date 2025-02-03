@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects DNS queries to the domain oast.fun, which is associated with MASEPIE malware's C2 infrastructure. Communication with this domain could indicate compromise or active exploitation by the malware.
+
+title: MASEPIE C2 Communication - oast.fun
+id: 90b85fe5-e0f6-4f12-b9e0-3c8bbceba46e
+status: experimental
+description: Detects HTTP communication with oast.fun, a domain associated with the MASEPIE malware.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName: oast.fun
+  condition: selection
+falsepositives:
+  - Legitimate security research or testing involving oast.fun
+level: medium

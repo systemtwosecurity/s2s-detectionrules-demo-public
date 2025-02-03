@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule monitors for the creation of a specific file named 4800-84DC-063A6A41C5C in the ProgramData directory, which is associated with the ForestTiger malware configuration file in the Diamond Sleet campaign. Detecting this file suggests potential malware activity, but the possibility of false positives exists if other legitimate software uses a similar file-naming convention in ProgramData.
+title: Detection of ForestTiger Configuration File Creation
+id: 70dce176-5582-46db-b47a-e931e55625ea
+status: experimental
+description: Detects the creation of a known ForestTiger malware configuration file in the ProgramData directory.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \4800-84DC-063A6A41C5C
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally uses a similar file path or name pattern in the ProgramData directory.
+level: high

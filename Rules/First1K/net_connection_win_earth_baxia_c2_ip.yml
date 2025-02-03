@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects Earth Baxia C2 activity by monitoring network connections to two specific IP addresses (167.172.89.142 and 152.42.243.170), which are associated with their command-and-control infrastructure. This detection is valuable for identifying C2 communications during data exfiltration or attack execution phases.
+
+title: Earth Baxia C2 Activity (IP Address Match)
+id: 915f246c-9b42-4d6e-bbf2-932f7ebd89c2
+status: experimental
+description: Detects network connections to IP addresses associated with Earth Baxia C2 activity.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp:
+      - 167.172.89.142
+      - 152.42.243.170
+  condition: selection
+falsepositives:
+  - Legitimate communication with these IP addresses if they are used for other purposes.
+level: medium

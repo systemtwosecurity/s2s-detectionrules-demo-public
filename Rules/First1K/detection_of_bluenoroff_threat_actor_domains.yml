@@ -1,0 +1,36 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule utilizes Zeek DNS logs to identify queries to domains associated with BlueNoroff's Hidden Risk campaign, which is known for leveraging command-and-control (C2) infrastructure targeting Mac users. The domains listed, such as docsolanalab.org and online.zoom-client.com, are key indicators of compromise (IOCs) linked to this threat actor. By focusing on DNS query patterns, this rule provides early detection of potential C2 communications. 
+
+title: Detection of BlueNoroff Threat Actor Domains
+id: dc6a9f09-ef41-4b23-ac24-3032ead67c8c
+status: experimental
+description: Detects network connections to domains associated with the BlueNoroff threat actor's Hidden Risk campaign.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - docsolanalab.org
+    - online.sellincapital.info
+    - www.hubspot.blog
+    - maelstroms.fund
+    - www.delphidigital.org
+    - online.zoom-client.com
+    - www.frameworks.ventures
+  condition: query
+falsepositives:
+  - Legitimate connections to domains that have been compromised or spoofed by the threat actor.
+level: high

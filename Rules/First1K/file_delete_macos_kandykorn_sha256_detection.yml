@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of KANDYKORN malware on macOS systems by identifying file deletions with a specific SHA256 hash. The rule is directly based on the CTI report, which lists the exact hash used in the detection.The detection key uses a simple selection based on the SHA256 hash, which is appropriate for this type of detection. The logical operator (condition: selection) is correct for this single-indicator rule.
+title: Detection of KANDYKORN Malware by SHA256 Hash
+id: a4a5ad15-32da-4897-83be-25ad95774814
+status: experimental
+description: Detects the presence of the KANDYKORN malware based on known SHA256 hashes associated with the malware.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.execution
+logsource:
+  category: file_delete
+  product: macos
+detection:
+  selection:
+    sha256: 927b3564c1cf884d2a05e1d7bd24362ce8563a1e9b85be776190ab7f8af192f6
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and false positives are unlikely but possible if the hash is used in a legitimate file.
+level: high

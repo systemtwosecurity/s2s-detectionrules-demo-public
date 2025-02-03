@@ -1,0 +1,33 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule for the BlueNoroff Hidden Risk campaign is designed to identify network connections to domains and IPs associated with malicious activities targeting Mac users, particularly those involving fake crypto news and innovative persistence techniques. By leveraging Zeek DNS logs, the rule monitors for queries to matuaner.com and resolves IP addresses (172.86.108.47 and 45.61.135.105) linked to this threat actor. This approach enhances visibility into potential malicious activity.
+
+title: Detection of BlueNoroff Hidden Risk Campaign Related Domains and IPs
+id: c1ea51f1-10a8-4829-9019-74dc49efa0a2
+status: experimental
+description: Detects network connections to domains and IPs associated with the BlueNoroff Hidden Risk campaign targeting Mac users with fake crypto news and novel persistence methods.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.persistence
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_ip:
+    query|contains: matuaner.com
+    answers|contains:
+      - 172.86.108.47
+      - 45.61.135.105
+  condition: domain_ip
+falsepositives:
+  - Legitimate connections to the domain or IPs that have been repurposed for benign use.
+level: high

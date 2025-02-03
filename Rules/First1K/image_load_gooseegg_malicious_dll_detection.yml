@@ -1,0 +1,30 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Detection of GooseEgg Malicious DLL File
+id: 39d5b448-d41b-4353-a786-201d5fb82806
+status: experimental
+description: Detects the presence of a specific malicious DLL file associated with the GooseEgg threat actor based on SHA-256 hash.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256_hash:
+    sha256|contains: 41a9784f8787ed86f1e5d20f9895059dac7a030d8d6e426b9ddcaf547c3393aa
+  condition: sha256_hash
+falsepositives:
+  - Unknown. Hashes are unique to specific files, so false positives are unlikely but possible due to hash collisions.
+level: high

@@ -1,0 +1,42 @@
+# review_report_url:https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: no
+# review_notes:
+#  -This Sigma rule detects unusual POST requests to specific OWA paths and files on Microsoft Exchange Servers, potentially indicating HAFNIUM-related compromise activity. It monitors HTTP POST requests in IIS logs for paths and files generally unused in legitimate POST requests, signaling possible malicious access.
+title: Detect HAFNIUM Targeting Microsoft Exchange Servers via Unusual File Access
+id: f668023f-9a3b-4b47-baaf-29d066b0d4b7
+status: experimental
+description: Detects POST requests to unusual file paths and file names used by Outlook Web Access (OWA) that are indicative of HAFNIUM group activity targeting Microsoft Exchange Servers.
+references:
+  - https://www.picussecurity.com/resource/blog/ttps-hafnium-microsoft-exchange-servers
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|endswith:
+      - /ecp/
+      - /owa/auth/Current/themes/resources/
+    cs-uri-query|contains:
+      - main.css
+      - SegoeUI-SemiBold.eot
+      - logon.css
+      - Default.flt
+      - lgnbotl.gif
+      - ??.js
+      - SegoeUI-SemiLight.ttf
+      - owafont_ja.css
+      - owafont_ko.css
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves direct POST requests to these files, which is highly unlikely.
+level: high

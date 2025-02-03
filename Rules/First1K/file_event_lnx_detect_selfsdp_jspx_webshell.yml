@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-11
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma detects the webshell presence in the server. This rule is usseful. However, we can use this from webserver logsource as well
+title: Detection of selfsdp.jspx Webshell
+id: 7bc83d64-0e34-48af-a75e-5b56167263f3
+status: experimental
+description: Detects the presence of a webshell named selfsdp.jspx, which is indicative of a compromised system.
+references:
+  - https://www.crowdstrike.com/blog/falcon-complete-thwarts-vanguard-panda-tradecraft
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  category: file_event
+  product: linux
+detection:
+  selection:
+    TargetFilename|endswith: /selfsdp.jspx
+  condition: selection
+falsepositives:
+  - Legitimate use of a file with the same name, although highly unlikely
+level: high

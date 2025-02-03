@@ -1,0 +1,29 @@
+# review_report_url:https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails/
+# review_date: 2024-11-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to the malicious URL /download/pload.exe, which is linked to the REvil ransomware campaign that struck Kaseya VSA. It's intended to perhaps catch the execution of the ransomware payload. Its severity is high. False positives may sometimes be generated as a result of legitimate traffic accessing similarly named files from trusted sources.
+title: Detection of REvil Kaseya VSA Attack Network Indicator
+id: 286c4d92-66b9-488f-8b5b-cb98708f66b9
+status: experimental
+description: Detects network connections to a known malicious URL associated with the REvil ransomware campaign targeting Kaseya VSA.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/diving-deeper-into-the-kaseya-vsa-attack-revil-returns-and-other-hackers-are-riding-their-coattails
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains: /download/pload.exe
+  condition: selection
+falsepositives:
+  - Legitimate connections to similarly named files from trusted domains.
+level: high

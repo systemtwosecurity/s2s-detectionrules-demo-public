@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule monitors file system activity targeting the \360Browser\Browser\User Data directory, indicating potential data theft by malicious actors, such as the Stealc infostealer.
+title: Stealc Infostealer - 360 Browser Data Theft
+id: a2b3b7fe-bd17-4b00-91ba-4ca7a0986bf5
+status: experimental
+description: Detects file system activity indicating potential data theft from 360 Browser user data directory
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: \360Browser\Browser\User Data
+  condition: selection
+falsepositives:
+  - Legitimate browser or system update process accessing the user data directory
+level: high

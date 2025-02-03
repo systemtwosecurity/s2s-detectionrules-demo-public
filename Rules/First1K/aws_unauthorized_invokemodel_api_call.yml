@@ -1,0 +1,33 @@
+# review_report_url: https://permiso.io/blog/exploiting-hosted-models
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule effectively identifies unauthorized or anomalous use of the InvokeModel API by focusing on key attributes like eventName, userAgent, and userIdentity.type. While it is a strong starting point for monitoring suspicious activity, the rule's reliance on specific userAgent patterns and IAM user identity may limit its effectiveness against more sophisticated attackers who disguise their activity. To enhance detection capabilities, the rule should incorporate broader userAgent patterns, contextual model-specific filters, and anomaly detection techniques to flag deviations from normal behavior. Additionally, regular baselining and integration with a layered security approach will help minimize false positives and improve detection accuracy for this potentially high-impact event.
+
+title: Detection of Unauthorized InvokeModel API Call
+id: 7d9cfc3d-f94f-4c6e-8d8d-de19c3f6fcb0
+status: experimental
+description: Detects the use of the InvokeModel API call which may indicate an attacker trying to check the availability of a model.
+references:
+  - https://permiso.io/blog/exploiting-hosted-models
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.reconnaissance
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: InvokeModel
+    eventType: AwsApiCall
+    userAgent|contains: Python/3.11 aiohttp/3.9.5
+    userIdentity.type: IAMUser
+  condition: selection
+falsepositives:
+  - Legitimate use of the InvokeModel API by authorized users that are misconfigured or lack the necessary permissions.
+level: high

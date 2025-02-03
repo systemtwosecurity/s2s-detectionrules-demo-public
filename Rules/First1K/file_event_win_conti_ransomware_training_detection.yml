@@ -1,0 +1,42 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the presence or creation of specific files associated with Conti ransomware training materials, as identified in the ContiTraining.torrent. These files, which include various penetration testing and red team tools, may indicate that an attacker is acquiring resources to develop ransomware capabilities. The rule focuses on filenames commonly associated with training kits used by Conti actors, and detection can help identify early-stage attacker preparation activities.
+title: Detection of Conti Ransomware Training Files
+id: aa2c602e-54bc-4bbc-b731-6f7f2f112d5c
+status: experimental
+description: Detects the creation or presence of files with names specified by the ContiTraining.torrent which may indicate the presence of Conti ransomware training materials.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.resource-development
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - GCB.zip
+      - GeekBrayns Реверс-инжиниринг.rar
+      - WMI Attacks and Defense +.rar
+      - Attacking and Defending Active Directory+.rar
+      - Кряк 2019.rar
+      - Cobalt Strike.rar
+      - Network Pentesting.rar
+      - Abusing SQL Server Trusts in a Windows Domain+.rar
+      - Метасплоит RU.zip
+      - Windows Red Team Lab+.rar
+      - Метасплоит US.rar
+      - Powershell for Pentesters+.rar
+  condition: selection
+falsepositives:
+  - Legitimate use of penetration testing tools by security teams
+  - False positives can be reduced by correlating with other suspicious activities such as network connections to known bad domains or IPs, unusual process creation events, and registry modifications.
+level: high

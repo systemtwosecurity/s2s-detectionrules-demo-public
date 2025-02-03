@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule discovers file access or creation events related to the Atomic wallet directory, which may indicate activities of infostealer malware. The activity may target wallet data, so it is relevant to investigate any unauthorized access to this file. Legitimate administration actions may cause false positives.
+title: Detection of Atomic Wallet File Access
+id: e38fe712-c4fb-4dab-bf71-a94ded7272f5
+status: experimental
+description: Detects file access or creation events targeting the specific paths and file names for the Atomic wallet, which could indicate the presence of an infostealer malware on the system.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: \atomic\Local Storage\leveldb\
+  condition: selection
+falsepositives:
+  - Legitimate software or administrative tools that access the Atomic wallet directory for maintenance or backup purposes.
+level: high

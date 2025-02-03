@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule is designed to detect network connections involving OCEANMAP C2 email accounts, based on connections to specific domains facadesolutionsuae.com and bahouholdings.com. These domains are flagged due to their association with C2 infrastructure.
+
+title: OCEANMAP C2 Email Accounts
+id: b6374eab-6cb8-4732-8ea5-b26807de1dc4
+status: experimental
+description: Detects network connections or email communication related to OCEANMAP C2 email accounts.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - facadesolutionsuae.com
+      - bahouholdings.com
+  condition: selection
+falsepositives:
+  - Legitimate communication with the specified domains.
+level: medium

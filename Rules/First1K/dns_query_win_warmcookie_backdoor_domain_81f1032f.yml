@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/dipping-into-danger
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are properly aligned, identifying assets.work-for.top as a malicious domain linked to the WARMCOOKIE backdoor.
+title: Detection of WARMCOOKIE Backdoor Related Domain
+id: 81f1032f-8e8a-436f-b1ec-3219ae156788
+status: experimental
+description: Detects DNS requests or network connections to a known malicious domain associated with the WARMCOOKIE backdoor.
+references:
+  - https://www.elastic.co/security-labs/dipping-into-danger
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: assets.work-for.top
+  condition: selection
+falsepositives:
+  - Legitimate connections to the domain if it has been hijacked or reused for legitimate purposes after the report.
+level: high

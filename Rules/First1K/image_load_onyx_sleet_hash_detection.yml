@@ -1,0 +1,41 @@
+# review_report_url: https://argonsys.com/microsoft-cloud/library/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation or execution of files associated with the Onyx Sleet malware by monitoring for specific SHA-256 hashes related to TigerRAT, LightHand, and ValidAlpha. If any of these hashes appear in image load events on Windows systems, it indicates potential malware activity. The rule aims to identify malicious behavior while considering the low likelihood of false positives due to hash collisions.
+title: Detection of Onyx Sleet Malware by SHA-256 Hashes
+id: 23ea4c56-89f3-4780-9087-37090a3a468f
+status: experimental
+description: Detects file creation or execution related to Onyx Sleet malware based on SHA-256 hashes of TigerRAT, LightHand, and ValidAlpha.
+references:
+  - https://argonsys.com/microsoft-cloud/library/onyx-sleet-uses-array-of-malware-to-gather-intelligence-for-north-korea
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256|contains:
+      - f1662bee722a4e25614ed30933b0ced17b752d99fae868fbb326a46afa2282d5
+      - 3098e6e7ae23b3b8637677da7bfc0ba720e557e6df71fa54a8ef1579b6746061
+      - 0837dd54268c373069fc5c1628c6e3d75eb99c3b3efc94c45b73e2cf9a6f3207
+      - fed94f461145681dc9347b382497a72542424c64b6ae6fcf945f4becd2d46c32
+      - f32f6b229913d68daad937cc72a57aa45291a9d623109ed48938815aa7b6005c
+      - 1b88b939e5ec186b2d19aec8f17792d493d74dd6ab3d5a6ddc42bfe78b01aff1
+      - c1a09024504a5ec422cbea68e17dffc46472d3c2d73f83aa0741a89528a45cd1
+      - c2500a6e12f22b16e221ba01952b69c92278cd05632283d8b84c55c916efe27c
+      - 7339cfa5a67f5a4261c18839ef971d7f96eaf60a46190cab590b439c71c4742b
+      - 8daa6b20caf4bf384cc7912a73f243ce6e2f07a5cb3b3e95303db931c3fe339f
+      - 29c6044d65af0073424ccc01abcb8411cbdc52720cac957a3012773c4380bab3
+      - 868a62feff8b46466e9d63b83135a7987bf6d332c13739aa11b747b3e2ad4bbf
+  condition: selection
+falsepositives:
+  - Benign files that happen to have a hash collision with the malicious hashes (extremely rare)
+level: high

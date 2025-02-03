@@ -1,0 +1,30 @@
+# review_report_url: https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule captures connections going into a known C2 IP address (103.56.114.69) belonging to the APT41 attack. This would produce some false positives due to other, perhaps subsequent, allocation of the same IP.
+
+title: Detect Network Connection to Known C2 Address
+id: 3d947612-28aa-4bcf-97b4-4fb4ba0d3e6d
+status: experimental
+description: Detects network connections to a known command and control (C2) IP address associated with APT41 activities.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.command_and_control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 103.56.114.69
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP address if it has been reused after the malicious campaign ended.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the enabling of write access to Model Specific Registers (MSR) using modprobe, an action typically associated with privilege escalation and potentially malicious behavior. It highlights abnormal activity, helping to identify unauthorized access attempts while acknowledging legitimate administrative uses.
+title: MSR Write Access Enabled via Modprobe
+id: 9f742ba0-b59c-49ca-90fe-f8b017b8aa94
+status: experimental
+description: Detects the enabling of write access to MSR using modprobe, which is abnormal behavior and may indicate malicious activity.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0: modprobe
+    a1: msr
+    a2: allow_writes=on
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that requires enabling write access to MSR.
+level: high

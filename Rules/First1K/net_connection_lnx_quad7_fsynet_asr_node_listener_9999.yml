@@ -1,0 +1,31 @@
+# review_report_url: https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects listener activity on UDP port 9999 initiated by the asr_node binary, which is linked to the Quad7 threat actor's FsyNet project. By monitoring network connection logs, it helps identify potential command-and-control communication. The rule acknowledges the possibility of legitimate applications using this port, indicating a need for careful investigation.
+
+title: Detection of Quad7 FsyNet asr_node Listener Activity
+id: 723233a8-8932-4d68-97fb-f3c6abb5a197
+status: experimental
+description: Detects the setup of a listener on UDP port 9999 by the asr_node binary, which is associated with the Quad7 threat actor's FsyNet project.
+references:
+  - https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  category: network_connection
+detection:
+  selection:
+    DestinationPort: 9999
+    Protocol: udp
+  condition: selection
+falsepositives:
+  - Legitimate applications that use UDP port 9999
+level: high

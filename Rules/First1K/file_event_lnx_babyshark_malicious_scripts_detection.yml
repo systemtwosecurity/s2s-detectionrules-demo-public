@@ -1,0 +1,32 @@
+# review_report_url: https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-2.html
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. But to cover the entire CTI report finetuned query required.
+
+title: Detection of BabyShark Malicious Server-Side Scripts
+id: 2f1bed82-164c-4592-9f26-33e2d08f22cd
+status: experimental
+description: Detects the presence of specific server-side scripts associated with the BabyShark campaign by Kimsuky group.
+references:
+  - https://www.pwc.co.uk/issues/cyber-security-services/research/tracking-kimsuky-north-korea-based-cyber-espionage-group-part-2.html
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - /customize/1111/expres.php
+      - /customize/1111/cow.php
+  condition: selection
+falsepositives:
+  - Legitimate files with coincidental names in the specified path
+level: high

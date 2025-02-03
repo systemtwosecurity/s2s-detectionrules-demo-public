@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is relevant to the behavior described in the CTI report, where PCUnlocker ISO was used by UNC3944 to reset local administrator passwords on compromised virtual machines. 
+title: Detection of PCUnlocker ISO for Password Reset
+id: ab9d1ee0-7626-491a-a210-55f061b55df2
+status: experimental
+description: Detects the use of an optical disc image file (ISO) called PCUnlocker to reset local administrator passwords by monitoring file creation or VM settings modification events.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc3944-targets-saas-applications
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \PCUnlocker.iso
+  condition: selection
+falsepositives:
+  - Legitimate use of PCUnlocker by system administrators for password recovery purposes.
+level: high

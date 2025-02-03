@@ -1,0 +1,33 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule "Monitoring Creation of New OAuth Applications and Service Principals in M365" effectively captures the activity described in the CTI report, which highlights the creation of malicious OAuth applications. Both the rule and the report emphasize the importance of monitoring the 'Add Application' and 'Add Service Principal' events to detect suspicious activity. This rule is well-suited for identifying similar malicious behavior as detailed in the report.
+title: Monitoring Creation of New OAuth Applications and Service Principals in M365
+id: 5a52e009-2ede-46ce-a4ba-b547235d70bb
+status: experimental
+description: '''Detects the creation of new OAuth applications and service principals in an M365 environment, which is identified by specific events such as "Add Application" and "Add Service Principal". Monitoring these events can help identify potentially malicious activity, as attackers may create new applications or service principals to maintain persistence or escalate privileges within the environment.''
+
+  '
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.persistence
+logsource:
+  product: m365
+  service: audit
+detection:
+  selection_add_application:
+    Operation: Add application.
+  selection_add_service_principal:
+    Operation: Add service principal.
+  condition: selection_add_application or selection_add_service_principal
+falsepositives:
+  - Legitimate creation of new OAuth applications and service principals by administrators or automated processes.
+level: medium

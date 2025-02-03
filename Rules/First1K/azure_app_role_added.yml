@@ -1,0 +1,33 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#service-principal-assigned-to-a-role
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies when an application is assigned privileged roles in Azure AD or Azure RBAC, such as Global Administrator or Subscription Owner, which may indicate persistence or privilege escalation attempts. While legitimate assignments for app functionality can trigger false positives, correlating with unexpected behavior or unauthorized changes improves accuracy. Regular reviews of role assignments and governance controls help mitigate misuse.
+
+title: App Role Added
+id: b04934b2-0a68-4845-8a19-bdfed3a68a7a
+status: test
+description: Detects when an app is assigned Azure AD roles, such as global administrator, or Azure RBAC roles, such as subscription owner.
+references:
+  - https://learn.microsoft.com/en-us/entra/architecture/security-operations-applications#service-principal-assigned-to-a-role
+author: Bailey Bercik '@baileybercik', Mark Morowczynski '@markmorow'
+date: 2022/07/19
+tags:
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1098.003
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    properties.message:
+      - Add member to role
+      - Add eligible member to role
+      - Add scoped member to role
+  condition: selection
+falsepositives:
+  - When the permission is legitimately needed for the app
+level: medium

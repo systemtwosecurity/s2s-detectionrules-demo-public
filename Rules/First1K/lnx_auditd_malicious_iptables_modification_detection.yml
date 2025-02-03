@@ -1,0 +1,37 @@
+# review_report_url: https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule accurately matches the CTI report regarding KV-botnet behavior, specifically the modification of iptables rules for PREROUTING, INPUT, OUTPUT, and POSTROUTING chains. All detection conditions are aligned, and the rule is ready for testing, with attention to possible false positives from legitimate administrative actions.
+title: Detection of Malicious Iptables Modifications
+id: e244d600-feb5-43da-99f2-76573b19e8b0
+status: experimental
+description: Detects the modification of iptables rules to ensure a generated port is open on the router, which could indicate a compromised system.
+references:
+  - https://blog.lumen.com/routers-roasting-on-an-open-firewall-the-kv-botnet-investigation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0|contains|all:
+      - iptables -I INPUT -p tcp –dport
+      - 'iptables -t nat –line-number -nL POSTROUTING | grep spt:'
+      - iptables -I OUTPUT -p tcp –sport
+      - 'iptables -t nat –line-number -nL PREROUTING | grep dpt:'
+      - iptables -t nat -I POSTROUTING -p tcp –sport
+      - 'iptables –line-number -nL OUTPUT | grep spt:'
+      - 'iptables –line-number -nL INPUT | grep dpt:'
+      - iptables -t nat -I PREROUTING -p tcp –dport
+  condition: selection
+falsepositives:
+  - Legitimate iptables rule changes by system administrators
+level: high

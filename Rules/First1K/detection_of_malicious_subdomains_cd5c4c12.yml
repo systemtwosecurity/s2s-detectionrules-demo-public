@@ -1,0 +1,32 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies DNS requests to malicious subdomains `mail.maskrisks.com` and `checkupdate.maskrisks.com`, linked to TAG-112 infrastructure, signaling potential command-and-control activity. Validation is required to rule out legitimate queries by unaware users or systems.
+title: Detection of DNS or HTTP Requests to Malicious Subdomains
+id: cd5c4c12-5061-40a7-a0f2-f0710d060988
+status: experimental
+description: Detects DNS or HTTP requests to the subdomains mail.maskrisks.com and checkupdate.maskrisks.com which are associated with TAG-112 infrastructure.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+  - attack.t1584.002
+logsource:
+  product: zeek
+  service: dns
+detection:
+  domain_query:
+    query|contains:
+      - checkupdate.maskrisks.com
+      - mail.maskrisks.com
+  condition: domain_query
+falsepositives:
+  - Legitimate queries to the domain by internal systems or users unaware of the domain being compromised.
+level: high

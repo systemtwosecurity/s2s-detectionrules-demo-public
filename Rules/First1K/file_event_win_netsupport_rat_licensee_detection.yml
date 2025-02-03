@@ -1,0 +1,29 @@
+# review_report_url: https://www.silentpush.com/blog/fin7/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - A match has been identified between the Sigma rule for detecting the NetSupport RAT and the recent CTI report. The report specifies the licensee code "MGJFFRT466" associated with the NetSupport RAT, reinforcing the importance of monitoring for this specific code in configuration files or registry entries. This connection enhances our detection capabilities for potential FIN7-related activities.
+title: Detection of NetSupport RAT Licensee Code in Configuration File or Registry
+id: 77746949-3526-4352-991d-cf87270713e2
+status: experimental
+description: Detects the presence of a specific NetSupport RAT licensee code "MGJFFRT466" in configuration files or registry entries, which may indicate the presence of the NetSupport RAT on the system.
+references:
+  - https://www.silentpush.com/blog/fin7
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    CommandLine|contains: licensee=MGJFFRT466
+  condition: selection
+falsepositives:
+  - Legitimate use of NetSupport software with the same licensee code, although highly unlikely.
+level: high

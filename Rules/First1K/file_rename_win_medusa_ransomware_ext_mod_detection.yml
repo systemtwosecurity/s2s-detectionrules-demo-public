@@ -1,0 +1,31 @@
+# review_report_url: https://www.bitdefender.com/blog/businessinsights/medusa-ransomware-a-growing-threat-with-a-bold-online-presence/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect Medusa ransomware activity by identifying file extension modifications to .medusa or .mylock. The rule is highly relevant and accurate, as it directly corresponds to the behavior described in the CTI report. Its efficacy is strong for detecting the final stage of the Medusa ransomware encryption process. The rule's logic aligns well with the threat behavior described in the CTI content. However, it may generate false positives if legitimate software uses these extensions. The rule's simplicity makes it less prone to false negatives. 
+title: Medusa Ransomware File Extension Modification Detection
+id: 165f936b-4216-4d2a-9d5c-7c52f520b4b9
+status: experimental
+description: Detects the modification of file extensions to .medusa or .mylock, which is indicative of Medusa ransomware activity.
+references:
+  - https://www.bitdefender.com/blog/businessinsights/medusa-ransomware-a-growing-threat-with-a-bold-online-presence
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_rename
+detection:
+  selection:
+    TargetFilename|endswith:
+      - .mylock
+      - .medusa
+  condition: selection
+falsepositives:
+  - Legitimate software or scripts that rename files to .medusa or .mylock extensions for non-malicious purposes.
+level: high

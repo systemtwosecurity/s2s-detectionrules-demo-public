@@ -1,0 +1,37 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This is a direct domain IOC match with the given CTI and it is useful. However we can choose file_executable_detected as category and insert the Hash values
+title: Detection of FROZEN#SHADOW Attack Campaign Leveraging SSLoad Malware
+id: 0ab34ecd-3cd0-4747-94b8-f7d32fd7e86d
+status: experimental
+description: Detects the presence of potentially malicious MSI installer files associated with the FROZEN#SHADOW attack campaign leveraging SSLoad malware.
+references:
+  - https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign
+author: System Two Security
+date: 2024/08/30
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: .msi
+    Image|endswith:
+      - 950b84.msi
+      - qual.msi
+      - avp.msi
+      - 6838aa.msi
+      - 4178fc.msi
+      - msedgeview.msi
+      - slack.msi
+  condition: selection
+falsepositives:
+  - Legitimate software installation with a hash collision
+level: high

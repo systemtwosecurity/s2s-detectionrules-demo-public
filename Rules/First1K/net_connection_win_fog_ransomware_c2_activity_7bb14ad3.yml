@@ -1,0 +1,29 @@
+# review_report_url: https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects outbound network connections to a known malicious IP address (85.209.11.27) associated with Fog Ransomware's command-and-control infrastructure. It is focused on identifying potential ransomware activity by monitoring network traffic for indicators of compromise (IOCs). Legitimate connections could be a false positive if the IP address has been reassigned to a benign entity after the report.
+title: Detection of Fog Ransomware Network Activity
+id: 7bb14ad3-abe7-4055-acdb-c22f11698176
+status: experimental
+description: Detects network connections to known malicious IP addresses associated with Fog Ransomware.
+references:
+  - https://adlumin.com/post/fog-ransomware-now-targeting-the-financial-sector
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 85.209.11.27
+  condition: selection
+falsepositives:
+  - Legitimate connections to the IP if it has been reassigned after the report
+level: high

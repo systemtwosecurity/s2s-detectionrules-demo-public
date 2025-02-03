@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects the creation of AWS Transfer Family users, a tactic potentially used by Muddled Libra for data exfiltration. While legitimate uses exist, security teams should investigate suspicious user creation events for unauthorized or anomalous activity.
+
+title: Muddled Libra AWS Transfer User Creation
+id: 6b01f34c-f8c3-4ae9-95a5-13829ba18406
+status: experimental
+description: Detects the creation of an AWS Transfer user, indicative of potential data exfiltration by Muddled Libra.
+references:
+  - https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.exfiltration
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  selection:
+    eventName: CreateUser
+    eventSource: transfer.amazonaws.com
+  condition: selection
+falsepositives:
+  - Legitimate creation of AWS Transfer users for authorized purposes.
+level: medium

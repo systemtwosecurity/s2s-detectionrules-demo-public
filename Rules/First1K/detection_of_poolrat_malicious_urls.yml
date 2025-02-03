@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies network connections or HTTP requests to specific malicious URLs associated with the POOLRAT malware, which is linked to North Korean threat actors. By utilizing Zeek's HTTP service logging, the rule targets requests containing URLs that may facilitate command-and-control communications. While it flags these connections as high risk, the rule acknowledges the potential for false positives from legitimate traffic to previously compromised domains that have been cleaned but still appear on blocklists.
+title: Detection of POOLRAT Malicious URLs
+id: db165460-0013-4671-a9ba-4cb832b33bee
+status: experimental
+description: Detects network connections or web requests to known malicious URLs associated with the POOLRAT malware used by North Korean threat groups.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains|all:
+      - www.talesseries[.]com/write.php
+      - rgedist[.]com/sfxl.php
+  condition: selection
+falsepositives:
+  - Legitimate access to compromised domains that have been cleaned but not removed from blocklists.
+level: high

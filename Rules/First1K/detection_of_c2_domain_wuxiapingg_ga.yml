@@ -1,0 +1,28 @@
+# review_report_url: https://www.crowdstrike.com/en-us/blog/liminal-panda-telecom-sector-threats
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DNS queries to the known command and control (C2) domain wuxiapingg.ga, which is associated with LIMINAL PANDA activity. It monitors DNS traffic using Zeek logs for potential signs of malicious communication.
+title: Detection of C2 Domain wuxiapingg.ga
+id: d7e4195d-1550-444c-9592-d16d655bf737
+status: experimental
+description: Detects network connections to the known command and control domain wuxiapingg.ga used by LIMINAL PANDA.
+references:
+  - https://www.crowdstrike.com/en-us/blog/liminal-panda-telecom-sector-threats
+author: System Two Security
+date: 2024/11/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: wuxiapingg.ga
+  condition: query
+falsepositives:
+  - Legitimate connections to a domain with a similar name
+level: high

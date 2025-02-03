@@ -1,0 +1,31 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to a specific IP address (192.168.1.85) on port 4444, which may indicate command-and-control (C2) communication related to malicious activity. However, it may generate false positives if legitimate tools like netcat (nc) are used for diagnostic or file transfer purposes to the specified IP and port. The rule should be carefully evaluated to exclude such cases.
+title: Detection of Network Connections to Specific IP and Port
+id: 2b165c38-ef28-424e-badf-8517625ebcb3
+status: experimental
+description: Detects network connections to a specific IP address (192.168.1.85) on port 4444, which may indicate malicious activity as described in the CTI report.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names: Host
+    method: CONNECT
+    uri|contains: 192.168.1.85:4444
+  condition: selection
+falsepositives:
+  - Legitimate use of netcat (nc) for diagnostics or file transfers to the specified IP and port
+level: high

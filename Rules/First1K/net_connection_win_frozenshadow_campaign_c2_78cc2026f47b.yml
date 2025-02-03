@@ -1,0 +1,39 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This is a direct domain IOC match with the given CTI and it is useful.
+title: Detection of FROZEN#SHADOW Campaign Malicious Domain Communication
+id: ea2ceb0f-5b91-4824-97a4-78cc2026f47b
+status: experimental
+description: Detects network connections to known malicious domains associated with the FROZEN#SHADOW attack campaign leveraging SSLoad malware.
+references:
+  - https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign
+author: System Two Security
+date: 2024/08/30
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|endswith:
+      - .top
+      - .info
+      - .com
+  domains:
+    DestinationHostname|contains:
+      - titnovacrion
+      - wireoneinternet
+      - Maramaravilha
+      - globalsolutionunlimitedltd
+      - skinnyjeanso
+  condition: selection and domains
+falsepositives:
+  - Legitimate connections to domains that have a similar name structure but are not part of the IOCs listed.
+level: high

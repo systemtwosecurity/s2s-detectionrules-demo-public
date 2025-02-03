@@ -1,0 +1,46 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - "This Sigma rule is designed to detect network connections to a specific set of 16 domains associated with command and control (C2) activities. The rule targets Windows network connection logs, focusing on the 'DestinationHostname' field to identify established connections or connection attempts to these known malicious domains. The rule directly addresses the threat described in the CTI report, which identifies a set of Azure App Service domains used by the Peach Sandstorm threat actor for C2 purposes. The domain list in the rule exactly matches the one provided in the CTI report, demonstrating strong alignment with the threat intelligence.
+title: Device Network Information for C2 Domains
+id: a06e9e9d-f730-4a09-be96-c1bf4f579460
+status: experimental
+description: Detects network information related to a known list of malicious domains used for command and control (C2) activities.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+  - attack.t1090.002
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - satellitespecialists.azurewebsites.net
+      - getsupportsservices.azurewebsites.net
+      - satellitegardens.azurewebsites.net
+      - nodetestservers.azurewebsites.net
+      - getservicessuports.azurewebsites.net
+      - softwareservicesupports.azurewebsites.net
+      - supportsoftwarecenter.azurewebsites.net
+      - satellite2.azurewebsites.net
+      - subreviews.azurewebsites.net
+      - centersoftwaresupports.azurewebsites.net
+      - satservicesdev.azurewebsites.net
+      - getsdervicessupoortss.azurewebsites.net
+      - getservicessupports.azurewebsites.net
+      - softwareservicesupport.azurewebsites.net
+      - servicessupports.azurewebsites.net
+      - websupportprotection.azurewebsites.net
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains that are not part of the malicious domain list but coincidentally contain similar strings.
+level: high

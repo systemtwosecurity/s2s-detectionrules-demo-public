@@ -1,0 +1,66 @@
+# review_report_url: https://news.sophos.com/en-us/2021/03/05/hafnium-advice-about-the-new-nation-state-attack/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule aligns seamlessly with the corresponding CTI report, ensuring that all suspicious file names, randomized patterns, and targeted directories are accurately covered. The detection logic is consistent with Sophos EDR queries.
+title: Detection of Known Web Shell File Names
+id: d2feeb51-9728-43ae-a4e2-8c11be626090
+status: experimental
+description: Detects the creation or modification of files with known web shell names in specific directories used by Microsoft Exchange Server, which may indicate the presence of a web shell.
+references:
+  - https://news.sophos.com/en-us/2021/03/05/hafnium-advice-about-the-new-nation-state-attack
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    TargetFilename|endswith:
+      - \OutlookJP.aspx
+      - \RedirSuiteServerProxy.aspx
+      - \xx.aspx
+      - \t.aspx
+      - \errorcheck.aspx
+      - \supp0rt.aspx
+      - \MultiUp.aspx
+      - \healthcheck.aspx
+      - \aspnet_www.aspx
+      - \shell.aspx
+      - \document.aspx
+      - \system_web.aspx
+      - \errorEEE.aspx
+      - \Logout.aspx
+      - \web.aspx
+      - \aspnet_client.aspx
+      - \one.aspx
+      - \error.aspx
+      - \OutlookRU.aspx
+      - \aspnet_iisstart.aspx
+      - \discover.aspx
+      - \TimeoutLogout.aspx
+      - \aspnettest.aspx
+      - \shellex.aspx
+      - \OutlookEN.aspx
+      - \errorEW.aspx
+      - \errorEE.aspx
+      - \errorFF.aspx
+      - \HttpProxy.aspx
+      - \help.aspx
+  selection2:
+    TargetFilename|re: '[0-9a-zA-Z]{8}\.aspx$'
+  filter1:
+    TargetFilename|startswith: C:\\inetpub\\wwwroot\\aspnet_client\\
+  filter2:
+    TargetFilename|startswith: C:\\Program Files\\Microsoft\\Exchange Server\\V15\\FrontEnd\\HttpProxy\\owa\\auth\\
+  condition: (selection1 or selection2) and (filter1 or filter2)
+falsepositives:
+  - Legitimate creation of files with names that match known web shell patterns but are for benign purposes.
+level: high

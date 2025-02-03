@@ -1,0 +1,39 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects indicators of the Linux version of SQLULDR2, a tool used for Oracle database dumping, which may suggest potential malicious activity. It flags high-severity alerts, though legitimate use by administrators could trigger false positives.
+title: Detection of the Linux Version of SQLULDR2
+id: 80be47db-7642-4500-b4f0-d61e886e4a2d
+status: experimental
+description: Detects the presence of certain strings and function calls indicative of the Linux version of SQLULDR2, which may suggest malicious activity.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/07/25
+tags:
+  - attack.collection
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    a0|contains|all:
+      - 'SQL*UnLoader: Fast Oracle Text Unloader'
+      - user    = username/password@tnsname
+      - 'file    = output file name(default: uldrdata.txt)'
+      - rows    = print progress for every given rows (default, 1000000)
+      - text    = output type (MYSQL, CSV, MYSQLINS, ORACLEINS, FORM, SEARCH)
+      - uldrdata.%p.txt
+      - 'format  = MYSQL: MySQL Insert SQLs, SQL: Insert SQLs'
+      - query   = select statement
+      - exec    = the command to execute the SQLs
+      - sqluldr2zip.c
+  condition: selection
+falsepositives:
+  - Legitimate use of SQLULDR2 by system administrators or authorized personnel.
+level: high

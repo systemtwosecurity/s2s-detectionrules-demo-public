@@ -1,0 +1,65 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect potentially malicious web requests targeting IP cameras, focusing on default credentials and exfiltration attempts. It monitors traffic to specific endpoints on common HTTP(S) ports and looks for data transfers to mega.nz using rclone. While it identifies typical adversary behaviors, it may also generate false positives from legitimate administrative actions, necessitating ongoing refinement for improved accuracy.
+title: Detection of Default Credential Use and Data Exfiltration in IP Cameras
+id: 92f7d794-ce4f-4e93-809e-bc7d5d62f698
+status: experimental
+description: Detects web requests that are likely intended to dump configuration settings and credentials from IP cameras using default usernames and passwords, followed by exfiltration of JPG files.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.initial-access
+logsource:
+  product: linux
+  category: network_connection
+detection:
+  selection1:
+    DestinationPort|contains:
+      - '80'
+      - '8080'
+      - '443'
+    DestinationHostname|contains:
+      - /ssi.cgi
+      - /PictureCatch.cgi
+    SourceHostname|contains|all:
+      - channel=1
+      - username=
+      - echo
+      - key=PWNED
+      - data_type=1
+      - secret=1
+      - password=
+      - Login.htm
+      - SYS_CFG
+      - attachment=1
+  selection2:
+    DestinationPort|contains:
+      - '80'
+      - '8080'
+      - '443'
+    DestinationHostname|contains:
+      - /ssi.cgi
+      - /PictureCatch.cgi
+    SourceHostname|contains|all:
+      - chRemember=on
+      - btConnect=
+      - 0>&1
+      - txtPassword=
+      - /dev/tcp/
+      - txtUser=
+      - system(
+  exfiltration:
+    DestinationHostname|contains: mega.nz
+    SourceHostname|contains: rclone
+  condition: selection1 or selection2 or exfiltration
+falsepositives:
+  - Legitimate administrative activity that uses similar command patterns for maintenance.
+level: high

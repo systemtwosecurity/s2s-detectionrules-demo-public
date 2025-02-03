@@ -1,0 +1,35 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This detection rule identifies when a new external user (guest) is granted administrative privileges, such as the Global Administrator role, which may indicate a privilege escalation attempt. While legitimate cases (e.g., external collaboration) can trigger false positives, unexpected assignments should be promptly investigated. Regularly reviewing admin role assignments helps mitigate risks associated with unauthorized privilege escalation.
+
+title: New External User Granted Admin
+id: 2244e96b-922a-4a32-b265-3a915fd278c3
+status: experimental
+description: Detects a new external user being granted administrative privileges
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: azure
+  service: auditlogs
+detection:
+  selection:
+    OperationName: Add member to role
+    ActivityDisplayName: Add member to role
+    TargetResources.modifiedProperties.newValue: User
+    TargetResources.ModifiedProperties.DisplayName|contains: Global Administrator
+    properties.message|contains|all:
+      - Guest
+      - assigned
+      - role
+  condition: selection
+falsepositives:
+  - Legitimate granting of admin privileges to external users (e.g., for collaboration purposes)
+level: medium

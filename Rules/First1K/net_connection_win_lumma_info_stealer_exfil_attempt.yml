@@ -1,0 +1,37 @@
+# review_report_url: https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies HTTP POST requests with multipart/form-data containing filenames indicative of Lumma Info-Stealer exfiltration attempts. It monitors traffic on ports 80 or 443 to the IP address 82.117.255.127, specifically originating from suspicious processes like svchost.exe
+title: Detection of Lumma Info-Stealer Exfiltration Attempts
+id: db5f6a4a-e891-4d4d-b82c-c15dd776eb5e
+status: experimental
+description: Detects POST requests with multipart/form-data containing specific filenames indicative of Lumma Info-Stealer activity.
+references:
+  - https://darktrace.com/blog/the-rise-of-the-lumma-info-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort:
+      - 80
+      - 443
+    DestinationIp: 82.117.255.127
+    Initiated: true
+    Protocol: tcp
+  filter:
+    Image|endswith: \\svchost.exe
+  condition: selection and filter
+falsepositives:
+  - Legitimate applications using similar user-agent strings or URI patterns
+  - Legitimate POST requests to the specified IP address if it gets reassigned
+level: high

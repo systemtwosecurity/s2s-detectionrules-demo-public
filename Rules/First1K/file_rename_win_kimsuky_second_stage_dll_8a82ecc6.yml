@@ -1,0 +1,29 @@
+# review_report_url: https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule matches the behavior described in the CTI report. The rule detects the specific action of copying and renaming the malicious DLL (AutoUpdate.dll) into the Windows Defender directory, which is part of the Kimsuky group’s persistence mechanism.
+title: Kimsuky Group Malware Second Stage DLL Activity
+id: 8a82ecc6-9ef9-4d96-ae18-e4583ee6e866
+status: experimental
+description: Detects the copying and renaming of a DLL file acting as the second stage of the Kimsuky group malware infection into the Windows Defender directory for persistence.
+references:
+  - https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_rename
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Roaming\Microsoft\Windows\Defender\AutoUpdate.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same filename and path for legitimate purposes.
+level: high

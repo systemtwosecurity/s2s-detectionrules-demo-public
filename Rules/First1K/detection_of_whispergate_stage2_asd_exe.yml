@@ -1,0 +1,32 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the WhisperGate stage 2 malware variant asd.exe based on its unique MD5 and SHA-256 hash values, ensuring precise identification. It targets file executions within Windows environments where these hashes are present. False positives are rare but possible if the hash is reused for benign files.
+
+title: Detection of WhisperGate Stage 2 Malware Variant asd.exe
+id: b5e4af80-2727-4e21-98ab-9ff7d1a61d0f
+status: experimental
+description: Detects the execution or presence of the WhisperGate stage 2 malware variant asd.exe by its MD5 or SHA-256 hash.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    Hashes|contains:
+      - b9e64b58d7746cb1d3bed20405ef34d097af08c809d8dad10b9296b0bebb2b0b
+      - eac0ae655d344c25ff467a929790885c
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to this malware, false positives are unlikely but possible if the hash is reused for benign files.
+level: critical

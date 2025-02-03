@@ -1,0 +1,31 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation, modification, or execution of DLL files named "update.dll" or "RPHost.dll," which are associated with Cobalt Strike malware. It identifies potential command-and-control activity from attackers using these DLLs. The detection level is high, with the possibility of false positives from legitimate applications using similarly named DLL files.
+title: Detection of Cobalt Strike Related DLL Files
+id: e2226194-72a0-4df5-b3dd-87708c652853
+status: experimental
+description: Detects the creation, modification, or execution of specific DLL files related to Cobalt Strike malware.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \update.dll
+      - \RPHost.dll
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similarly named DLL files
+level: high

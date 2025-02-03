@@ -1,0 +1,38 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule identifies AWS IAM API calls indicative of reconnaissance activity, such as listing users, roles, and credentials, potentially associated with Muddled Libra. Multiple calls from the same source in a short timeframe should be investigated to differentiate between legitimate administrative tasks and malicious intent
+
+
+title: AWS IAM Reconnaissance Activity by Muddled Libra
+id: aa25c725-6d8f-40d6-8bd1-ae91e0c178a4
+status: experimental
+description: Detects AWS IAM API calls indicative of reconnaissance activity, potentially associated with the Muddled Libra threat actor group.  This rule focuses on API calls that gather information about users, groups, roles, and credentials without directly revealing sensitive data itself.  The presence of multiple calls from the same user or IP address within a short timeframe increases the likelihood of malicious activity.
+references:
+  - https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.reconnaissance
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  selection:
+    eventName:
+      - ListUsers
+      - ListRoles
+      - ListSAMLProviders
+      - ListSSHPublicKeys
+      - ListOpenIDConnectProviders
+      - ListGroups
+      - ListSigningCertificates
+      - ListServiceSpecificCredentials
+  condition: selection
+falsepositives:
+  - Legitimate administrative tasks involving the enumeration of AWS IAM resources.
+  - Automated security tools performing IAM audits.
+level: high

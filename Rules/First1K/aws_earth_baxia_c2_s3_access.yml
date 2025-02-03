@@ -1,0 +1,28 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects Earth Baxia C2 activity by identifying network connections to a known C2 server domain, recordar-simmco.s3.sa-east-1.amazonaws.com, associated with APT41's intrusion campaigns. It focuses on AWS CloudTrail logs and captures requests containing the specific S3 bucket domain used in the command-and-control infrastructure. This makes the rule valuable for identifying malicious C2 communications linked to Earth Baxia, particularly when they rely on this specific infrastructure.
+
+title: Earth Baxia C2 Activity (recordar-simmco.s3.sa-east-1.amazonaws.com)
+id: 5dd438f1-1faa-4606-9318-bbec37b36228
+status: experimental
+description: Detects suspicious network connections to a known Earth Baxia C2 server.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.command-and-control
+logsource:
+  product: aws
+  service: cloudtrail
+detection:
+  selection:
+    requestParameters.attribute: .*recordar-simmco\.s3\.sa-east-1\.amazonaws\.com.*
+  condition: selection
+falsepositives:
+  - Legitimate connections to the domain if it is repurposed for benign activity.
+level: medium

@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule checks Zeek DNS logs for any queries to primerosauxiliosperu[.]com, which has been identified as a Fullhouse Backdoor C2 domain. Triggering this rule suggests potential command-and-control activity related to the Fullhouse Backdoor malware. False positives are possible if the domain is later repurposed or used legitimately.
+title: Detection of Fullhouse Backdoor Domain Communication
+id: 6e80cfcf-84ef-4cde-bac4-7f2ba9d444de
+status: experimental
+description: Detects DNS queries or web proxy requests for a known Fullhouse Backdoor command and control domain.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection:
+    query|contains: basketsalute[.]com
+  condition: selection
+falsepositives:
+  - Legitimate access to the domain, if the domain is hijacked for benign purposes after the report date.
+level: high

@@ -1,0 +1,35 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects network connections to C2 servers used by the Stealc infostealer, which communicates using /api.php and random 16-character hexadecimal paths. 
+title: Detection of Stealc Infostealer C2 Communication
+id: d8790209-18f7-4f08-b864-acc00c25ee59
+status: experimental
+description: Detects network connections to C2 servers used by the Stealc infostealer, which communicates using /api.php and random 16-character hexadecimal paths.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.exfiltration
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationPort:
+      - '80'
+      - '443'
+    DestinationHostname|endswith: .php
+    CommandLine|contains|all:
+      - /api.php
+      - '[a-f0-9]{16}'
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar patterns in their network communication
+level: high

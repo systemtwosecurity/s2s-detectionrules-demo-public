@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -  This Sigma rule detects potential exfiltration of file size data via DNS queries, where file size information is prepended to domains ending with `.ns.time12.cf`, a tactic linked to APT41. It monitors Windows DNS query logs, though legitimate applications with similar patterns may cause false positives.
+title: Exfiltration of File Size Information via DNS Lookups
+id: a5542ae0-8963-482f-8fcb-031870c3eb08
+status: experimental
+description: Detects the exfiltration of file size information through DNS lookups by prepending the file size to a domain, indicative of APT41 activity.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-us-state-governments
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.exfiltration
+  - attack.t1071.004
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains: .ns.time12.cf
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar domain generation patterns for benign purposes.
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: URL
+# review_date: 2024-09-10
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule closely matches the CTI report, particularly in detecting Mimikatz DCSync activity through network traffic spikes and Suricata alerts. The detection method aligns with both the traffic spike and the DRSUAPI DsGetNCChanges Request observed in the report.
+title: Network Traffic Spike Indicating Mimikatz DCSync Activity
+id: c25b25e8-4b67-4e54-8edf-3a9d317c0bc9
+status: experimental
+description: Detects network traffic spikes that could indicate Mimikatz DCSync activity, based on Suricata alert signatures.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.privilege-escalation
+  - attack.t1003.006
+logsource:
+  category: proxy
+detection:
+  selection:
+    c-uri|contains: Mimikatz DRSUAPI DsGetNCChanges Request
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that uses DRSUAPI DsGetNCChanges Request
+level: high

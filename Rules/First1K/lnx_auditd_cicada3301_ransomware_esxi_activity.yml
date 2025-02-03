@@ -1,0 +1,28 @@
+# review_report_url: https://www.truesec.com/hub/blog/dissecting-the-cicada
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are aligned, detecting commands associated with the Cicada3301 ransomware targeting ESXi hosts. The CTI report highlights that Cicada3301 uses similar commands to ALPHV ransomware, specifically commands to stop VMs and remove snapshots, which are precursors to encryption. This alignment underscores the importance of monitoring for the command enc:esxi::stop_vm_removeall_snapshot to identify potential ransomware activity on ESXi systems.
+title: Detection of Cicada3301 Ransomware Activity on ESXi Hosts
+id: b060b7c8-0093-4a8f-adc4-a117f4a68e36
+status: experimental
+description: Detects commands associated with the Cicada3301 ransomware that targets ESXi hosts, similar to the ALPHV ransomware. These commands are used to stop VMs and remove all snapshots, which is a precursor to encryption of the virtual machines.
+references:
+  - https://www.truesec.com/hub/blog/dissecting-the-cicada
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords: enc:esxi::stop_vm_removeall_snapshot
+  condition: keywords
+falsepositives:
+  - Legitimate administrative activity that uses similar commands for maintenance purposes.
+level: high

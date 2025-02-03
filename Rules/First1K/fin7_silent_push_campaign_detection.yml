@@ -1,0 +1,34 @@
+# review_report_url: https://www.silentpush.com/blog/fin7/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - We have identified a strong correlation between the Sigma rules and the recent CTI report regarding FIN7 activities. Specifically, the Sigma rule detecting DNS queries for domains with the string "meet-go" aligns with findings of dedicated IPs used by FIN7, particularly on 103.35.191.28. Additionally, the detection of the NetSupport RAT licensee code further supports the reported use of this malware in FIN7's operations. This mapping underscores the need for enhanced monitoring and threat detection related to FIN7 infrastructure and tactics.
+title: Detection of FIN7 Domains Related to Silent Push Campaign
+id: ed4d4c4a-c868-4ec6-adfc-f2e88893362a
+status: experimental
+description: Detects DNS queries for domains associated with the FIN7 Silent Push campaign, which are known to use the common string "meet-go" in their domain names and are hosted on dedicated IPs linked to Stark Industries infrastructure.
+references:
+  - https://www.silentpush.com/blog/fin7
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.t1583.001
+  - attack.resource-development
+logsource:
+  product: zeek
+  service: dns
+detection:
+  queries:
+    query|contains: meet-go
+  answers:
+    answers|contains:
+      - 89.105.198.190
+      - 103.35.191.28
+  condition: queries and answers
+falsepositives:
+  - Legitimate queries to domains containing the string "meet-go" that are not related to FIN7 activity.
+level: high

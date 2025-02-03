@@ -1,0 +1,31 @@
+# review_report_url: https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects PATCH requests indicative of APT41's MoonWalk backdoor heartbeat activity by flagging requests to Google Drive URIs with specific headers. It leverages `zeek` HTTP logs. False positives may arise from legitimate applications using the Google Drive API.
+title: Detect MoonWalk Backdoor Heartbeat via PATCH Method
+id: 0cfa07be-5cc3-4ea1-b8d6-453e4ec1c37f
+status: experimental
+description: Detects network requests with PATCH method which may indicate MoonWalk backdoor heartbeat activity.
+references:
+  - https://www.zscaler.com/blogs/security-research/moonwalk-deep-dive-updated-arsenal-apt41-part-2
+author: System Two Security
+date: 2024/08/22
+tags:
+  - attack.command_and_control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: PATCH
+    uri|contains: /upload/drive/v3/files/
+    client_header_names|contains: User-Agent
+  condition: selection
+falsepositives:
+  - Legitimate PATCH requests to Google Drive API by authorized applications
+level: high

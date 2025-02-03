@@ -1,0 +1,41 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of malicious inbox rules designed to delete security-related emails, potentially signaling an attempt to hide malicious activities from security teams. The rule looks for specific events, such as New-InboxRule in Microsoft Exchange logs, focusing on rule names like "junk" and key parameters like "DeleteMessage" or "StopProcessingRules." It raises alerts when such rules are created successfully, with attention to patterns that suggest abuse. False positives could arise from legitimate rules, so careful monitoring is needed to reduce unnecessary alerts.
+title: 'Octo Tempest Compromise: Security Product Arsenal Sabotage via Mailbox Rule Modification'
+id: 20f526a8-bbcd-455a-96e1-6f8d102c8f0b
+status: experimental
+description: Detects the creation of malicious inbox rules that automatically delete emails from vendors, which may indicate an attempt by Octo Tempest to evade detection by sabotaging security product alerts.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.defense-evasion
+  - attack.t1564.008
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    eventName: New-InboxRule
+    eventSource: Exchange
+    status: Success
+    eventName|contains|all:
+      - Name
+      - DeleteMessage
+      - Force
+      - BodyContainsWords
+      - New-InboxRule
+      - StopProcessingRules
+      - junk
+      - AlwaysDeleteOutlookRulesBlob
+  condition: selection
+falsepositives:
+  - Legitimate creation of inbox rules that match the detection criteria but are benign in nature.
+level: high

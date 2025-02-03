@@ -1,0 +1,32 @@
+# review_report_url: https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule identifies access to specific malicious JavaScript URLs in Zeek HTTP logs, which could indicate compromised website visits or malicious script execution. It is precise in targeting known URLs but may generate false positives if the referenced sites have been cleaned. It requires validation to exclude legitimate access to cleaned or restored sites.
+title: Detection of Malicious JavaScript URLs
+id: 5a119ba5-5049-4685-838c-d40bdd313e7f
+status: experimental
+description: Detects the access to known malicious JavaScript URLs which may indicate a compromised website visit or malicious script execution.
+references:
+  - https://go.recordedfuture.com/hubfs/reports/cta-cn-2024-1112.pdf
+author: System Two Security
+date: 2024/11/14
+tags:
+  - attack.t1189
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - /templates/lt_interiordesign/js/custom.js
+      - /templates/ja_teline_v/js/gallery/jquery.blueimp-gallery.full.js
+  condition: selection
+falsepositives:
+  - Legitimate access to the compromised websites if they have been cleaned and the malicious content removed.
+level: high

@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as well. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detection of APT41 DUSTTRAP Family - atstrust.dll
+id: 92ffee8f-bc55-46e4-a846-6636fc95bf7a
+status: experimental
+description: Detects the presence or execution of atstrust.dll with a specific MD5 hash associated with the DUSTTRAP family, which is indicative of APT41 activity.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith: \atstrust.dll
+    Hashes|contains: MD5=393065ef9754e3f39b24b2d1051eab61
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use the same filename and hash (highly unlikely)
+level: high

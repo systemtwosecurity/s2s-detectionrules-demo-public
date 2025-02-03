@@ -1,0 +1,38 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule focuses on identifying file deletion events related to the SmoothOperator malware on macOS systems by monitoring specific SHA256 hashes of files named libffmpeg.dy. By targeting this particular file extension, the rule aims to capture malicious activity associated with the malware's operational techniques. The high alert level indicates the critical nature of this detection, while the false positive note serves as a reminder that legitimate software could potentially share the same filename and hash, necessitating careful investigation of detected events to confirm malicious intent.
+title: Detection of SmoothOperator libffmpeg.dy SHA256 Hashes
+id: 77ec88bd-7cdb-4328-bc24-fef7f365e864
+status: experimental
+description: Detects file events related to the SmoothOperator malware with specific SHA256 hashes as reported by CTI.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.defense-evasion
+logsource:
+  product: macos
+  category: file_delete
+detection:
+  selection:
+    TargetFilename|endswith: libffmpeg.dy
+    sha256:
+      - 5009c7d1590c1f8c05827122172583ddf924c53b55a46826abf66da46725505a
+      - 479038eb12ed07893ee0dcc04fbdcf182489bbb271f5a4f90f83874881a80ce3
+      - 7667d1b8fcc4f712084e3e3f8b4ab505ab150c52aea7b219249ec508b4b0e224
+      - fee4f9dabc094df24d83ec1a8c4e4ff573e5d9973caa676f58086c99561382d7
+      - 99dbc6fe3c3e465052fcefa1642861747dc9e069eeb244589b605bd710b1e0d1
+      - 2546d239a262c24a6f8ea01d890cbc459a22db79b379b6ec3b24fbb56efb5381
+      - 87c5d0c93b80acf61d24e7aaf0faae231ab507ca45483ad3d441b5d1acebc43c
+      - a64fa9f1c76457ecc58402142a8728ce34ccba378c17318b3340083eeb7acc67
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally has a file named libffmpeg.dy with the same hash
+level: high

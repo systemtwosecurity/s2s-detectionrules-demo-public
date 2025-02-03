@@ -1,0 +1,32 @@
+# review_report_url: https://research.checkpoint.com/2024/iranian-malware-attacks-iraqi-government/https://research.checkpoint.com/2024/iranian-malware-attacks-iraqi-government/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule aims to detect HTTP GET requests to a specific URL with a unique parameter, indicative of a .NET-based HTTP listener backdoor used in Iranian attacks against Iraqi government infrastructure. The rule's relevance and accuracy are high, as it closely aligns with the behavior described in the CTI report. The efficacy is potentially strong, focusing on a specific attack pattern. The detection logic correctly identifies GET requests to the "/owa/auth/login" path, checks for the presence of the "snmflwkejrhgsey" parameter, and verifies the host ends with ".gov.iq". The use of the contains operator for the URI query and endswith for the host is appropriate and aligns with best practices.
+title: Detection of HTTP Listener Backdoor Activity
+id: 3ec9e5d4-6b65-4418-9978-efb51e1ad6bd
+status: experimental
+description: Detects incoming HTTP GET requests to a specific URL with a unique parameter that executes its value via CMD, indicative of a .NET-based HTTP listener backdoor.
+references:
+  - https://research.checkpoint.com/2024/iranian-malware-attacks-iraqi-government
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: GET
+    cs-uri-stem: /owa/auth/login
+    cs-uri-query|contains: snmflwkejrhgsey
+    cs-host|endswith: .gov.iq
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that coincidentally uses the same parameter name.
+level: high

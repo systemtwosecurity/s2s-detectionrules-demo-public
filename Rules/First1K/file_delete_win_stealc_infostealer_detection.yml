@@ -1,0 +1,44 @@
+# review_report_url:  https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule identifies potential Stealc infostealer activity by looking for the deletion of specific DLL files in the C:\\ProgramData and identifying known malicious DLLs. False positives occur when this type of activity is observed due to legitimate software installs, updates, or clean-up operations by administrators with the same DLLs involved.
+title: Detection of Stealc Infostealer Malware
+id: 24601884-ede2-4acc-9a7c-bef20c2f34bc
+status: experimental
+description: Detects the execution of a command that deletes all DLLs in C:\ProgramData and the presence of specific DLLs known to be abused by Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_delete
+detection:
+  selection1:
+    TargetFilename|endswith:
+      - \sqlite3.dll
+      - \nss3.dll
+      - \freebl3.dll
+      - \vcruntime140.dll
+      - \softokn3.dll
+      - \msvcp40.dll
+      - \mozglue.dll
+  selection2:
+    CommandLine|contains|all:
+      - /c
+      - del
+      - cmd.exe
+    TargetFilename|startswith: C:\ProgramData\
+    TargetFilename|endswith: .dll
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate software installation or update that uses the same DLLs
+  - Legitimate deletion of DLLs by system administrators or cleanup tools
+level: high

@@ -1,0 +1,33 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/fin7-shim-databases-persistence
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule is essential for detecting FIN7's persistence tactics. Monitoring for .sdb file creation and associated registry changes can enhance an organization’s ability to detect and respond to potential threats effectively.
+title: FIN7 Shim Database File Creation Detection
+id: 62337979-85b2-4fe9-8ec0-f72c059783f1
+status: experimental
+description: Detects the creation of shim database files in the AppPatch directories, which may indicate persistence via shim databases as used by the FIN7 group.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/fin7-shim-databases-persistence
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+  - attack.t1546.011
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith:
+      - C:\Windows\AppPatch\Custom\Custom64\
+      - C:\Windows\AppPatch\Custom\
+    TargetFilename|endswith: .sdb
+  condition: selection
+falsepositives:
+  - Legitimate software installation or updates that use shim databases for compatibility purposes.
+level: high

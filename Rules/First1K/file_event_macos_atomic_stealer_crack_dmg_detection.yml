@@ -1,0 +1,29 @@
+# review_report_url: https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects .dmg files whose names contain "Crack", a name pattern attributed to Atomic Stealer malware targeting macOS. Legitimate files may sometimes come up in the results but it is uncommon and should be checked very thoroughly.
+title: Detection of Atomic Stealer Malware via .dmg Files with 'Crack' Naming Pattern
+id: 1f387456-9ca9-4610-a8a3-8b825f99604b
+status: experimental
+description: Detects the creation or download of .dmg files with names containing 'Crack' which may indicate the presence of the Atomic Stealer malware.
+references:
+  - https://spycloud.com/blog/reverse-engineering-atomic-macos-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.initial-access
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: Crack*.dmg
+  condition: selection
+falsepositives:
+  - Legitimate software with 'Crack' in the name downloaded as .dmg files, though this is unlikely and should be investigated.
+level: high

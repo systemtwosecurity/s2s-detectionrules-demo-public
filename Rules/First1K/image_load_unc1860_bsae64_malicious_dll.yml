@@ -1,0 +1,29 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the loading of a suspicious DLL named "bsae64.dll," a known misspelling used by the UNC1860 threat group to evade detection. Monitoring for this specific DLL is crucial for identifying malicious activity related to defense evasion techniques.
+title: Detection of UNC1860 Bsae64 Malicious DLL
+id: 4eb188af-770b-4b21-a969-9dd132e99ed5
+status: experimental
+description: Detects the loading of a misspelled Base64 DLL named "bsae64" which is an indicator of UNC1860 group activity.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|contains: bsae64.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that happens to use a similarly named DLL (very unlikely)
+level: high

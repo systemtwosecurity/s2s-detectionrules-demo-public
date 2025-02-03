@@ -1,0 +1,37 @@
+# review_report_url: https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  -The sigma rule is properly aligned with the CTI report. It accurately detects non-standard User-Agent strings (antSword/v2.1, python-requests/2.19.1, ExchangeServicesClient/0.0.0.0, python-requests/2.25.1) associated with webshell access, as detailed in the CTI report. 
+title: Detection of User-Agent Strings Indicative of Webshell Access
+id: 47dfceed-34b7-4f4c-9a38-9015185b7389
+status: experimental
+description: Detects non-standard User-Agent strings that may indicate post-exploitation access to webshells.
+references:
+  - https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+  - attack.t1505.003
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|endswith: /ecp/
+    cs-user-agent|contains:
+      - antSword/v2.1
+      - python-requests/2.19.1
+      - ExchangeServicesClient/0.0.0.0
+      - python-requests/2.25.1
+  condition: selection
+falsepositives:
+  - Legitimate administrative tools that use similar User-Agent strings
+  - Automated scripts for legitimate purposes that use custom User-Agent strings
+level: high

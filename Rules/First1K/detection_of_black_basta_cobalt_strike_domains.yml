@@ -1,0 +1,76 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule provided is accurately mapped to the CTI report. The rule is designed to detect DNS requests or network connections to known Black Basta Cobalt Strike domains listed in the CISA advisory (AA24-131A). It correctly identifies these domains as indicators of compromise (IOCs) related to command and control (C2) infrastructure used by Black Basta.
+title: Detection of Known Black Basta Cobalt Strike Domains
+id: 3329d73c-ef4e-4d1c-9ef1-de7ed1836d05
+status: experimental
+description: Detects DNS requests or network connections to known Black Basta Cobalt Strike domains.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a
+author: System Two Security
+date: 2024/09/18
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  queries:
+    query|contains:
+      - simorten.com
+      - modernbeem.net
+      - artspathgroup.net
+      - recentbeelive.com
+      - artspathgroupe.net
+      - jenshol.com
+      - otxcarecosmetics.com
+      - usaglobalnews.com
+      - recentbee.net
+      - thesmartcloudusa.com
+      - trailcocompany.com
+      - investmentgblog.net
+      - trailshop.net
+      - myfinancialexperts.com
+      - tomlawcenter.com
+      - kekeoamigo.com
+      - oneblackwood.com
+      - topglobaltv.com
+      - buygreenstudio.com
+      - investrealtydom.net
+      - magentoengineers.com
+      - protectionek.com
+      - nebraska-lawyers.com
+      - wipresolutions.com
+      - artstrailman.com
+      - webnubee.com
+      - childrensdolls.com
+      - specialdrills.com
+      - onedogsclub.com
+      - startupbuss.com
+      - businessprofessionalllc.com
+      - otxcosmeticscare.com
+      - thetrailbig.net
+      - startupmartec.net
+      - realbumblebee.net
+      - ontexcare.com
+      - trackgroup.net
+      - trailcosolutions.com
+      - rasapool.net
+      - securecloudmanage.com
+      - buyblocknow.com
+      - limitedtoday.com
+      - currentbee.net
+      - technologgies.com
+      - consulheartinc.com
+      - startupbusiness24.net
+      - artstrailreviews.com
+  condition: queries
+falsepositives:
+  - Legitimate connections to domains that have been compromised and are also used by Black Basta Cobalt Strike for command and control activities.
+level: high

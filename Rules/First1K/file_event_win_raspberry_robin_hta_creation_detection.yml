@@ -1,0 +1,34 @@
+# review_report_url: https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is designed to detect the creation of HTA files associated with the Raspberry Robin infection chain. It specifically targets HTA files with names such as access.hta, bootstrap.hta, bundle.hta, and min.hta, which are commonly used by the malware. The rule is intended to capture file creation events that match this pattern, and its effectiveness in detecting malicious activity will be assessed during testing.
+title: Detection of HTA File Creation Indicative of Raspberry Robin Infection
+id: 74616ecf-facd-4e0a-a692-504f42b251a1
+status: experimental
+description: Detects the creation of HTA files with specific names that are indicative of the Raspberry Robin infection chain.
+references:
+  - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+author: System Two Security
+date: 2024/11/18
+tags:
+  - attack.execution
+  - attack.t1218.005
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \bundle.hta
+      - \min.hta
+      - \access.hta
+      - \bootstrap.hta
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similarly named HTA files for installation or updates
+level: high

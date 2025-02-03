@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects the creation of trojanized DLLs in specific .NET framework paths (`System.Data.Trace`) associated with DUSTTRAP, used for defense evasion by APT41. It monitors suspicious file creation in targeted directories to identify potential tampering. The likelihood of false positives is low due to the rarity of legitimate activity in these locations.
+
+title: DUSTTRAP Trojanized DLL Creation
+id: c2892042-6438-469a-9f07-40b0268b7c69
+status: experimental
+description: Detects the creation of trojanized DLLs used by DUSTTRAP in specific paths.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-arisen-from-dust
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.defense-evasion
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \\Microsoft.NET\\System.Data.Trace\\v4.0_4.0.0.0__b0*.dll
+      - \\Microsoft.NET\\assembly\\GAC_MSIL\\System.Data.Trace\\v4.0_4.0.0.0__b0*.dll
+  condition: selection
+falsepositives:
+  - Legitimate applications writing to these directories (unlikely)
+level: medium

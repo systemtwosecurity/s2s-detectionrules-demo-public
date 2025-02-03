@@ -1,0 +1,29 @@
+# review_report_url: https://blog.talosintelligence.com/threat-actors-using-macropack/
+# review_date: 2024-10-08
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect the presence of a 64-bit Havoc demon file based on its SHA256 hash. The rule is directly relevant to the CTI report, which lists this specific hash as an indicator of compromise (IOC) for the Havoc malware.The IOC used in the rule matches exactly with the CTI report, minimizing false positives.
+title: Detection of 64-bit Havoc Demon Hash
+id: 3f087863-29f1-4fec-89bd-d1f9708aadff
+status: experimental
+description: Detects the creation, modification, or execution of a file with a hash indicative of the 64-bit Havoc demon.
+references:
+  - https://blog.talosintelligence.com/threat-actors-using-macropack
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    sha256: 0cf1e59bae9dba7fbbf6ee6a36ca6bdb8fa0ac002b8cf824bd0888789a981c57
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash has been identified as malicious. Any detection should be investigated.
+level: high

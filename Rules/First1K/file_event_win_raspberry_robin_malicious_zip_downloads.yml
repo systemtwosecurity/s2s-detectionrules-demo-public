@@ -1,0 +1,33 @@
+# review_report_url: https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+# review_date: 2024-11-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule detects the download of ZIP files with specific names associated with the Raspberry Robin infection chain. This rule focuses on files such as min.zip, bootstrap.zip, bundle.zip, and access.zip, which are commonly observed in the infection process. The detection is useful for identifying potentially malicious activity linked to the initial access phase of the attack, specifically targeting file events on Windows systems.
+title: Detection of Raspberry Robin Malicious ZIP File Downloads
+id: 2bd81a66-6d2d-4de1-883d-98954308b6d9
+status: experimental
+description: Detects the download of ZIP files with specific names that are associated with the Raspberry Robin infection chain.
+references:
+  - https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-11-14-IOCs-for-Raspberry-Robin-activity.txt
+author: System Two Security
+date: 2024/11/18
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \min.zip
+      - \bootstrap.zip
+      - \bundle.zip
+      - \access.zip
+  condition: selection
+falsepositives:
+  - Legitimate downloads of files with the same names, though unlikely, should be investigated and whitelisted as necessary.
+level: high

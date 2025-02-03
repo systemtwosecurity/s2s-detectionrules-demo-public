@@ -1,0 +1,31 @@
+# review_report_url: https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule  is well-supported by the CTI report. The report verifies that DarkSide ransomware creates files such as C:\%USERNAME%\AppData\Local\Temp\3582–490, making the rule's detection logic valid and effective for identifying potential ransomware activity.
+title: Suspicious File Creation in AppData\Local\Temp Directory
+id: 08a11fb0-1b09-49b0-aae7-aeafa65a4184
+status: experimental
+description: Detects the creation of a suspicious file in the user's AppData\Local\Temp directory which is indicative of DarkSide ransomware activity.
+references:
+  - https://www.metabaseq.com/threat/inside-darkside-the-ransomware-that-attacked-colonial-pipeline
+author: System Two Security
+date: 2024/09/14
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: C:\
+    TargetFilename|contains: \AppData\Local\Temp\
+    TargetFilename|endswith: 3582–490
+  condition: selection
+falsepositives:
+  - Legitimate software that uses non-standard naming conventions for temporary files in the AppData\Local\Temp directory.
+level: high

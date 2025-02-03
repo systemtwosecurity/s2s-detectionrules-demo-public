@@ -1,0 +1,35 @@
+# review_report_url: https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation/
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - There is a match between the Sigma rule and the CTI report. The Sigma rule is designed to detect POST requests to /wordpress/xmlrpc.php, which is a key IOC mentioned in the CTI report. But to cover all the IOCs we are providing finetuned sigma too.
+title: Detection of GootBot C2 Server Communication
+id: 1b34f33f-add1-4238-9ba5-9a8ae524b284
+status: experimental
+description: Detects network communication to known GootBot command and control (C2) servers.
+references:
+  - https://securityintelligence.com/x-force/gootbot-gootloaders-new-approach-to-post-exploitation
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  c2_traffic:
+    client_header_names|contains: Host
+    uri|contains: /wordpress/xmlrpc.php
+    method: POST
+  c2_hosts:
+    client_header_names|contains: Host
+    uri|startswith: /wordpress/xmlrpc.php
+    method: POST
+  condition: c2_traffic and c2_hosts
+falsepositives:
+  - Legitimate access to WordPress xmlrpc.php by authorized systems
+level: high

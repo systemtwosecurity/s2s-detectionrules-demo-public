@@ -1,0 +1,41 @@
+# review_report_url: URL
+# review_date: 2024-09-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule aligns with the report describing the same techniques for Cobalt strike process injection via powershell. Also, the TTP is a match as it's in the CTI report.
+title: Cobalt Strike Beacon Communication Over Port 80
+id: fe2a4935-07fb-475c-acb0-ddb9c627f92e
+status: experimental
+description: Detects network connections to known Cobalt Strike server IP addresses over port 80.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    client_header_names|contains: Host
+    method: GET
+    status_code: 200
+    uri|contains:
+      - /submit.php?id=217358394
+      - /load
+      - /dpixel
+      - /download/test1.exe
+      - /download/http64.exe
+      - /download/csss.exe
+      - /ksajSk
+  filter:
+    client_header_names|contains: 85.209.11.48
+  condition: selection and filter
+falsepositives:
+  - Legitimate traffic to IP address that coincidentally matches the Cobalt Strike server IP
+level: high

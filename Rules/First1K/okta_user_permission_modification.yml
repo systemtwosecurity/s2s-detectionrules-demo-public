@@ -1,0 +1,34 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This rule detects suspicious modifications to registry keys associated with MOVEit Transfer, specifically those used for configuration and logging. Changes to keys such as HKEY_LOCAL_MACHINE\SOFTWARE\Standard Networks\siLock may indicate compromise or malicious persistence techniques. False positives may occur due to legitimate administrative changes, such as during MOVEit Transfer configuration updates.
+
+title: Modification of Okta User Permissions
+id: 2f33c0fa-9bed-4858-9eda-868c12704716
+status: experimental
+description: Detects modifications to user permissions within Okta, indicative of potential privilege escalation or unauthorized access.
+references:
+  - https://unit42.paloaltonetworks.com/muddled-libra-evolution-to-cloud
+author: System Two Security
+date: 2024/11/29
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: okta
+  service: okta
+detection:
+  selection:
+    eventtype:
+      - user.lifecycle.privilege.revoke
+      - user.account.privilege.revoke
+      - group.privilege.grant
+      - user.lifecycle.privilege.grant
+      - user.account.privilege.grant
+      - group.privilege.revoke
+  condition: selection
+falsepositives:
+  - Legitimate administrative changes to user permissions.
+level: medium

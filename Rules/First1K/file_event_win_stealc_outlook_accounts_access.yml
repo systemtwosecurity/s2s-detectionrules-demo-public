@@ -1,0 +1,29 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma detects access attempts to Outlook \Outlook\accounts.txt file which may indicate activity related to the Stealc infostealer
+title: Stealc Infostealer - Outlook Accounts File Access
+id: 8e0dde49-39a7-4172-b3ac-0b6b4ae9d303
+status: experimental
+description: Detects access attempts to Outlook accounts.txt file which may indicate activity related to the Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \Outlook\accounts.txt
+  condition: selection
+falsepositives:
+  - Legitimate access to Outlook accounts file by authorized applications or administrative tools.
+level: high

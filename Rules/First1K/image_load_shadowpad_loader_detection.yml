@@ -1,0 +1,35 @@
+# review_report_url:  https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+# review_date: 2024-11-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the sideloading activity of taskhost.exe, loading sbiedll.dll. This could be indicated by the installation of the MoonWalk backdoor through the DodgeBox loader. The alert has a high severity and can indicate malware installation and persistence attempts.
+
+title: Detection of ShadowPad Loader Files
+id: f11d84bf-0ae4-4097-8377-6bc759ee570b
+status: experimental
+description: Detects the presence of specific ShadowPad loader file hashes on a system.
+references:
+  - https://blog.talosintelligence.com/chinese-hacking-group-apt41-compromised-taiwanese-government-affiliated-research-institute-with-shadowpad-and-cobaltstrike-2
+author: System Two Security
+date: 2024/08/04
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    ImageLoaded|endswith:
+      - .dll
+      - .exe
+    sha256:
+      - 2e46fcadacfe9e2a63cfc18d95d5870de8b3414462bf14ba9e7c517678f235c9
+      - eba3138d0f3d2385b55b08d8886b1018834d194440691d33d612402ba8a11d28
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally has the same hash values (highly unlikely)
+level: high

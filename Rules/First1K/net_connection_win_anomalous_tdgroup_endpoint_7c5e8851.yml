@@ -1,0 +1,30 @@
+# review_report_url: https://darktrace.com/blog/gootloader-malware-detecting-and-containing-multi-functional-threats-with-darktrace
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - There is a direct match between the Sigma rule and the CTI report. Both focus on detecting suspicious connections to the domain tdgroup.ru and the associated IP address 95.181.231.204, which is flagged as rare and linked to potentially malicious C2 communications.
+title: Anomalous Connection to Rare Endpoint
+id: 7c5e8851-c81c-4692-924a-b4081a38d551
+status: experimental
+description: Detects network connections to a rare endpoint 'tdgroup.ru' with specific IP '95.181.231.204' and ASN 'AS210079 EuroByte LLC'.
+references:
+  - https://darktrace.com/blog/gootloader-malware-detecting-and-containing-multi-functional-threats-with-darktrace
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname: tdgroup.ru
+    DestinationIp: 95.181.231.204
+  condition: selection
+falsepositives:
+  - Legitimate connections to the endpoint for business purposes
+level: high

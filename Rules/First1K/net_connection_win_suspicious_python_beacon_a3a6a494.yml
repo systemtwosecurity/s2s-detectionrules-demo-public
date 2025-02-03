@@ -1,0 +1,30 @@
+# review_report_url: https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies suspicious network activity involving pythonw.exe connecting to a specific IP, potentially indicating command and control communication. While designed to detect malicious beacons, legitimate uses of pythonw.exe for network tasks should be validated to reduce false positives.
+title: Suspicious Python Network Beacon Detected
+id: a3a6a494-4541-4eba-9b55-965fed6c355e
+status: experimental
+description: Detects network beacons initiated by pythonw.exe to a specific IP address which may indicate command and control activity.
+references:
+  - https://thedfirreport.com/2024/09/30/nitrogen-campaign-drops-sliver-and-ends-with-blackcat-ransomware
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 194.49.94.18
+    CommandLine|contains: pythonw.exe
+  condition: selection
+falsepositives:
+  - Legitimate use of pythonw.exe with network activity to the specified IP address.
+level: high

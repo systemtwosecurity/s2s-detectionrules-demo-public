@@ -1,0 +1,30 @@
+# review_report_url: URL
+# review_date: 2024-09-19
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rules detects the indicated detection.
+title: Detection of Malicious VBS File by SHA256 Hash
+id: 9b29f1ba-b744-4fc7-a968-d871696c903c
+status: experimental
+description: Detects the presence of a known malicious VBS file in the system by its SHA256 hash value.
+references:
+  - https://www.securonix.com/blog/analysis-and-detection-of-cloudreverser-an-attack-involving-threat-actors-compromising-systems-using-a-sophisticated-cloud-based-malware
+author: System Two Security
+date: 2024/09/16
+tags:
+  - attack.t1059.005
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  selection:
+    sha256: 51D758FC04D05B997C651F658CDD30819EF5CF795D4498FAD919E75A320E72EA
+  condition: selection
+falsepositives:
+  - Unknown. Hashes are unique to files, and this hash is associated with known malware. Any detection should be considered a true positive unless the hash has been reused for legitimate software, which is highly unlikely.
+level: critical

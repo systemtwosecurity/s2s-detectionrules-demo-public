@@ -1,0 +1,37 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects Earth Baxia's C2 activity by monitoring file downloads from static.krislab.site, a known malicious domain used for distributing Cobalt Strike beacon implants and other malicious payloads. By focusing on specific file names and command-line patterns (e.g., the use of wget), the rule targets suspicious downloads associated with Earth Baxia's attack techniques.
+
+title: Suspicious File Downloads from static.krislab.site
+id: 33d6711f-3101-489e-931b-19743f0763db
+status: experimental
+description: Detects the download of known malicious files related to Earth Baxia from static.krislab.site.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith|contains:
+      - C:\Users\Public\邀請函.pdf
+      - C:\Users\Public\Logs.txt
+      - C:\Users\Public\Edge.exe
+      - C:\Users\Public\msedge.dll
+  selection2:
+    CommandLine|contains|all:
+      - static.krislab.site/infodata
+      - wget
+  condition: selection or selection2
+falsepositives:
+  - Legitimate downloads of files with the same name from the specified domain (unlikely).
+  - Legitimate use of wget with the specified domain.
+level: high

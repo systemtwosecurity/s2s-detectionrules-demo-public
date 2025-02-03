@@ -1,0 +1,45 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule aims to detect network connections to domains associated with the UpdateAgent malware, as mentioned in the CTI report. The rule's relevance and accuracy are high, as it directly addresses the threat described in the intelligence, focusing on DNS queries to specific domains linked to UpdateAgent. The rule's efficacy is potentially strong, given its targeted approach to identifying known malicious domains. The rule correctly implements IOCs from the CTI report, including all listed UpdateAgent domains. The risk of false positives is acknowledged and appropriately addressed in the rule
+title: Detection of UpdateAgent Related Domains
+id: adabeeda-8938-4240-a3c5-f93518672eb8
+status: experimental
+description: Detects network connections to domains associated with the UpdateAgent malware.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    query|contains:
+      - zacharryblogs.com
+      - azuredeploystore.com
+      - sourceslabs.com
+      - sbmsa.wiki
+      - visualstudiofactory.com
+      - pbxphonenetwork.com
+      - glcloudservice.com
+      - msstorageboxes.com
+      - akamaitechcloudservices.com
+      - msstorageazure.com
+      - azureonlinestorage.com
+      - msedgepackageinfo.com
+      - pbxsources.com
+      - officestoragebox.com
+      - officeaddons.com
+      - pbxcloudeservices.com
+  condition: query
+falsepositives:
+  - Legitimate access to similarly named domains not associated with the malware.
+level: high

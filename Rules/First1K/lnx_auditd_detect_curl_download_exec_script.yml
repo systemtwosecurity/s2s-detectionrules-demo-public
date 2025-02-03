@@ -1,0 +1,30 @@
+# review_report_url: https://www.elastic.co/security-labs/betting-on-bots
+# review_date: 2024-10-06
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the use of curl to download scripts from a potentially malicious URL and execute them using a shell command, which is a common technique in Linux malware infections. Monitoring for this behavior helps identify unauthorized script executions that may compromise system integrity, although it may generate false positives from legitimate usage of curl
+title: Detect Download and Execution of Malicious Script via Curl
+id: 56964b5d-c38a-415d-ba6b-bf50626d1f39
+status: experimental
+description: Detects the execution of a curl command to download and execute a script as part of a Linux malware infection.
+references:
+  - https://www.elastic.co/security-labs/betting-on-bots
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  service: auditd
+detection:
+  keywords:
+    - curl -s http://gcp.pagaelrescate.com:8080/
+    - '| bash'
+  condition: keywords
+falsepositives:
+  - Legitimate scripts downloaded and executed via curl
+level: high

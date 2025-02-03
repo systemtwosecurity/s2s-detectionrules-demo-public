@@ -1,0 +1,32 @@
+# review_report_url: URL
+# review_date: 2024-09-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule ligns with the CTI report, as both focus on detecting unauthorized access to multiple mailboxes by an OAuth application. The CTI report details the use of OAuth applications for email collection, which corresponds with the Sigma rule's detection of multiple mailbox accesses via the API.
+title: O365 Multiple Mailboxes Accessed via API
+id: b90281ce-be3d-4cab-9fcb-2f0c5c52115a
+status: experimental
+description: Detects multiple mailbox accesses by an OAuth application within a short period of time, which could indicate unauthorized data collection or compromise.
+references:
+  - https://www.splunk.com/en_us/blog/security/hunting-m365-invaders-navigating-the-shadows-of-midnight-blizzard.html
+author: System Two Security
+date: 2024/09/17
+tags:
+  - attack.t1114.002
+  - attack.collection
+logsource:
+  product: m365
+  service: threat_detection
+detection:
+  selection:
+    eventName: MailItemsAccessed
+    eventSource: Exchange
+    status: Succeeded
+  condition: selection
+falsepositives:
+  - Legitimate use of applications that require access to multiple mailboxes within a short period of time, such as journaling and compliance applications.
+level: high

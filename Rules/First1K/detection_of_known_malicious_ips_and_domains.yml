@@ -1,0 +1,47 @@
+# review_report_url: URL
+# review_date: 2024-09-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches with the CTI report's domain and IP address for detecting C2 and exfiltration related activties. Also, it aligns with mulitple MITRE ATT&CK techniques including DNS based C2, tool transfer and exfiltration over C2 channels.
+title: Detection of Known Malicious IP Addresses and Domains
+id: f720643a-87c0-4470-9672-a300935d4888
+status: experimental
+description: Detects network connections to known malicious IP addresses and domains that may indicate command and control activity or data exfiltration.
+references:
+  - https://thedfirreport.com/2024/06/10/icedid-brings-screenconnect-and-csharp-streamer-to-alphv-ransomware-deployment
+author: System Two Security
+date: 2024/09/10
+tags:
+  - attack.t1665
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  selection1:
+    query|contains:
+      - evinakortu.com
+      - skrechelres.com
+      - jkbaarmosen.com
+      - modalefastnow.com
+      - hofsaalos.com
+      - jerryposter.com
+  selection2:
+    answers|contains:
+      - 94.232.46.27
+      - 77.105.140.181
+      - 212.18.104.12
+      - 109.236.80.191
+      - 77.105.142.135
+      - 85.209.11.48
+      - 92.118.112.13
+      - 217.23.12.8
+      - 173.255.204.62
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate connections to IP addresses or domains that have been reused for benign purposes after the report was generated.
+level: high

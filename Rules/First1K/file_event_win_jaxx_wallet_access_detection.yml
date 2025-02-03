@@ -1,0 +1,31 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects file system events targeting Jaxx Desktop wallet's key storage locations, including \jaxx\Local Storage\file__0.localstorage and \com.liberty.jaxx\IndexedDB\file__0.indexeddb.leveldb\. It effectively aligns with CTI-reported behaviors, monitoring access to critical directories and files.
+title: Detection of Jaxx Desktop Wallet File Access
+id: 78316424-7d0d-4df6-a1df-564cf75e690a
+status: experimental
+description: Detects file access or creation events targeting the Jaxx Desktop wallet directories and file names.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection1:
+    TargetFilename|startswith: \jaxx\Local Storage\file__0.localstorage
+  selection2:
+    TargetFilename|startswith: \com.liberty.jaxx\IndexedDB\file__0.indexeddb.leveldb\
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate access or backup of the Jaxx Desktop wallet files by the user or system processes
+level: high

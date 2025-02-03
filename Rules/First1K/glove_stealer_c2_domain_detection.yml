@@ -1,0 +1,28 @@
+# review_report_url: https://www.gendigital.com/blog/news/innovation/glove-stealer
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DNS queries to the known Glove Stealer C&C domain master.volt-texs.online, indicating potential malware activity. The detection is specific to Glove Stealer
+title: Detection of C&C Domain Related to Glove Stealer Malware
+id: ed74ae78-2d99-4b0f-be1f-3b3c008e4e0c
+status: experimental
+description: Detects network connections to a known command and control (C&C) domain associated with the Glove Stealer malware.
+references:
+  - https://www.gendigital.com/blog/news/innovation/glove-stealer
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: master.volt-texs.online
+  condition: query
+falsepositives:
+  - Legitimate connections to the domain, if the domain is hijacked or reused for legitimate purposes after the time of the report.
+level: high

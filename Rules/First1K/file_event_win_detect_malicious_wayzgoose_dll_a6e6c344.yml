@@ -1,0 +1,30 @@
+# review_report_url:https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule directly matches the indicators provided in the CTI report. Both the rule and the report identify DLL files containing "wayzgoose" as a critical component of Forest Blizzard's tactics, specifically for privilege escalation and post-compromise activities.
+
+title: Detection of Malicious DLL Files Containing "Wayzgoose"
+id: a6e6c344-0a9c-4202-b1e6-36cf3c96d152
+status: experimental
+description: Detects the use of embedded malicious DLL file names containing the phrase "wayzgoose" which is associated with the Forest Blizzard threat actor.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/04/22/analyzing-forest-blizzards-custom-post-compromise-tool-for-exploiting-cve-2022-38028-to-obtain-credentials
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.privilege-escalation
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: wayzgoose*.dll
+  condition: selection
+falsepositives:
+  - Legitimate files that coincidentally contain the phrase "wayzgoose" in their names
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://www.threatdown.com/blog/gootloader-05-23-2024/
+# review_date: 2024-10-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule offers accurate detection of web requests to the malicious Gootloader zip URL identified in the CTI report. It serves as a valuable tool for monitoring and preventing network connections to known malicious resources, enabling timely detection and response to Gootloader-related threats.
+title: Gootloader Malicious Zip URL Detection
+id: 9f571102-1e62-4261-9f1b-46483c59bdda
+status: experimental
+description: Detects network connections or web requests to a known malicious Gootloader zip URL
+references:
+  - https://www.threatdown.com/blog/gootloader-05-23-2024
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.execution
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    uri|contains: /manual.php
+  selection2:
+    client_header_names|contains: Host
+    uri|contains: clintkustoms.com
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate access to a non-malicious manual.php file on a different host
+level: high

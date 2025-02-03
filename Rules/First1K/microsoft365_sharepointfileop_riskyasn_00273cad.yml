@@ -1,0 +1,31 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies SharePoint file operations originating from previously unseen IP addresses associated with risky Autonomous System Numbers (ASNs) within the last 30 days. It aims to flag potential data exfiltration attempts by monitoring unusual activity. However, it may generate false positives for legitimate operations from newly assigned, non-risky IPs.
+title: SharePointFileOperation from Risky ASN IPs
+id: 00273cad-8a4a-45cc-ad68-e6011be5ea02
+status: experimental
+description: Detects SharePoint file operations from previously unseen IPs that belong to risky Autonomous System Numbers (ASNs).
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/25/octo-tempest-crosses-boundaries-to-facilitate-extortion-encryption-and-destruction
+author: System Two Security
+date: 2024/09/11
+tags:
+  - attack.exfiltration
+logsource:
+  product: m365
+  service: threat_detection
+detection:
+  selection:
+    eventName: SharePointFileOperation
+    eventSource|startswith: previously unseen IP from risky ASN
+  timeframe: 30d
+  condition: selection
+falsepositives:
+  - Legitimate file operations from new IPs that were recently assigned to the organization and are not risky.
+level: high

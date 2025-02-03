@@ -1,0 +1,29 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation or modification of a file named Version.dll in any directory on a Windows system. This file is associated with the FeedLoad binary, part of the Diamond Sleet campaign, which may be used for persistence. As legitimate software may also use Version.dll as a file name, detections should be investigated carefully for false positives.
+title: Detection of FeedLoad Binary via Version.dll File Path
+id: 0b0915b0-78e3-49fc-9ed4-10f77b106a91
+status: experimental
+description: Detects the creation or modification of a specific file path and file name associated with the FeedLoad binary.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \Version.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same file name for its binaries
+level: high

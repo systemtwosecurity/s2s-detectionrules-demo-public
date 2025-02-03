@@ -1,0 +1,28 @@
+# review_report_url: https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects DNS queries or connections to the domain pcsecucheck.scienceontheweb.net, which is linked to malicious activity such as implant downloads or command and control communication by Kimsuky APT. It monitors DNS traffic (via Zeek) for this specific domain. Any legitimate access to this domain should be carefully reviewed to avoid false positives.
+title: Detection of Potentially Malicious Domain pcsecucheck.scienceontheweb.net
+id: dfbabaa2-5399-462c-9a9b-54377c9c86ca
+status: experimental
+description: Detects DNS queries or connections to a known malicious domain used for implant downloads or command and control communication.
+references:
+  - https://blog.talosintelligence.com/kimsuky-abuses-blogs-delivers-malware
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: pcsecucheck.scienceontheweb.net
+  condition: query
+falsepositives:
+  - Legitimate access to the domain, if the domain is hijacked or used for legitimate purposes.
+level: high

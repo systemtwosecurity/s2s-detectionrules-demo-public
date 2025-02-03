@@ -1,0 +1,33 @@
+# review_report_url: https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps/
+# review_date: 2024-10-17
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule matches the CTI report because both describe the use of DLL injection into explorer.exe through the CreateRemoteThread API call. The CTI report specifically mentions this technique used by Kimsuky APT malware to inject malicious DLLs into explorer.exe, which is exactly what the Sigma rule is designed to detect. The rule monitors for this type of process injection, and the exclusion filter ensures legitimate DLLs like AutoUpdate.dll are not falsely flagged.
+title: Malicious DLL Injection via CreateRemoteThread
+id: aeb823cf-2e70-41a7-b7cd-79fa436340e3
+status: experimental
+description: Detects the injection of a DLL into explorer.exe using CreateRemoteThread API call, which is a common technique used by malware to execute code within the context of another process.
+references:
+  - https://yoroi.company/research/the-north-korean-kimsuky-apt-keeps-threatening-south-korea-evolving-its-ttps
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.defense-evasion
+  - attack.t1055.001
+logsource:
+  product: windows
+  category: create_remote_thread
+detection:
+  selection:
+    TargetImage|endswith: \explorer.exe
+    StartFunction|contains: CreateRemoteThread
+  filter:
+    SourceImage|endswith: \AutoUpdate.dll
+  condition: selection and not filter
+falsepositives:
+  - Legitimate software that uses similar injection techniques for non-malicious purposes
+level: high

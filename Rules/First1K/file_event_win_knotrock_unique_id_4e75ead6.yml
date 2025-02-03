@@ -1,0 +1,30 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the presence of a unique marker associated with KNOTROCK malware, specifically the identifier $7d7b40c2-b763-4388-ac13-79711209439b. Care should be taken as legitimate software may also use similar identifiers, leading to potential false positives in detection.
+
+title: Detection of KNOTROCK Malware Unique Identifier
+id: 4e75ead6-04ae-41af-8c76-238554e169c5
+status: experimental
+description: Detects the presence of a unique marker associated with KNOTROCK malware as reported by Mandiant.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc4393-goes-gently-into-silentnight
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: $7d7b40c2-b763-4388-ac13-79711209439b
+  condition: selection
+falsepositives:
+  - Legitimate software that coincidentally uses the same unique identifier in filenames or paths
+level: high

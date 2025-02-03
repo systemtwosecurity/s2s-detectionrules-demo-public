@@ -1,0 +1,33 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - All the encryption extension used by the Embargo ransomware are properly defined in the Sigma rule as per the CTI report i.e. .564ba1, .partial, .embargo these all are the indicator of On-premises compromis.
+title: Detection of Embargo Ransomware File Encryption Activity
+id: 9b9bad19-49d0-4080-8504-003c2d2a1122
+status: experimental
+description: Detects the file encryption activity of Embargo ransomware by monitoring for files with specific extensions indicative of Embargo encryption.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/09/26/storm-0501-ransomware-attacks-expanding-to-hybrid-cloud-environments
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.impact
+  - attack.t1486
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - .564ba1
+      - .partial
+      - .embargo
+  condition: selection
+falsepositives:
+  - Legitimate applications that use the same file extensions for their normal operations.
+level: high

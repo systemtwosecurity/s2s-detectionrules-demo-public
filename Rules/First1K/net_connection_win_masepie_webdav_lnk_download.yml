@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule is designed to detect network connections to a specific IP address (194.126.178.8) and port (80), which are associated with a known malicious URL used to deliver MASEPIE malware. The malware is often spread through malicious LNK files as part of an attack campaign targeting government organizations.
+
+title: Malicious LNK File Downloading MASEPIE Malware via WebDAV
+id: 380fbb22-f7f5-42d5-b4dd-e708ced76db3
+status: experimental
+description: Detects access to a malicious URL known to host the MASEPIE malware downloader, delivered via a malicious LNK file.  This URL is part of a campaign targeting government organizations.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationIp: 194.126.178.8
+    DestinationPort: 80
+  condition: selection
+falsepositives:
+  - Legitimate access to the IP address.  Requires further investigation based on context.
+level: high

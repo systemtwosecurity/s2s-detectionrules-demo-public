@@ -1,0 +1,28 @@
+# review_report_url:  https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule for detecting ScreenConnect relay activity aligns accurately with the CTI report, targeting the specified domain instance-olqdnn-relay.screenconnect.com as part of adversary activity. The rule reflects the provided indicators and is consistent with the threat intelligence details.
+title: Detection of ScreenConnect Relay Activity
+id: c612af65-10dc-4ec9-a43a-c50d4cb00276
+status: experimental
+description: Detects DNS or web proxy log entries related to the ScreenConnect relay domain used by adversaries.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+author: System Two Security
+date: 2024/10/30
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: instance-olqdnn-relay.screenconnect.com
+  condition: query
+falsepositives:
+  - Legitimate use of ScreenConnect relay by IT support staff
+level: high

@@ -1,0 +1,29 @@
+# review_report_url: https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule correctly captures the fy.sh webshell identified in the CTI report. It is aligned with the report’s findings and is ready for testing to detect potential Volt Typhoon activity.
+title: Detection of fy.sh Webshell on Targeted Devices
+id: 6c937986-821c-4f6f-b5eb-0010de9f2040
+status: experimental
+description: Detects the presence of a previously unspecified webshell, fy.sh, on targeted devices which may indicate a compromise by the threat actor group Volt Typhoon.
+references:
+  - https://www.securityweek.com/wp-content/uploads/2024/01/Volt-Typhoon.pdf
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: fy.sh
+  condition: selection
+falsepositives:
+  - Legitimate use of a file named fy.sh, although unlikely due to the specificity of the file name in the context of the threat actor's TTPs.
+level: high

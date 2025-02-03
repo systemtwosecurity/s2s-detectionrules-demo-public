@@ -1,0 +1,28 @@
+# review_report_url: https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects potential malicious network activity by identifying DNS queries linked to a specific Cobalt Strike watermark ID, 1357776117. Cobalt Strike is often used by attackers for command-and-control (C2) purposes, allowing them to maintain a presence in the network. By flagging connections with this watermark ID, the rule can help identify beaconing behavior or interactions with known malicious infrastructure, specifically through DNS logs captured by Zeek.
+title: Detect Cobalt Strike Beacon with Specific Watermark ID
+id: 704a8b5a-aa2e-481d-a815-de8b79c1db26
+status: experimental
+description: Detects network connections to IP addresses and domain names associated with a known Cobalt Strike watermark ID, indicating potential malicious activity.
+references:
+  - https://unit42.paloaltonetworks.com/edr-bypass-extortion-attempt-thwarted
+author: System Two Security
+date: 2024/11/02
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: '1357776117'
+  condition: query
+falsepositives:
+  - Legitimate connections to IP addresses or domain names that were previously associated with the watermark but have since been repurposed for benign use.
+level: high

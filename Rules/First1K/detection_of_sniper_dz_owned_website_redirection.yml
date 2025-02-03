@@ -1,0 +1,28 @@
+# review_report_url: https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma is well mapped with the CTI report, since it is looking for only Sniper Dz-owned domain raviral[.]com which is also a Redirection to Sniper Dz-owned websites.
+title: Detection of Sniper Dz-Owned Website Redirection
+id: bef158ac-8249-4577-9703-5714886954c8
+status: experimental
+description: Detects network connections or DNS queries to the Sniper Dz-owned domain raviral.com, which is indicative of redirection to a phishing site.
+references:
+  - https://unit42.paloaltonetworks.com/phishing-platform-sniper-dz-unique-tactics
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.credential-access
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query: raviral.com
+  condition: query
+falsepositives:
+  - Legitimate connections to raviral.com, although this is unlikely as the domain is associated with phishing activity.
+level: high

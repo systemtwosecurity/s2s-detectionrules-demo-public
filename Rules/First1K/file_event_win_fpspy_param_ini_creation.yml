@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect the creation of a file named Param.ini in the C:\Users\user\AppData\Local\Microsoft\WPSOffice\ directory. The presence of this specific file is indicative of the FPSpy malware activity, which uses this file for storing configuration data about the infected device. The rule focuses on monitoring file creation events, ensuring that any new instance of Param.ini in the specified location triggers an alert. However, legitimate applications may also create files with the same name and in the same directory, which is acknowledged in the false positives section. This emphasizes the importance of reviewing such alerts to determine if they are associated with malicious activity or benign software behavior. You can use Suggested rule as well.
+title: Detection of FPSpy Malware File Creation Activity
+id: e92cd975-11e9-4399-9467-d610309df6a8
+status: experimental
+description: Detects the creation of a Param.ini file in the C:\Users\user\AppData\Local\Microsoft\WPSOffice\ directory, which is indicative of FPSpy malware activity.
+references:
+  - https://unit42.paloaltonetworks.com/kimsuky-new-keylogger-backdoor-variant
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \AppData\Local\Microsoft\WPSOffice\Param.ini
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same directory and filename for configuration.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation of the stage1.exe file, which is associated with the WhisperGate malware used by Russian Military Cyber Actors to target critical infrastructure. It monitors Windows file event logs for any file named stage1.exe, which is a known indicator of this malware's presence. False positives may occur if legitimate software or administrative tools use a similar naming convention, so further analysis is recommended to verify potential threats.
+
+title: Detection of WhisperGate Stage1 Malware Deployment
+id: bf1749a2-c3ba-453e-bf25-76c299f1a0ae
+status: experimental
+description: Detects the creation of the WhisperGate malware file stage1.exe, which is associated with Russian Military Cyber Actors targeting critical infrastructure.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.impact
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: stage1.exe
+  condition: selection
+falsepositives:
+  - Legitimate software with a conflicting name
+  - Administrative tools that may use a similar naming convention
+level: high

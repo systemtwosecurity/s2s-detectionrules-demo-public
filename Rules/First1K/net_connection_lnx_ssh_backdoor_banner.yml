@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: This Sigma rule detects potential backdoored OpenSSH server activity by identifying specific SSH banner strings associated with OpenSSH version 6.7p2. This version is known to have a backdoor vulnerability, which may be exploited by threat actors.
+
+title: Detection of Backdoored OpenSSH Server via SSH Banner
+id: 481a19b8-0a66-45be-9a08-a055daabf131
+status: experimental
+description: Detects the presence of a potentially backdoored OpenSSH server identified by a specific SSH banner string.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    Protocol: ssh
+  filter:
+    DestinationPort: 22
+    SourceHostname: '*SSH-2.0-OpenSSH_6.7p2*'
+  condition: selection and filter
+falsepositives:
+  - Legitimate use of OpenSSH 6.7p2 (unlikely due to known backdoor)
+  - SourceHostname field containing the banner string coincidentally.
+level: high

@@ -1,0 +1,28 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections to the Stealc malware Telegram channel serving as an indicator of compromise for the Stealc infostealer, using Zeek HTTP logs. It is classified as high severity, with potential false positives from legitimate access by security researchers or network administrators.
+title: Detection of Network Connections to Stealc Telegram Channel
+id: 30d8f0fe-9caa-4c11-a742-f2b45d8fa5fd
+status: experimental
+description: Detects network connections to the Stealc malware Telegram channel, which is an indicator of compromise (IoC) for the Stealc infostealer.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  uri: https://t.me/stealc_changelog
+  condition: uri
+falsepositives:
+  - Legitimate access to the Telegram channel by security researchers or network administrators.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule is correctly aligned with the CTI report and ready for production deployment. It provides effective detection of SoreFang malware based on custom encoding/decoding routines.
+title: Detection of SoreFang Custom Encoding/Decoding Algorithm Function
+id: ccd7a6a1-81ef-4068-99c5-be6776f674be
+status: experimental
+description: Detects the custom encoding/decoding algorithm function used by SoreFang malware based on specific byte sequences.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.defense-evasion
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    MagicHeader|startswith: MZ
+    Image|contains|all:
+      - 55 8B EC 8B D1 53 56 8B 75 08 8B DE 80 42 62 FA
+      - 8A 4A 62 66 D3 EB 57 3A 5A 5C 74 0F
+  condition: selection
+falsepositives:
+  - Legitimate applications using similar encoding/decoding routines
+level: high

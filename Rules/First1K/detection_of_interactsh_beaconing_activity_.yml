@@ -1,0 +1,37 @@
+# review_report_url:https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The rule and CTI report collectively emphasize the need for vigilance against sophisticated misuse of legitimate services like Interactsh. This approach not only aids in precise detection but also highlights the importance of validating traffic patterns to oast.fun domains within high-risk environments.
+
+title: Detection of Interactsh Beaconing Activity
+id: 4811b13d-20b2-4165-94b4-051df6c84ba2
+status: experimental
+description: Detects potential beaconing activity to the oast.fun domain, which may indicate compromised routers targeting government organizations in Europe and Caucasus.
+references:
+  - https://harfanglab.io/insidethelab/compromised-routers-infrastructure-target-europe-caucasus
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  domain_oast_fun:
+    client_header_names|contains: Host
+    uri|contains: oast.fun
+  uri_path:
+    uri|contains: /
+  method:
+    method: GET
+  user_agent:
+    client_header_names|contains: User-Agent
+  condition: domain_oast_fun and uri_path and method and user_agent
+falsepositives:
+  - Legitimate use of the Interactsh service by pentesters
+level: high

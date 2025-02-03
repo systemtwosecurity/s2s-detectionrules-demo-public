@@ -1,0 +1,32 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule effectively detects Earth Baxia's persistence activities by monitoring file creation in the C:\Windows\Temp directory, specifically targeting files such as Edge.exe and msedge.dll. These files are commonly used by Earth Baxia for malicious purposes, as documented in the CTI report.
+
+title: Earth Baxia - Suspicious File Creation in Temp Directory
+id: b9a2ccb5-ff6b-4f99-b032-75203c4c1911
+status: experimental
+description: Detects the creation of files associated with Earth Baxia activity in the temporary directory.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.persistence
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|endswith:
+      - \Logs.txt
+      - \Edge.exe
+      - \msedge.dll
+    TargetFilename|startswith: c:\windows\temp
+  condition: selection
+falsepositives:
+  - Legitimate use of similarly named files in the temporary directory.
+level: medium

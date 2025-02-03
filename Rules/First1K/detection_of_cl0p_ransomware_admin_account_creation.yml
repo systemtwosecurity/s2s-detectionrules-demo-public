@@ -1,0 +1,29 @@
+# review_report_url: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Detection of CL0P Ransomware Administrative Account Creation
+id: 06df5b89-1ac5-46cd-8f5c-852cc3cffdc5
+status: experimental
+description: Detects SQL queries used to audit for active administrative accounts which may indicate persistence by the CL0P ransomware group after exploiting MOVEit Transfer vulnerability.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  category: application
+  product: sql
+detection:
+  keywords: SELECT * FROM [].[dbo].[users] WHERE Permission=30 AND Status='active' and Deleted='0'
+  condition: keywords
+falsepositives:
+  - Legitimate administrative account audits by system administrators
+level: high

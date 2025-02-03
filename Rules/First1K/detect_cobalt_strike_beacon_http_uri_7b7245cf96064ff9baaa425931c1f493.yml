@@ -1,0 +1,33 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is correct based on the rule name and description. Howver, we can increase the fidelity of the sigma if we include rest of the IOCs as additional layers. So this query doesn't require finetuning. But we are providing alternative sigma too
+title: Detect Cobalt Strike Beacon via HTTP Methods and URI
+id: 7b7245cf-9606-4ff9-baaa-425931c1f493
+status: experimental
+description: Detects Cobalt Strike Beacon C2 communication patterns using specific HTTP methods and URI.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    method: GET
+    uri|contains: /jquery-3.3.2.min.woff2
+  selection2:
+    method: POST
+    uri|contains: /jquery-3.3.2.min.woff2
+  condition: selection1 or selection2
+falsepositives:
+  - Legitimate access to resources with a similar URI pattern by benign applications
+level: high

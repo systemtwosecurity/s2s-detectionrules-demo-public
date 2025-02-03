@@ -1,0 +1,30 @@
+# review_report_url: https://www.antiy.com/response/HideShoveling.html
+# review_date: 2024-11-13
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is intended to detect the loading of a specific driver, aswArPots.sys, which is associated with rootkit activity and may signal an attempt to evade detection on a Windows system. Rootkits like this are often loaded as drivers to persist on a system and can potentially bypass standard monitoring mechanisms. The rule looks for any instance of aswArPots.sys in driver load events, which could indicate malicious activity if found in unexpected contexts.
+title: Detection of Rootkit aswArPots.sys
+id: 2552ac15-b192-403e-be3d-17bf8ef225f6
+status: experimental
+description: Detects the presence or behavior of the aswArPots.sys rootkit which may indicate an attempt to evade rootkit monitoring.
+references:
+  - https://www.antiy.com/response/HideShoveling.html
+author: System Two Security
+date: 2024/10/26
+tags:
+  - attack.persistence
+  - attack.t1014
+logsource:
+  product: windows
+  category: driver_load
+detection:
+  selection:
+    ImageLoaded|endswith: \aswArPots.sys
+  condition: selection
+falsepositives:
+  - Legitimate software that uses a similarly named driver
+level: high

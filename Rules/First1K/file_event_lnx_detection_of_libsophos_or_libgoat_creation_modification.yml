@@ -1,0 +1,32 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the creation or modification of files named `libsophos.so` or `libgoat.so`, which may indicate a userland rootkit. False positives can arise from legitimate updates to Sophos products, but correlation with other suspicious activities can reduce them.
+title: Detection of libsophos.so or libgoat.so File Creation or Modification
+id: 10c378ae-1869-4354-b173-faa206739981
+status: experimental
+description: Detects the creation or modification of files with names mimicking Sophos product file naming conventions, such as libsophos.so or libgoat.so, which may indicate the presence of a userland rootkit.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.persistence
+logsource:
+  category: file_event
+  product: linux
+detection:
+  selection:
+    TargetFilename|contains:
+      - libgoat.so
+      - libsophos.so
+  condition: selection
+falsepositives:
+  - Legitimate updates or modifications to Sophos products
+  - False positives can be reduced by correlating with other suspicious activities such as network connections to unusual IPs or domains, process creation events related to known penetration testing tools, or indicators of compromise (IOCs) associated with known threat actors.
+level: high

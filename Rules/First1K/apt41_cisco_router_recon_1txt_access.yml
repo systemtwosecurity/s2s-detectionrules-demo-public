@@ -1,0 +1,29 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule identifies HTTP requests to /test/1.txt on a known C2 server (66.42.98.220), indicating potential reconnaissance targeting Cisco RV320 routers. It uses Cisco syslog as the log source, with accurate schema and detection logic. The reference validates the detection context, aligning it with Mitre ATT&CK TA0007 (Discovery).
+
+title: APT41 Cisco Router Reconnaissance Activity (1.txt Access)
+id: b11daa08-535f-48aa-a401-a7a219680c5a
+status: experimental
+description: Detects HTTP requests to the specific file '1.txt' hosted on a known APT41 C2 server, indicative of reconnaissance activity targeting Cisco RV320 routers.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/apt41-initiates-global-intrusion-campaign-using-multiple-exploits
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.discovery
+logsource:
+  product: cisco
+  service: syslog
+detection:
+  selection:
+    cs-uri|endswith: /test/1.txt
+    cs-ip: 66.42.98.220
+  condition: selection
+falsepositives:
+  - Legitimate access to the file if hosted elsewhere.
+level: medium

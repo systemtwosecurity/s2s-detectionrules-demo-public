@@ -1,0 +1,31 @@
+# review_report_url: https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns with the CTI report, identifying the subjects "C=Tunis, O=IT" and "O=GMO GlobalSign, Inc" as indicators of malware infrastructure. It monitors Linux auditd logs, consistent with the CTI report’s findings. 
+title: Detection of WellMail and WellMess Malware via TLS Certificate Subjects
+id: ebd3615e-7ce4-454c-84a5-a8ee5825046e
+status: experimental
+description: Detects the use of specific TLS certificate subjects associated with WellMail and WellMess malware samples.
+references:
+  - https://www.ncsc.gov.uk/files/Advisory-APT29-targets-COVID-19-vaccine-development-V1-1.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    keywords|contains|all:
+      - O=GMO GlobalSign, Inc
+      - C=Tunis, O=IT
+  condition: selection
+falsepositives:
+  - Legitimate certificates that happen to use the same subjects, though this is unlikely and should be investigated.
+level: high

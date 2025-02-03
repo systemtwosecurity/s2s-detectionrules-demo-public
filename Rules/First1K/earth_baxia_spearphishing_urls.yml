@@ -1,0 +1,30 @@
+# review_author: Blackperl
+# review_date: 2024-12-11
+# review_report_url: https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+# review_rule_useful: Yes
+# review_rule_classification: Proceed to testing
+# review_rule_ttp_match: Yes
+# review_notes: The rule is appropriately focused on detecting malicious URLs and has been aligned with Earth Baxia's spear-phishing campaign. This rule is useful in detecting suspicious traffic and should be integrated with an alerting system that provides real-time analysis.
+
+title: Earth Baxia Spear-Phishing Campaign - Malicious URLs
+id: b723e355-cda1-43ff-a7e8-83b101c8e87e
+status: experimental
+description: Detects connections to malicious URLs associated with the Earth Baxia spear-phishing campaign.
+references:
+  - https://www.trendmicro.com/en_us/research/24/i/earth-baxia-spear-phishing-and-geoserver-exploit.html
+author: System Two Security
+date: 2024/11/28
+tags:
+  - attack.initial-access
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    uri|contains:
+      - hxxps://recordar-simmco.s3.sa-east-1.amazonaws[.]com
+      - hxxps://360photo.oss-cn-hongkong.aliyuncs[.]com
+  condition: selection
+falsepositives:
+  - Legitimate use of the identified URLs (unlikely).
+level: high

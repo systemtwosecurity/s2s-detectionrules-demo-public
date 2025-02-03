@@ -1,0 +1,34 @@
+# review_report_url: https://rhinosecuritylabs.com/aws/s3-ransomware-part-1-attack-vector
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects the creation of an AWS Key Management Service (KMS) key with a policy that grants global access to all principals, which could indicate preparatory steps for a ransomware attack. The rule looks for CloudTrail events where a key is created (CreateKey event) and the policy contains wide access permissions, such as "Action": "kms:*", "Effect": "Allow", and "Principal": "*"
+title: Detection of KMS Key Creation with World Access
+id: 5d57e75f-9486-4170-a178-d583b2a44834
+status: experimental
+description: Detects the creation of an AWS KMS key with a policy granting global access to all principals, which could be indicative of preparatory steps for a ransomware attack.
+references:
+  - https://rhinosecuritylabs.com/aws/s3-ransomware-part-1-attack-vector
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.impact
+logsource:
+  service: cloudtrail
+  product: aws
+detection:
+  selection:
+    eventName: CreateKey
+    requestParameters:
+      policy|contains|all:
+        - 'Action": "kms:*"'
+        - 'Effect": "Allow"'
+        - '"Principal": "*"'
+  condition: selection
+falsepositives:
+  - Legitimate creation of KMS keys with broad access for non-sensitive operations (to be validated by the security team).
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://unit42.paloaltonetworks.com/cobalt-strike-memory-analysis/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The original Sigma rule covers the TeamServer IP addresses but misses other crucial indicators from the CTI data, such as Beacon sample URLs (/n9Rd, /flas).
+title: Detection of Cobalt Strike TeamServer IP Communication
+id: ee1a516d-8a7d-40bd-a14e-8c3f743d500c
+status: experimental
+description: Detects network connections to known Cobalt Strike TeamServer IP addresses.
+references:
+  - https://unit42.paloaltonetworks.com/cobalt-strike-metadata-encoding-decoding
+author: System Two Security
+date: 2024/09/20
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  cs_ip_communication:
+    client_header_names:
+      - 80.255.3.109
+      - 143.244.178.247
+  condition: cs_ip_communication
+falsepositives:
+  - Legitimate traffic to IP addresses that were previously used by Cobalt Strike TeamServers and have since been repurposed for benign use.
+level: high

@@ -1,0 +1,36 @@
+# review_report_url: https://redcanary.com/threat-detection-report/trends/info-stealers
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma detects the creation or modification of specific DLL files in the AppData\LocalLow directory which are indicators of Raccoon Stealer activity.
+title: Detection of Raccoon Stealer DLL Files in AppData\LocalLow
+id: ddceed82-4321-4fb5-8af1-906931227df0
+status: experimental
+description: Detects the creation or modification of specific DLL files in the AppData\LocalLow directory which are indicators of Raccoon Stealer activity.
+references:
+  - https://redcanary.com/threat-detection-report/trends/info-stealers
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains:
+      - AppData\LocalLow\msvcp140.dll
+      - AppData\LocalLow\sqlite3.dll
+      - AppData\LocalLow\mozglue.dll
+      - AppData\LocalLow\vcruntime140.dll
+      - AppData\LocalLow\freebl3.dll
+      - AppData\LocalLow\nss3.dll
+      - AppData\LocalLow\softokn3.dll
+  condition: selection
+falsepositives:
+  - Legitimate software that uses similar naming conventions or stores DLLs in the AppData\LocalLow directory.
+level: high

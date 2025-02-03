@@ -1,0 +1,30 @@
+# review_report_url: https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+# review_date: 2024-12-03
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule reports file access or creation activities in the Daedalus Mainnet cryptocurrency wallet directory involving files with a.sqlite extension. Such activity could likely be an attempt by malware to steal credentials. During legitimate wallet access or backups, false positives can occur.
+title: Detection of Daedalus Mainnet Wallet File Access
+id: cf1831c4-f0e7-4cb8-8452-6e8d44a1c807
+status: experimental
+description: Detects file access or creation events targeting the Daedalus Mainnet cryptocurrency wallet directory and file pattern.
+references:
+  - https://blog.sekoia.io/stealc-a-copycat-of-vidar-and-raccoon-infostealers-gaining-in-popularity-part-1
+author: System Two Security
+date: 2024/11/15
+tags:
+  - attack.credential-access
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: \Daedalus Mainnet\wallets\
+    TargetFilename|endswith: .sqlite
+  condition: selection
+falsepositives:
+  - Legitimate access or backup of the Daedalus Mainnet wallet files by the user or system processes
+level: high

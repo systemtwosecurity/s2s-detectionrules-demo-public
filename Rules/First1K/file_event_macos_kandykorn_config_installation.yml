@@ -1,0 +1,29 @@
+# review_report_url: https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule is designed to monitor macOS systems for the creation and modification of a specific configuration file associated with KANDYKORN malware, indicating potential SUGARLOADER stage activity in the infection process. By targeting the path /Library/Caches/com.apple.safari.ck, the rule aims to identify unauthorized persistence mechanisms employed by the malware. The high severity level reflects the critical nature of this detection, while the note on false positives highlights the possibility of legitimate applications using similar file paths, necessitating thorough investigation of alerts to confirm malicious activity.
+title: Detect KANDYKORN Malware Configuration File Installation on macOS
+id: 4cdc8ddb-4f9c-459e-8499-23a7a64518b3
+status: experimental
+description: Detects the creation and writing of a configuration file used by the KANDYKORN malware on macOS systems, which is indicative of the SUGARLOADER stage of the infection.
+references:
+  - https://unit42.paloaltonetworks.com/threat-assessment-north-korean-threat-groups-2024
+author: System Two Security
+date: 2024/09/13
+tags:
+  - attack.persistence
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: /Library/Caches/com.apple.safari.ck
+  condition: selection
+falsepositives:
+  - Legitimate software that uses the same file path for configuration
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects TEMPLEPLAY malware by inspecting HTTP logs for a specific GET request URI and a unique client header response pattern. It leverages Zeek logs to identify abnormal traffic indicative of C2 activity.
+title: Detection of TEMPLEPLAY Test Backdoor Activity
+id: 97809b3a-9ecf-4c07-9aeb-3fdcef6f0a8b
+status: experimental
+description: Detects the network activity of TEMPLEPLAY malware which creates a specific GET request and expects a unique string in the response.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/unc1860-iran-middle-eastern-networks
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection1:
+    method: GET
+    uri|contains: wOxhuoSBgpGcnLQZxipa
+  selection2:
+    client_header_names|contains: UsEPTIkCRUwarKZfRnyjcG13DFA
+  condition: selection1 and selection2
+falsepositives:
+  - Legitimate applications that coincidentally use the same URI and response content patterns
+level: high

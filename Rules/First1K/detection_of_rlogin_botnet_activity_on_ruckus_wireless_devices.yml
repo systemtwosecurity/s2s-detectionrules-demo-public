@@ -1,0 +1,33 @@
+# review_report_url: https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets/
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects potential rlogin botnet activity on compromised Ruckus Wireless devices by monitoring DNS queries for "A" records that include "rlogin" and filtering for responses on TCP port 63210. It aims to identify instances where a bind shell may be active, indicating a security compromise. The rule acknowledges the possibility of false positives from legitimate use of this port and is categorized with a high risk level.
+
+title: Detection of Rlogin Botnet Activity on Ruckus Wireless Devices
+id: 1de93e0f-d662-43ae-a8f0-ddefed84a856
+status: experimental
+description: Detects potential rlogin botnet activity with a bind shell listening on TCP port TELNET/63210, which may indicate a compromised Ruckus Wireless device.
+references:
+  - https://blog.sekoia.io/a-glimpse-into-the-quad7-operators-next-moves-and-associated-botnets
+author: System Two Security
+date: 2024/10/03
+tags:
+  - attack.persistence
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    qtype_name|contains: A
+    query|contains: rlogin
+  filter_ports:
+    id.resp_p: 63210
+  condition: query and filter_ports
+falsepositives:
+  - Legitimate use of port 63210 for non-malicious purposes
+level: high

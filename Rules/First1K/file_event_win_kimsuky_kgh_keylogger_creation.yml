@@ -1,0 +1,30 @@
+# review_report_url: https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+# review_date: 2024-10-16
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is crafted to detect the creation of files with the .x extension in the %appdata%\lg folder, which is associated with the KGH backdoor's keylogger functionality used by the Kimsuky threat group. By monitoring this specific directory and file extension, the rule aims to identify potential malicious activity indicative of data collection efforts by the keylogger. The rule acknowledges a low likelihood of false positives from legitimate applications using .x files in this context, enhancing its reliability for threat detection.
+
+title: Detection of Kimsuky KGH Keylogger File Creation
+id: 53bf73b7-8363-4b0c-952a-06925cedb179
+status: experimental
+description: Detects the creation of files with the ".x" extension within the %appdata%\\lg folder, which is indicative of the KGH backdoor keylogger functionality.
+references:
+  - https://www.cybereason.com/blog/research/back-to-the-future-inside-the-kimsuky-kgh-spyware-suite
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.collection
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: \\lg\\*.x
+  condition: selection
+falsepositives:
+  - Legitimate applications that use ".x" files within the specified folder (very unlikely)
+level: high

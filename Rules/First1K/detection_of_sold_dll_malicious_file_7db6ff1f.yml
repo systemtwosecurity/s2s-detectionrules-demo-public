@@ -1,0 +1,30 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The CTI report lists several IOCs associated with the "Tickler" malware, which is part of a long-running intelligence-gathering operation by a threat actor named "Peach Sandstorm". The Sold.dll file is one of the key components in this malware ecosystem. The rule focuses on this specific file, which is likely a crucial part of the Tickler malware's functionality or persistence mechanism. By combining both the filename and the exact SHA-256 hash, it minimizes the risk of false positives. This approach ensures that only the specific malicious Sold.dll file is detected, not any legitimate files that might coincidentally have the same name
+title: Detection of Sold.dll Malicious File
+id: 7db6ff1f-6fb9-4f75-8769-cada16d69b7a
+status: experimental
+description: Detects the presence of a known malicious DLL file Sold.dll with a specific SHA-256 hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/28/peach-sandstorm-deploys-new-custom-tickler-malware-in-long-running-intelligence-gathering-operations
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: file_executable_detected
+detection:
+  selection:
+    TargetFilename|endswith: Sold.dll
+    sha256: ccb617cc7418a3b22179e00d21db26754666979b4c4f34c7fda8c0082d08cec4
+  condition: selection
+falsepositives:
+  - Unknown
+level: high

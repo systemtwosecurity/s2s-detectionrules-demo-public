@@ -1,0 +1,29 @@
+# review_report_url: https://www.elastic.co/security-labs/dipping-into-danger
+# review_date: 2024-10-07
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule and CTI report are properly aligned, identifying the SHA-256 hash ccde1ded028948f5cd3277d2d4af6b22fa33f53abde84ea2aa01f1872fad1d13 as belonging to the WARMCOOKIE backdoor's RtlUpd.dll file. This detection focuses on tracking the presence of the backdoor through hash-based identification, indicating potential persistence mechanisms employed by the malware.
+title: Detection of WARMCOOKIE Backdoor SHA-256 Hash
+id: b9686650-25e3-4a1c-b5a8-5a02e7e712c4
+status: experimental
+description: Detects the presence of the SHA-256 hash associated with the WARMCOOKIE backdoor file RtlUpd.dll
+references:
+  - https://www.elastic.co/security-labs/dipping-into-danger
+author: System Two Security
+date: 2024/10/02
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: image_load
+detection:
+  hash_detection:
+    Hashes|contains: ccde1ded028948f5cd3277d2d4af6b22fa33f53abde84ea2aa01f1872fad1d13
+  condition: hash_detection
+falsepositives:
+  - Legitimate software with a hash collision (highly unlikely)
+level: critical

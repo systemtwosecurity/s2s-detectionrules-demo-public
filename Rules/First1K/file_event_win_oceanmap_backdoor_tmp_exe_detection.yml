@@ -1,0 +1,30 @@
+# review_report_url:https://gurucul.com/blog/apt28s-oceanmap-backdoor/
+# review_date: 2024-10-26
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the report. No fine-tuned or suggested query required.
+
+title: Detection of OCEANMAP Backdoor File Activity
+id: 590aa5f3-ba07-422e-87cd-0b00399ce3a9
+status: experimental
+description: Detects the creation or execution of files with "_tmp.exe" used by OCEANMAP backdoor attributed to APT28.
+references:
+  - https://gurucul.com/blog/apt28s-oceanmap-backdoor
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith: _tmp.exe
+  condition: selection
+falsepositives:
+  - Legitimate applications that use "_tmp.exe" in their filenames
+level: high

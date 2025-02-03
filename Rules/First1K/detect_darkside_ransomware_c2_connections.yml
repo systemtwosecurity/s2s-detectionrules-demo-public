@@ -1,0 +1,30 @@
+# review_report_url: https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+# review_date: 2024-11-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This sigma rule is well-founded and can be confidently deployed to monitor for DarkSide ransomware activity through network traffic. The rule’s high alert level is appropriate due to the significance of these IPs in C2 operations. 
+title: Detect Network Connections to Malicious IP Addresses
+id: fcf2c033-4688-4b6e-abf5-1b509305233b
+status: experimental
+description: Detects network connections to IP addresses associated with DarkSide ransomware variant.
+references:
+  - https://www.cisa.gov/sites/default/files/publications/MAR-10337802-1.v1.WHITE.pdf
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - 99.83.154.118
+    - 176.103.62.217
+  condition: query
+falsepositives:
+  - Legitimate connections to the IP addresses if they have been reassigned after the report
+level: high

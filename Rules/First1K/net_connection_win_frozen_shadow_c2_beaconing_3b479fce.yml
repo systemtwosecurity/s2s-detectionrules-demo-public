@@ -1,0 +1,32 @@
+# review_report_url: URL
+# review_date: 2024-09-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This is a direct domain IOC match with the given CTI and it is useful
+title: Detection of FROZEN#SHADOW Attack Campaign Beaconing Activity
+id: 3b479fce-9959-4c30-937e-70ab6e7075e2
+status: experimental
+description: Detects network connections to known C2 servers associated with the FROZEN#SHADOW attack campaign leveraging SSLoad malware.
+references:
+  - https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign
+author: System Two Security
+date: 2024/08/30
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - skinnyjeanso[.]com
+      - titnovacrion[.]top
+    DestinationPort: '443'
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains with similar names
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://any.run/cybersecurity-blog/brute-ratel-c4-analysis
+# review_date: 2024-11-05
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the loading of files with specific hash values associated with the Brute Ratel C4 Badger tool used to deploy the Latrodectus malware. While these hash values should be unique to the malware, rare hash collisions with legitimate software could result in false positives.
+title: Detection of Brute Ratel C4 Badger Loading Latrodectus via Hashes
+id: 5e1a289d-8a7b-4a87-b52f-4f3dfb1b38ee
+status: experimental
+description: Detects the presence of files associated with the Brute Ratel C4 Badger tool used to load the Latrodectus malware based on known hash values.
+references:
+  - https://any.run/cybersecurity-blog/brute-ratel-c4-analysis
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  hashes:
+    sha256|contains:
+      - b4a482a7e96cfdef632a7af286120156
+      - 83bca228a6a8f5e6d7c95d2a08494d32
+      - ccb6d3cb020f56758622911ddd2f1fcb
+  condition: hashes
+falsepositives:
+  - Unknown. Hashes should be unique to the malware, but collisions or legitimate software with the same hash could potentially trigger a false positive.
+level: high

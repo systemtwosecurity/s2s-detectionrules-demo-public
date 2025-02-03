@@ -1,0 +1,34 @@
+# review_report_url: The sigma rule  is aligned with the findings in the CTI report from Morphisec, which details a JavaScript backdoor utilized by FIN7. The CTI identifies the backdoor's communication with a C2 server via HTTP requests, using parameters indicative of malicious behavior, such as request and _uniq_id. This behavior is crucial in identifying the operational tactics of FIN7 and helps in developing effective detection strategies.
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule  is aligned with the findings in the CTI report from Morphisec, which details a JavaScript backdoor utilized by FIN7. The CTI identifies the backdoor's communication with a C2 server via HTTP requests, using parameters indicative of malicious behavior, such as request and _uniq_id. This behavior is crucial in identifying the operational tactics of FIN7 and helps in developing effective detection strategies.
+title: FIN7 JavaScript Backdoor HTTP Request Activity
+id: b4b571a4-0e7d-4412-8083-ac4b7a4b6db0
+status: experimental
+description: Detects HTTP GET and POST requests with a query parameter "request" and a unique identifier "_uniq_id" which are indicative of the JavaScript backdoor used by FIN7.
+references:
+  - https://blog.morphisec.com/fin7-not-finished-morphisec-spots-new-campaign
+author: System Two Security
+date: 2024/10/11
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  service: iis
+detection:
+  selection:
+    cs-method|contains|all:
+      - POST
+      - GET
+    cs-uri-query|contains:
+      - request=
+      - _uniq_id=
+  condition: selection
+falsepositives:
+  - Legitimate applications that use similar query parameters in their normal network communications.
+level: high

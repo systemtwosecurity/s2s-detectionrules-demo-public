@@ -1,0 +1,29 @@
+# review_report_url: https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief/
+# review_date: 2024-10-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule identifies file creation or modification within the %WinDir%\System32\Sysvols\ directory, which is uncommon and may suggest persistence tactics used by malware like Pillowmint associated with the FIN7 group. As the Sysvol directory is not typically accessed during routine system operations, unauthorized modifications here can be highly suspicious. However, legitimate administrative tasks involving Sysvol could trigger false positives.
+title: Suspicious File Creation or Modification in Sysvol Directory
+id: 52634c59-d479-4c04-9cb3-8b40b5943afe
+status: experimental
+description: Detects the creation or modification of files in the %WinDir%\System32\Sysvols\ directory, which is uncommon and may indicate malicious activity.
+references:
+  - https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/pillowmint-fin7s-monkey-thief
+author: System Two Security
+date: 2024/10/14
+tags:
+  - attack.persistence
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|startswith: '%WinDir%\\System32\\Sysvols\\'
+  condition: selection
+falsepositives:
+  - Legitimate administrative activity that involves working with the Sysvol directory.
+level: high

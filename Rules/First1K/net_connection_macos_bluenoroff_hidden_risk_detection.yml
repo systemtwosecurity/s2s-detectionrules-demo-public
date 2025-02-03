@@ -1,0 +1,100 @@
+# review_report_url: https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network connections or DNS queries to domains associated with the BlueNoroff Hidden Risk threat actor, targeting macOS systems with fake cryptocurrency news and advanced persistence mechanisms. The rule specifically identifies suspicious activity involving a comprehensive list of domains, such as matuaner.com, zoom-client.com, selinicapital.com, and delphidigital.org, which are known indicators of compromise (IOCs) linked to phishing, command-and-control (C2) infrastructure, and malware delivery.
+
+title: Detect Network Connections to Malicious Domains Related to BlueNoroff Hidden Risk
+id: bf979f98-06c9-41d9-9ff4-fa4d425bf5f7
+status: experimental
+description: Detects network connections or DNS queries to domains associated with the BlueNoroff Hidden Risk threat actor targeting Macs with fake crypto news and novel persistence mechanisms.
+references:
+  - https://www.sentinelone.com/labs/bluenoroff-hidden-risk-threat-actor-targets-macs-with-fake-crypto-news-and-novel-persistence
+author: System Two Security
+date: 2024/11/22
+tags:
+  - attack.command-and-control
+logsource:
+  category: network_connection
+  product: macos
+detection:
+  selection:
+    DestinationHostname|contains:
+      - www.sendmailed.com
+      - maelstromfund.org
+      - www.maelstromfund.org
+      - tvdhoenn.net
+      - www.delphidigital.org
+      - www.prismlab.xyz
+      - www.sendmailer.org
+      - community.edwardcaputo.shop
+      - calendly.caladan.video
+      - xu10.1056.uk
+      - appleaccess.pro
+      - meet.selinicapital.online
+      - selinicapital.online
+      - mg21.1056.uk
+      - www.yoannturp.xyz
+      - email.sellinicapital.com
+      - mbupdate.linkpc.net
+      - www.sellinicapital.com
+      - online.zoom-client.com
+      - verify.selinicapital.info
+      - evalaskatours.com
+      - pixelmonmmo.net
+      - info.customer-app.xyz
+      - sendmailed.com
+      - delphidigital.org
+      - mc.tvdhoenn.net
+      - kevinaraujo.shop
+      - versionupdate.dns.army
+      - www.happyz.one
+      - www.panda95sg.asia
+      - community.kevinaraujo.shop
+      - meet.caladan.video
+      - www.buy2x.com
+      - happyz.one
+      - info.ankanimatoka.com
+      - selincapital.com
+      - selinicapital.network
+      - arkinvst.com
+      - meeting.zoom-client.com
+      - matuaner.com
+      - dourolab.xyz
+      - sellinicapital.com
+      - edwardcaputo.shop
+      - cardiagnostic.net
+      - presentations.life
+      - panda95sg.asia
+      - meeting.sellinicapital.com
+      - drogueriasanjose.net
+      - meet.selinicapital.xyz
+      - zoom-client.com
+      - community.selincapital.com
+      - meet.caladangroup.xyz
+      - sendmailer.org
+      - meet.sellinicapital.com
+      - online.selinicapital.info
+      - shh5.baranftw.xyz
+      - hwsrv-1225327.hostwindsdns.com
+      - nodnote.com
+      - atajerefoods.com
+      - www.frameworks.ventures
+      - meet.hananetwork.video
+      - cmt.ventures
+      - maelstroms.fund
+      - meet.selinicapital.info
+      - analysis.arkinvst.com
+      - customer-app.xyz
+      - buy2x.com
+      - selinicapital.info
+      - doc.solanalab.org
+      - www.huspot.blog
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains that have been compromised or are legitimate but have similar names to the malicious domains.
+level: high

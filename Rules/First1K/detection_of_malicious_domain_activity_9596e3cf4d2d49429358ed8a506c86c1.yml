@@ -1,0 +1,35 @@
+# review_report_url:  https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule is designed to detect network connections to known malicious domains as specified in a CTI report, which can indicate potential command-and-control (C2) or malicious activity. It tracks DNS queries for specific domains often associated with attacks or abuse, flagging unusual access to these domains. Since some domains might be legitimately accessed if they’ve been compromised or re-used, occasional false positives may occur. This rule is rated as high priority due to its focus on monitoring for C2 activity.
+title: Detection of Malicious Domain Activity
+id: 9596e3cf-4d2d-4942-9358-ed8a506c86c1
+status: experimental
+description: Detects network connections to known malicious domains listed in CTI report.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/05/15/threat-actors-misusing-quick-assist-in-social-engineering-attacks-leading-to-ransomware
+author: System Two Security
+date: 2024/10/30
+tags:
+  - attack.t1583.002
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - antispam2.com
+    - upd7a.com
+    - upd9.com
+    - upd7.com
+    - upd5.pro
+    - antispam3.com
+  condition: query
+falsepositives:
+  - Legitimate connections to domains that have been compromised or repurposed after the CTI report was generated.
+level: high

@@ -1,0 +1,31 @@
+# review_report_url: https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+# review_date: 2024-12-04
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the replacement of SSH and SSHD binaries with Onderon malware on Linux systems, which is a sign of an attacker gaining persistence on the system. It monitors file events for these specific binaries. The detection level is high, but false positives could occur from legitimate SSH/SSHD updates by system administrators or official package management tools.
+title: Detection of Onderon SSH/SSHD Malware Replacement
+id: 95880226-bee8-4cc8-850b-f4c6e66cfc11
+status: experimental
+description: Detects the replacement of SSH and SSHD binaries with Onderon malware, which is indicative of an actor gaining persistence on a system.
+references:
+  - https://news.sophos.com/en-us/2024/10/31/pacific-rim-timeline
+author: System Two Security
+date: 2024/11/01
+tags:
+  - attack.persistence
+logsource:
+  product: linux
+  category: file_event
+detection:
+  selection:
+    TargetFilename|endswith:
+      - /ssh
+      - /sshd
+  condition: selection
+falsepositives:
+  - Legitimate updates of SSH/SSHD binaries by system administrators or through official package management tools.
+level: high

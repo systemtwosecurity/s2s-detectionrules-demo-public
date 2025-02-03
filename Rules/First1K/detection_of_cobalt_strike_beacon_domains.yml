@@ -1,0 +1,38 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule successfully identifies all relevant Cobalt Strike Beacon domains from CTI report.
+title: Detection of Cobalt Strike Beacon Domains
+id: e1a62287-087d-4266-a972-eff54d6e6ad5
+status: experimental
+description: Detects network connection events to known Cobalt Strike Beacon domains.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: dns
+detection:
+  query:
+    - gallerycenter.org
+    - olapdatabase.com
+    - techiefly.com
+    - financialmarket.org
+    - datazr.com
+    - mobilnweb.com
+    - aimsecurity.net
+    - infinitysoftwares.com
+    - ervsystem.com
+    - swipeservice.com
+  condition: query
+falsepositives:
+  - Legitimate connections to domains that have been compromised or repurposed by threat actors.
+level: high

@@ -1,0 +1,32 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day/
+# review_date: 2024-09-22
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This rule detects DNS queries that match known malicious domains associated with Citrine Sleet activity, such as voyagorclub.space and weinsteinfrog.com. It helps identify potential command-and-control communication by inspecting DNS requests for suspicious domain names, but care is needed for false positives from legitimate domains with similar names.
+title: Interaction with Citrine Sleet Malicious Domains via DNS Query
+id: 99eda76c-1d41-42eb-82d8-f92644e52f16
+status: experimental
+description: Detects DNS query events where the query name matches known malicious domains associated with Citrine Sleet activity.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|contains:
+      - voyagorclub.space
+      - weinsteinfrog.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains with similar names
+  - Incorrect threat intelligence
+level: high

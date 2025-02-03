@@ -1,0 +1,35 @@
+# review_report_url: https://redcanary.com/blog/threat-detection/email-forwarding-rules
+# review_date: 2024-11-18
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects the creation, modification, removal, or disabling of inbox rules in Microsoft 365, focusing on commands such as New-InboxRule, Set-InboxRule, Remove-InboxRule, and Disable-InboxRule. These activities, while often legitimate, can also be used maliciously by adversaries to establish or manipulate email forwarding rules as part of their persistence or data exfiltration strategies.The rule is aligned with MITRE ATT&CK T1114.003 (Email Forwarding Rule) and is critical for detecting unauthorized configuration changes that could allow adversaries to intercept or exfiltrate sensitive emails. 
+
+title: Suspicious Email Forwarding Rule Creation in Office 365
+id: 02baed55-8f0a-4e82-994d-982173219314
+status: experimental
+description: Detects the creation, modification, or removal of inbox rules in Office 365 that could be used for malicious email forwarding.
+references:
+  - https://redcanary.com/blog/threat-detection/email-forwarding-rules
+author: System Two Security
+date: 2024/11/26
+tags:
+  - attack.persistence
+  - attack.t1114.003
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    eventName|contains:
+      - New-InboxRule
+      - Set-InboxRule
+      - Remove-InboxRule
+      - Disable-InboxRule
+  condition: selection
+falsepositives:
+  - Legitimate inbox rule changes done by the user or administrator
+level: high

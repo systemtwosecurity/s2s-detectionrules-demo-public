@@ -1,0 +1,29 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule matches the CTI report. The specific cookie value (_cfuid=QA9ir3qEQyrMCBiZvVVeZeJgmwAQkeyavYAyYk3S8phISRPhzhyYFClzQKeXwGSDFXHoMR1LGv166j-9tyF8b6AlxbeDwjrtfHB5yGK337UPiqJ7CGi6k7yRHRh5t5ngCa8jzkmNCfV2s2KvEO6Bp1hs-qjhtE7kL4DG9AgsO-n2Uo27) found in the Sigma rule is present in the CTI report’s HTTP sessions, confirming detection of Cobalt Strike activity.
+title: Detection of Cobalt Strike Beacon via Specific Cookie Value
+id: 76b1d241-8011-49d7-962a-934c79c7977a
+status: experimental
+description: Detects Cobalt Strike Beacon command-and-control activity by identifying a specific cookie value in HTTP sessions.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  category: application
+  product: modsecurity
+detection:
+  selection:
+    RequestHeaders|contains: 'Cookie: _cfuid=QA9ir3qEQyrMCBiZvVVeZeJgmwAQkeyavYAyYk3S8phISRPhzhyYFClzQKeXwGSDFXHoMR1LGv166j-9tyF8b6AlxbeDwjrtfHB5yGK337UPiqJ7CGi6k7yRHRh5t5ngCa8jzkmNCfV2s2KvEO6Bp1hs-qjhtE7kL4DG9AgsO-n2Uo27'
+  condition: selection
+falsepositives:
+  - Legitimate use of the domain with the specific cookie value, although unlikely, should be investigated.
+level: high

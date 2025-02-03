@@ -1,0 +1,28 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability/
+# review_date: 2024-10-27
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This detection rule identifies the presence of the DSROLE.dll file linked to the Diamond Sleet Path 2 by monitoring its specific SHA-256 hash. It leverages the uniqueness of the hash value to minimize false positives and ensure accurate detection of the malicious file. Due to the rarity of this file, any detection should prompt further investigation for potential malicious activity.
+title: Detection of Diamond Sleet Path 2 DSROLE.dll
+id: a3ef708b-e006-45f6-8855-2c90369fd910
+status: experimental
+description: Detects the presence of the DSROLE.dll file associated with the Diamond Sleet path 2 by its SHA-256 hash value.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2023/10/18/multiple-north-korean-threat-actors-exploiting-the-teamcity-cve-2023-42793-vulnerability
+author: System Two Security
+date: 2024/10/25
+tags:
+  - attack.execution
+logsource:
+  product: windows
+  category: image_load
+detection:
+  sha256: d9add2bfdfebfa235575687de356f0cefb3e4c55964c4cb8bfdcdc58294eeaca
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to files, and as such, any detection should be investigated.
+level: high

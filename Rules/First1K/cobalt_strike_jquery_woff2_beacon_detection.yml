@@ -1,0 +1,35 @@
+# review_report_url:https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The Sigma rule accurately maps to the CTI report. It checks for the URI (jquery-3.3.1.min.woff2), the associated subdomains (theyardservice.com), and uses headers (User-Agent and Cookies) that are indicative of Cobalt Strike Beacon activity.
+title: Detection of Cobalt Strike Beacon via Suspicious jQuery WOFF2 File Requests
+id: f7acffc6-06cb-4ea2-85b7-c28ee110539e
+status: experimental
+description: Detects HTTP GET requests for a .woff2 file masquerading as a jQuery file from various subdomains of theyardservice.com, which is indicative of Cobalt Strike Beacon activity.
+references:
+  - https://www.cisa.gov/news-events/analysis-reports/ar21-148a
+author: System Two Security
+date: 2024/09/23
+tags:
+  - attack.command-and-control
+logsource:
+  product: zeek
+  service: http
+detection:
+  selection:
+    method: GET
+    uri|endswith: /jquery-3.3.1.min.woff2
+    client_header_names|contains: Host
+  filter1:
+    client_header_names|contains:
+      - User-Agent
+      - Cookie
+  condition: selection and filter1
+falsepositives:
+  - Legitimate access to a .woff2 file that coincidentally has a similar name to a jQuery file.
+level: high

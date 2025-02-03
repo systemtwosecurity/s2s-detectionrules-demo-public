@@ -1,0 +1,33 @@
+# review_report_url: https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat/
+# review_date: 2024-09-21
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This query is useful and correct based on the rule name and description. No additional fine-tuned or suggested queries are required.
+title: Detection of PondRAT macOS Variants
+id: 1590e6f7-4185-4785-a320-3e24e1042010
+status: experimental
+description: Detects the presence of PondRAT macOS variants based on SHA-256 hashes.
+references:
+  - https://unit42.paloaltonetworks.com/gleaming-pisces-applejeus-poolrat-and-pondrat
+author: System Two Security
+date: 2024/09/26
+tags:
+  - attack.persistence
+logsource:
+  product: macos
+  category: file_delete
+detection:
+  sha256:
+    - cbf4cfa2d3c3fb04fe349161e051a8cf9b6a29f8af0c3d93db953e5b5dc39c86
+    - bfd74b4a1b413fa785a49ca4a9c0594441a3e01983fc7f86125376fdbd4acf6b
+    - bce1eb513aaac344b5b8f7a9ba9c9e36fc89926d327ee5cc095fb4a895a12f80
+    - 3c8dbfcbb4fccbaf924f9a650a04cb4715f4a58d51ef49cc75bfcef0ac258a3e
+    - 0b5db31e47b0dccfdec46e74c0e70c6a1684768dbacc9eacbb4fd2ef851994c7
+  condition: sha256
+falsepositives:
+  - Unknown. Hashes are unique to the malware and should not be found in benign processes.
+level: critical

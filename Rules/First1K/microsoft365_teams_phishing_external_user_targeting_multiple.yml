@@ -1,0 +1,31 @@
+# review_report_url: https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+# review_date: 2024-11-12
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - The sigma rule aligns well with the CTI report by identifying external users targeting multiple users within a tenant on Microsoft Teams. The TeamsUserInteraction field conceptually maps to the CTI's description of external actors engaging with multiple users in a targeted manner. The aggregation logic and focus on Teams activity align directly with the TTPs outlined in the CTI.
+title: Teams Phishing via External User Targeting Multiple Users
+id: 10499fe1-5200-4a78-8c77-7102a4b7979e
+status: experimental
+description: Detects an external user targeting multiple users within a tenant on Microsoft Teams, which could indicate a phishing attack. The rule looks for external users who have interacted with at least three users within the same tenant.
+references:
+  - https://techcommunity.microsoft.com/blog/microsoftsecurityexperts/phish-click-breach-hunting-for-a-sophisticated-cyber-attack/4267916
+author: System Two Security
+date: 2024/11/11
+tags:
+  - attack.initial-access
+logsource:
+  product: m365
+  service: threat_management
+detection:
+  selection:
+    Payload: TeamsUserInteraction
+    eventName: ExternalUserTargeting
+    eventSource: Teams
+  condition: selection | count() by tenant, external_user > 2
+falsepositives:
+  - Legitimate external user collaboration with multiple users within a short time frame.
+level: high

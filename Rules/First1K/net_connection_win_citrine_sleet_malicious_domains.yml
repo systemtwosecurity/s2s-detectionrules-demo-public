@@ -1,0 +1,31 @@
+# review_report_url: https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day/
+# review_date: 2024-09-23
+# review_author: Blackpearl
+# review_rule_useful: true
+# review_rule_classification: proceed to testing
+# review_rule_classification_reason: na
+# review_rule_ttp_match: yes
+# review_notes:
+#  - This Sigma rule detects network events where devices have connected to domains associated with the Citrine Sleet threat group, such as voyagorclub.space and weinsteinfrog.com. It identifies potential command-and-control activity by flagging any interactions with these known malicious domains.
+title: Interaction with Citrine Sleet Malicious Domains
+id: 791aaff8-c7cb-4937-92de-8baf5b33b8e2
+status: experimental
+description: Detects network events where devices have interacted with known malicious domains associated with the Citrine Sleet activity group.
+references:
+  - https://www.microsoft.com/en-us/security/blog/2024/08/30/north-korean-threat-actor-citrine-sleet-exploiting-chromium-zero-day
+author: System Two Security
+date: 2024/09/27
+tags:
+  - attack.command-and-control
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    DestinationHostname|contains:
+      - voyagorclub.space
+      - weinsteinfrog.com
+  condition: selection
+falsepositives:
+  - Legitimate connections to domains with similar names
+level: high
